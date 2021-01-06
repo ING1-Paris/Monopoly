@@ -1,4 +1,5 @@
 # Monopoly
-monopoly-2021-2022-KinanLak created by GitHub Classroom
+Monopoly project using C.
 
-Donc la en gros c'est tipar !
+# Notice
+monopoly-2021-2022-KinanLak created by GitHub Classroom
