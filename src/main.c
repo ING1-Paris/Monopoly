@@ -362,9 +362,7 @@ void home() {
     }
 }
 
-
 void afficherJoueurs() {}
-
 
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
