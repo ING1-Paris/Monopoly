@@ -5,8 +5,8 @@
 #include <time.h>
 #include <unistd.h>
 #if defined(__WIN32__)
-#include <conio.h>
-#include <windows.h>
+    #include <conio.h>
+    #include <windows.h>
 #endif
 #define MAX 100
 
@@ -317,9 +317,10 @@ void creationPlateau() {
     cyborg = creationTerrain(cyborg, 21);
 }
 
-int choixAvatar() {
+int choixAvatar(int nbJoueurs, int currentPlayer) {
     bool end = false;
-    int key;
+    int av;
+    int key, c;
     int avatar[10] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0B, 0x0C, 0x0E, 0x0F};
     int selection = 0;
     display();
@@ -347,14 +348,58 @@ int choixAvatar() {
                     printf("%c", avatar[selection]);
                     break;
                 case 13:
-                    gotoligcol(18, 5);
-                    printf("Selection enregistre");
-                    animation(20, 0, 50, 30);
                     end = true;
                     break;
+                    /* Pour vérifier si l'avat est déjà pris
+                    av = avatar[selection];
+                    switch (currentPlayer) {
+                        case 1:
+                            if ((av == j2.avatar) || (av == j3.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 2:
+                            if ((av == j1.avatar) || (av == j3.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 3:
+                            if ((av == j1.avatar) || (av == j2.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 4:
+                            if ((av == j1.avatar) || (av == j2.avatar) || (av == j3.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        {*/
             }
         }
     }
+
+    gotoligcol(18, 5);
+    printf("Selection enregistre");
+    animation(20, 0, 50, 28);
+
+    /*
+    for (c = selection - 1; c < 10 - 1; c++)
+        avatar[c] = avatar[c + 1];
+
+    printf("Resultant array:\n");
+
+    for (c = 0; c < 10 - 1; c++)
+        printf("%c\n", avatar[c]);
+    */
+
     return avatar[selection];
 }
 
@@ -370,43 +415,43 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     display();
     printf("Entrez le nom du joueur 1 : ");
     scanf("%s", j1.username);
-    j1.avatar = choixAvatar();
+    j1.avatar = choixAvatar(nombreDeJoueurs, 1);
     display();
     printf("Entrez le nom du joueur 2 : ");
     scanf("%s", j2.username);
-    j2.avatar = choixAvatar();
+    j2.avatar = choixAvatar(nombreDeJoueurs, 2);
 
     if (nombreDeJoueurs == 3) {
         display();
         printf("Entrez le nom du joueur 3 : ");
         scanf("%s", j3.username);
-        j3.avatar = choixAvatar();
+        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
     }
 
     else if (nombreDeJoueurs == 4) {
         display();
         printf("Entrez le nom du joueur 3 : ");
         scanf("%s", j3.username);
-        j3.avatar = choixAvatar();
+        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
         display();
         printf("Entrez le nom du joueur 4 : ");
         scanf("%s", j4.username);
-        j4.avatar = choixAvatar();
+        j4.avatar = choixAvatar(nombreDeJoueurs, 4);
     }
 
     display();
     gotoligcol(14, 0);
 
-    printf("Pseudo du joueur 1 : %s\n", j1.username);
-    printf("Pseudo du joueur 2 : %s\n", j2.username);
+    printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j1.username, j1.avatar);
+    printf("Pseudo et avatar du joueur 2 : %s  -  %c\n", j2.username, j2.avatar);
 
     if (nombreDeJoueurs == 3) {
-        printf("Pseudo du joueur 3 : %s\n", j3.username);
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
     }
 
     else if (nombreDeJoueurs == 4) {
-        printf("Pseudo du joueur 3 : %s\n", j3.username);
-        printf("Pseudo du joueur 4 : %s\n", j4.username);
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j4.username, j4.avatar);
     }
 
     printf("\nChargement de la partie en cours");
