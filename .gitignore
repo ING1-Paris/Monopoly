@@ -3,3 +3,4 @@ cmake-build-debug
 .DS_Store
 Monopoly.xcworkspace
 Monopoly/Monopoly.xcodeproj/xcuserdata/kinanlakhdar.xcuserdatad/xcschemes/xcschememanagement.plist
+src/main

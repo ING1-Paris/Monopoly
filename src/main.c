@@ -27,5 +27,9 @@ struct Field {
 
 int main() {
     printf("Test");
-}
 
+
+
+    printf("\n");
+    return 0;
+}
