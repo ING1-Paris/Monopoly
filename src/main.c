@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include <windows.h>
 
 struct Player {
     int id;             // Player's ID from 1 to 4
