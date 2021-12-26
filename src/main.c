@@ -4,9 +4,6 @@
 #include <stdbool.h>
 #include <time.h>
 
-
-
-
 struct Player {
     int id;             // Player's ID from 1 to 4
     long balance;       // Balance of the player
