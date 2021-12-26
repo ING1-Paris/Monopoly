@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
+
+#include "mesFonctions.h"
+
+
 
 struct Player {
     int id;             // Player's ID from 1 to 4
@@ -26,9 +31,9 @@ struct Field {
 };
 
 int main() {
-    printf("Test");
+    printf("Numero 1");
 
-
+    testFunction();
 
     printf("\n");
     return 0;
