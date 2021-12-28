@@ -47,6 +47,8 @@ int lancerDe() {
 }
 
 int completeType() {
+    return 0;
+}
 
 void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
 {
@@ -164,26 +166,6 @@ void plateau(){
     creationCase("RacineCarree", 32, 108, 13, 'h');
 }
 
-int main() {
-    for(int i = 0; i <50; i++) {
-        printf("\n");
-    }
-    gotoligcol(6, 16);
-    printf("1-Lancer une nouvelle partie");
-    gotoligcol(6, 55);
-    printf("2-Sauvegarder la partie");
-    gotoligcol(6, 86);
-    printf("3-Charger une ancienne partie");
-    gotoligcol(8, 25);
-    printf("4-Consulter les regles");
-    gotoligcol(8, 61);
-    printf("5-Credits");
-    gotoligcol(8, 84);
-    printf("6-Quitter la partie");
-    plateau();
-    return 0;
-}
-
 int creationDesJoueurs(int nombreDeJoueurs) {
 
     int emptyCard[10];
@@ -202,6 +184,25 @@ int creationDesJoueurs(int nombreDeJoueurs) {
 }
 
 int main() {
+    for (int i = 0; i < 50; i++)
+    {
+        printf("\n");
+    }
+    gotoligcol(6, 16);
+    printf("1-Lancer une nouvelle partie");
+    gotoligcol(6, 55);
+    printf("2-Sauvegarder la partie");
+    gotoligcol(6, 86);
+    printf("3-Charger une ancienne partie");
+    gotoligcol(8, 25);
+    printf("4-Consulter les regles");
+    gotoligcol(8, 61);
+    printf("5-Credits");
+    gotoligcol(8, 84);
+    printf("6-Quitter la partie");
+    plateau();
+    return 0;
+
     //Initialisation
         srand(time(NULL));
 
