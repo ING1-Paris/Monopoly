@@ -175,10 +175,17 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     char pseudoJ2[10];
 
     fgets(pseudoJ1, 10, stdin);
+    printf("\n");
     fgets(pseudoJ2, 10, stdin);
+    printf("\n");
 
     struct Joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
     struct Joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+
+    printf("\n");
+
+    printf("Pseudo joeur 1 : %s", j1.username);
+    printf("Pseudo joeur 2 : %s", j2.username);
 
     return 0;
 }
