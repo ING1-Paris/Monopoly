@@ -46,7 +46,7 @@ int lancerDe() {
     return nb;
 }
 
-int completeType() {
+//int completeType() {
 
 void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
 {
