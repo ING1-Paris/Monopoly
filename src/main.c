@@ -259,15 +259,21 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     printf("\n");
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
     joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
 =======
+=======
+>>>>>>> Stashed changes
     printf("%s\n", pseudoJ1);
 
     printf("%s\n", pseudoJ2);
 
     struct Joueur j1 = {1, 1500, pseudoJ1, 0, 0, "test", "test", "test", false, false};
     struct Joueur j2 = {1, 1500, pseudoJ2, 0, 0, "test", "test", "test", false, false};
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
     printf("\n");
@@ -321,6 +327,7 @@ int main() {
     Color(15,8);
     printf("6-Quitter la partie");
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     gotoligcol(19, 0);
     Color(15,0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
@@ -336,6 +343,8 @@ int main() {
     }
 }
 =======
+=======
+>>>>>>> Stashed changes
     */
 
     //plateau();
