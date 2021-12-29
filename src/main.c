@@ -40,24 +40,6 @@ typedef struct{
     char ownedBy[10];   // Name of the player who owns this field
 }terrain;
 
-typedef struct
-{
-    int id;           // Field's ID from 0 to 25
-    int defaultPrice; // Field's initial price
-    int housePrice;   // Field's house price
-    int loyer;        // Loyer de base
-    int loyermaison1; // Loyer avec une maison
-    int loyermaison2; // Loyer avec 2 maisons
-    int loyermaison3; // Loyer avec 3 maisons
-    int loyermaison4; // Loyer avec 4 maisons
-    int loyerhotel;   // Loyer avec un hotel
-    int hypotheque;   // Valeur hypothécaire
-    int buildings;    // Amount of buildings in the field
-    bool owned;       // True if owned, False if not
-    bool hotel;       // True if there is a hotel
-    char ownedBy[10]; // Name of the player who owns this field
-} terrain;
-
 int lancerDe()
 {
     // Retourne un nombre pseudo aléatoire en 1 et 6
@@ -306,6 +288,10 @@ int creationDesJoueurs(int nombreDeJoueurs)
     printf("Pseudo joueur 2 : %s", j2.username);
 }
 
+void clearScreen(){
+    printf("\e[1;1H\e[2J");
+}
+
 void home()
 {
     int choice = 0;
@@ -353,16 +339,15 @@ void home()
         } while (choice < 1 || choice > 6);
     }
     switch(choice){
-        case 1 : printf("\e[1;1H\e[2J"); // permet de clear la console !!!
+        case 1 : clearScreen(); // permet de clear la console !!!
         newGame();
+        break;
+        case 4 : clearScreen(); 
+        regles();
         break;
     }
 }
 
-// plateau();
-
-// Initialisation
-//srand(time(NULL));
 void newGame()
 {
     int nb_joueurs = 0;
@@ -388,25 +373,51 @@ void skip(){ // saute 50 lignes
     }
 }
 
-void deplacement(int de1, int de2){
-    
+void deplacement(joueur* player, int plateau[36], int de1, int de2){
+    int somme = de1+de2;
+    player->position += somme;
+}
+
+void regles(){
+    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
+    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
+    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
+    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
+    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
+    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
+    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
+    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
+    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
+    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
+    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
+    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
+    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
+    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
+    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
 }
 
 int main() {
-    int nb_joueurs = 0;
-    int plateauJeu[36]; // plateau = liste de 36 cases
+    //int nb_joueurs, i, de1, de2 = 0;
+    //int plateauJeu[36]; // plateau = liste de 36 cases
     //nb_joueurs = demanderNbJoueurs();
     //joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
-    //skip();
+    //while("pas la fin"){
+        //joueuractuel = &players[i];
+        //de1 = lancerDe();
+        //de2 = lancerDe();
+        //deplacement(joueuractuel, plateauJeu, de1, de2);
+        //if (joueuractuel->position > 12)
+        //i++;
+    //}
+    skip();
     //creationPlateau();
-    plateauGraphique();
+    //plateauGraphique();
 
     //Initialisation
     //srand(time(NULL));
-    //home();
+    home();
 
     //Tests
-    //lancerDe();
     //creationDesJoueurs(2);
     //printf("\n");
     return 0;
