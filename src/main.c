@@ -7,17 +7,17 @@
 #include <string.h>
 #if defined(__WIN32__)
     #include <windows.h>
-#endif*
+#endif
 
 typedef struct{
     int id;             // Player's ID from 1 to 4
     long balance;       // Balance of the player
-    char username[10];  // Username of the player
+    char* username[10];  // Username of the player
     int position;       // ID of the player's current cell
     int cellType;       // Type of the player's current cell
-    int ownedField[26]; // ID of each owned fields
-    int luckCard[10];   // ID of possessed luck card
-    int comCard[10];    // ID of possessed community card
+    int* ownedField[26]; // ID of each owned fields
+    int* luckCard[10];   // ID of possessed luck card
+    int* comCard[10];    // ID of possessed community card
     bool inJail;        // True if the player is in jail, false if not
     bool bankruptcy;    // True if the player is in bankruptcy, false if not
 }joueur;
@@ -258,8 +258,17 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     fgets(pseudoJ2, 10, stdin);
     printf("\n");
 
+<<<<<<< Updated upstream
     joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
     joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+=======
+    printf("%s\n", pseudoJ1);
+
+    printf("%s\n", pseudoJ2);
+
+    struct Joueur j1 = {1, 1500, pseudoJ1, 0, 0, "test", "test", "test", false, false};
+    struct Joueur j2 = {1, 1500, pseudoJ2, 0, 0, "test", "test", "test", false, false};
+>>>>>>> Stashed changes
 
     printf("\n");
 
@@ -269,6 +278,7 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     return 0;
 }
 
+<<<<<<< Updated upstream
 void home(){
     int choice = 0;
     gotoligcol(0,0);
@@ -285,6 +295,15 @@ void home(){
     printf("\nMONO		POLY	     POLYMONO         PO          MO         POLYMONO         PO                     POLYMONO         POLYMONOPOLY     LY");
     gotoligcol(14, 23);
     Color(15,2);
+=======
+int main() {
+    /*
+    for (int i = 0; i < 50; i++)
+    {
+        printf("\n");
+    }
+    gotoligcol(6, 16);
+>>>>>>> Stashed changes
     printf("1-Lancer une nouvelle partie");
     gotoligcol(14, 60);
     Color(15,5);
@@ -301,6 +320,7 @@ void home(){
     gotoligcol(16, 89);
     Color(15,8);
     printf("6-Quitter la partie");
+<<<<<<< Updated upstream
     gotoligcol(19, 0);
     Color(15,0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
@@ -315,6 +335,15 @@ void home(){
         break;
     }
 }
+=======
+    */
+
+    //plateau();
+
+
+    //Initialisation
+        srand(time(NULL));
+>>>>>>> Stashed changes
 
 void newGame(){
     int nb_joueurs = 0;
