@@ -35,18 +35,16 @@ struct Terrain {
 
 int lancerDe() {
     //Retourne un nombre pseudo aléatoire en 1 et 6
-
     int nb;
     const int min = 1, max = 6;
-
     nb = (rand()%max) + min;
-
     printf("%d", nb);
-
     return nb;
 }
 
-//int completeType() {
+int completeType() {
+    return 0;
+}
 
 void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
 {
@@ -55,11 +53,11 @@ void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de coul
 }
 
 void gotoligcol( int lig, int col ) {
-// ressources
-COORD mycoord;
-mycoord.X = col;
-mycoord.Y = lig;
-SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
+    // ressources
+    COORD mycoord;
+    mycoord.X = col;
+    mycoord.Y = lig;
+    SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
 }
 
 void creationCase (char titre[15], int x, int y, int couleur, char mode){
@@ -127,7 +125,7 @@ void plateau(){
     creationCase("NWTS", 8, 0, 4, 'v');
     creationCase("Communaute", 11, 0, 15, 'v');
     creationCase("MMLP", 14, 0, 4, 'v');
-    creationCase("Gare", 17, 0, 15, 'v');
+    creationCase("Zenith", 17, 0, 15, 'v');
     creationCase("Discovery", 20, 0, 5, 'v');
     creationCase("OneMoreLove", 23, 0, 5, 'v');
     creationCase("Sacem", 26, 0, 15, 'v');
@@ -137,7 +135,7 @@ void plateau(){
     creationCase("Chance", 0, 24, 15, 'h');
     creationCase("Ouest Side", 0, 36, 12, 'h');
     creationCase("Civilisation", 0, 48, 12, 'h');
-    creationCase("Gare", 0, 60, 15, 'h');
+    creationCase("Zenith", 0, 60, 15, 'h');
     creationCase("Unorth.Juke", 0, 72, 14, 'h');
     creationCase("After Hours", 0, 84, 14, 'h');
     creationCase("Sacem", 0, 96, 15, 'h');
@@ -147,7 +145,7 @@ void plateau(){
     creationCase("Trinity", 8, 120, 2, 'v');
     creationCase("Communaute", 11, 120, 15, 'v');
     creationCase("Julius", 14, 120, 2, 'v');
-    creationCase("Gare", 17, 120, 15, 'v');
+    creationCase("Zenith", 17, 120, 15, 'v');
     creationCase("Chance", 20, 120, 15, 'v');
     creationCase("Ipseite", 23, 120, 1, 'v');
     creationCase("Sacem", 26, 120, 15, 'v');
@@ -157,31 +155,11 @@ void plateau(){
     creationCase("Plat.Collec", 32, 24, 11, 'h');
     creationCase("Chance", 32, 36, 15, 'h');
     creationCase("Absolution", 32, 48, 11, 'h');
-    creationCase("Gare", 32, 60, 15, 'h');
+    creationCase("Zenith", 32, 60, 15, 'h');
     creationCase("Sacem", 32, 72, 15, 'h');
     creationCase("Brol", 32, 84, 13, 'h');
     creationCase("Communaute", 32, 96, 15, 'h');
     creationCase("RacineCarree", 32, 108, 13, 'h');
-}
-
-int main() {
-    for(int i = 0; i <50; i++) {
-        printf("\n");
-    }
-    gotoligcol(6, 16);
-    printf("1-Lancer une nouvelle partie");
-    gotoligcol(6, 55);
-    printf("2-Sauvegarder la partie");
-    gotoligcol(6, 86);
-    printf("3-Charger une ancienne partie");
-    gotoligcol(8, 25);
-    printf("4-Consulter les regles");
-    gotoligcol(8, 61);
-    printf("5-Credits");
-    gotoligcol(8, 84);
-    printf("6-Quitter la partie");
-    plateau();
-    return 0;
 }
 
 int creationDesJoueurs(int nombreDeJoueurs) {
@@ -201,14 +179,46 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     return 0;
 }
 
+void home(){
+    gotoligcol(0,0);
+    printf("MONO            POLY  	     MONOPOLY	      MONO	  PO   	     MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO        NO");
+    printf("\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO      MO        NO         PO         NO      MO        NO           NO      MO");
+    printf("\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO        NO       PO          LY       PO        NO       PO            PO    LY");
+    printf("\nPOLY	MONO	POLY	  LY	      PO      LY  NO      LY      LY          PO      LY          MO      LY          PO      LY             LY  PO");
+    printf("\nMONO	POLY	MONO     MO            LY     MO    PO    PO     MO            LY     MO         NO      MO            LY     MO              MONO");
+    printf("\nPOLY		POLY	NO		MO    NO    LY	  NO    NO              MO    NOPONOMOLYPO      NO              MO    NO               NO");
+    printf("\nMONO		MONO	 PO	       NO     PO      MO  MO     PO            NO     PO                 PO            NO     PO               PO");
+    printf("\nPOLY		POLY	  LY	      PO      LY      NO  LY      LY          PO      LY                  LY          PO      LY               LY");
+    printf("\nMONO		MONO	   MO	     LY       MO        POPO       MO        LY       MO                   MO        LY       MO               MO");
+    printf("\nPOLY		POLY 	    NO      MO        NO        LYNO        NO      MO        NO                    NO      MO        NO               NO");
+    printf("\nMONO		POLY	     POLYMONO         PO          MO         POLYMONO         PO                     POLYMONO         POLYMONOPOLY     LY");
+    gotoligcol(10, 5);
+    printf("1-Lancer une nouvelle partie");
+    gotoligcol(10, 35);
+    printf("2-Sauvegarder la partie");
+    gotoligcol(10, 65);
+    printf("3-Charger une ancienne partie");
+    gotoligcol(14, 25);
+    printf("4-Consulter les regles");
+    gotoligcol(14, 61);
+    printf("5-Credits");
+    gotoligcol(14, 84);
+    printf("6-Quitter la partie");
+}
+
 int main() {
-    //Initialisation
-        srand(time(NULL));
-
-    //Tests
-        lancerDe();
-        creationDesJoueurs(2);
-
+    for (int i = 0; i < 50; i++)
+    {
         printf("\n");
-        return 0;
+    }
+    plateau();
+    //Initialisation
+    //srand(time(NULL));
+    //home();
+    //Tests
+    lancerDe();
+    creationDesJoueurs(2);
+
+    printf("\n");
+    return 0;
 }
