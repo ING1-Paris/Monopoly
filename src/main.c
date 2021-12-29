@@ -9,7 +9,7 @@
     #include <windows.h>
 #endif*
 
-struct Joueur {
+typedef struct{
     int id;             // Player's ID from 1 to 4
     long balance;       // Balance of the player
     char username[10];  // Username of the player
@@ -20,17 +20,24 @@ struct Joueur {
     int comCard[10];    // ID of possessed community card
     bool inJail;        // True if the player is in jail, false if not
     bool bankruptcy;    // True if the player is in bankruptcy, false if not
-};
+}joueur;
 
-struct Terrain {
+typedef struct{
     int id;             // Field's ID from 0 to 25
-    long defaultPrice;  // Field's initial price
-    long currentPrice;  // Field's current price after mark-up
+    int defaultPrice;   // Field's initial price
+    int housePrice;     // Field's house price
+    int loyer;          // Loyer de base
+    int loyermaison1;   // Loyer avec une maison
+    int loyermaison2;   // Loyer avec 2 maisons
+    int loyermaison3;   // Loyer avec 3 maisons
+    int loyermaison4;   // Loyer avec 4 maisons
+    int loyerhotel;     // Loyer avec un hotel
+    int hypotheque;     // Valeur hypothécaire
     int buildings;      // Amount of buildings in the field
     bool owned;         // True if owned, False if not
-    int ownedBy;        // 0 if not owned
-
-};
+    bool hotel;         // True if there is a hotel
+    char ownedBy[10];   // Name of the player who owns this field
+}terrain;
 
 
 int lancerDe() {
@@ -119,7 +126,7 @@ void creationCase (char titre[15], int x, int y, int couleur, char mode){
     Color(15,0);
 }
 
-void plateau(){
+void plateauGraphique(){
     creationCase("Soundcloud", 0, 0, 15, 'h');
     creationCase("Eminem Show", 5, 0, 4, 'v');
     creationCase("NWTS", 8, 0, 4, 'v');
@@ -162,6 +169,82 @@ void plateau(){
     creationCase("RacineCarree", 32, 108, 13, 'h');
 }
 
+terrain creationTerrain(terrain instance, int position){
+    FILE* texte = NULL;
+    char ignore[1024];
+    int donnee[11];
+    char proprio[10];
+    texte = fopen("monopoly.txt", "r");
+    if(texte == NULL){
+        printf("Error: Cannot open");
+    }
+    for (int i = 0; i<position; i++){
+        fgets(ignore, sizeof(ignore), texte);
+    }
+    fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7], &donnee[8], &donnee[9], &donnee[10]);
+    instance.id = donnee[0];
+    instance.defaultPrice = donnee[1];
+    instance.housePrice = donnee[2];
+    instance.loyer = donnee[3];
+    instance.loyermaison1 = donnee[4];
+    instance.loyermaison2 = donnee[5];
+    instance.loyermaison3 = donnee[6];
+    instance.loyermaison4 = donnee[7];
+    instance.loyerhotel = donnee[8];
+    instance.hypotheque = donnee[9];
+    instance.buildings = donnee[10];
+    instance.owned = 0;
+    instance.hotel = 0; 
+    return instance;
+}
+
+void creationPlateau(){
+    terrain racine;
+    terrain brol;
+    terrain absolution;
+    terrain platinium;
+    terrain nevermind;
+    terrain ram;
+    terrain onemore;
+    terrain discovery;
+    terrain mmlp;
+    terrain nwts;
+    terrain eminemshow;
+    terrain ornoir;
+    terrain ouestside;
+    terrain civilisation;
+    terrain jukebox;
+    terrain after;
+    terrain thriller;
+    terrain dll;
+    terrain trinity;
+    terrain julius;
+    terrain ipseite;
+    terrain cyborg;
+    racine = creationTerrain(racine, 0);
+    brol = creationTerrain(brol, 1);
+    absolution = creationTerrain(absolution, 2);
+    platinium = creationTerrain(platinium, 3);
+    nevermind = creationTerrain(nevermind, 4);
+    ram = creationTerrain(ram, 5);
+    onemore = creationTerrain(onemore, 6);
+    discovery = creationTerrain(discovery, 7);
+    mmlp = creationTerrain(mmlp, 8);
+    nwts = creationTerrain(nwts, 9);
+    eminemshow = creationTerrain(eminemshow, 10);
+    ornoir = creationTerrain(ornoir, 11);
+    ouestside = creationTerrain(ouestside, 12);
+    civilisation = creationTerrain(civilisation, 13);
+    jukebox = creationTerrain(jukebox, 14);
+    after = creationTerrain(after, 15);
+    thriller = creationTerrain(thriller, 16);
+    dll = creationTerrain(dll, 17);
+    trinity = creationTerrain(trinity, 18);
+    julius = creationTerrain(julius, 19);
+    ipseite = creationTerrain(ipseite, 20);
+    cyborg = creationTerrain(cyborg, 21);
+}
+
 int creationDesJoueurs(int nombreDeJoueurs) {
 
     int emptyCard[10];
@@ -175,18 +258,19 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     fgets(pseudoJ2, 10, stdin);
     printf("\n");
 
-    struct Joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
-    struct Joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+    joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+    joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
 
     printf("\n");
 
-    printf("Pseudo joeur 1 : %s", j1.username);
-    printf("Pseudo joeur 2 : %s", j2.username);
+    printf("Pseudo joueur 1 : %s", j1.username);
+    printf("Pseudo joueur 2 : %s", j2.username);
 
     return 0;
 }
 
 void home(){
+    int choice = 0;
     gotoligcol(0,0);
     printf("MONO            POLY  	     MONOPOLY	      MONO	  PO   	     MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO        NO");
     printf("\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO      MO        NO         PO         NO      MO        NO           NO      MO");
@@ -199,33 +283,62 @@ void home(){
     printf("\nMONO		MONO	   MO	     LY       MO        POPO       MO        LY       MO                   MO        LY       MO               MO");
     printf("\nPOLY		POLY 	    NO      MO        NO        LYNO        NO      MO        NO                    NO      MO        NO               NO");
     printf("\nMONO		POLY	     POLYMONO         PO          MO         POLYMONO         PO                     POLYMONO         POLYMONOPOLY     LY");
-    gotoligcol(10, 5);
+    gotoligcol(14, 23);
+    Color(15,2);
     printf("1-Lancer une nouvelle partie");
-    gotoligcol(10, 35);
+    gotoligcol(14, 60);
+    Color(15,5);
     printf("2-Sauvegarder la partie");
-    gotoligcol(10, 65);
+    gotoligcol(14, 93);
+    Color(15,4);
     printf("3-Charger une ancienne partie");
-    gotoligcol(14, 25);
+    gotoligcol(16, 33);
+    Color(15,9);
     printf("4-Consulter les regles");
-    gotoligcol(14, 61);
+    gotoligcol(16, 67);
+    Color(15,11);
     printf("5-Credits");
-    gotoligcol(14, 84);
+    gotoligcol(16, 89);
+    Color(15,8);
     printf("6-Quitter la partie");
+    gotoligcol(19, 0);
+    Color(15,0);
+    printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
+    scanf("%d", &choice);
+    if (choice <1 || choice>6){
+        do{printf("--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a nouveau : ");
+        scanf("%d", &choice);}while(choice <1 || choice>6);
+    }
+    switch(choice){
+        case 1 : skip();
+        newGame();
+        break;
+    }
 }
 
-int main() {
+void newGame(){
+    int nb_joueurs = 0;
+    do{printf("Veuillez entrer le nombre de joueurs (entre 2 et 6): ");
+    scanf("%d", &nb_joueurs);}while(nb_joueurs<2 || nb_joueurs>6);
+    plateauGraphique();
+}
+
+void skip(){
     for (int i = 0; i < 50; i++)
     {
         printf("\n");
     }
-    plateau();
+}
+
+int main() {
+    skip();
+    //plateauGraphique();
     //Initialisation
     //srand(time(NULL));
-    //home();
+    home();
     //Tests
-    lancerDe();
-    creationDesJoueurs(2);
-
-    printf("\n");
+    //lancerDe();
+    //creationDesJoueurs(2);
+    //printf("\n");
     return 0;
 }
