@@ -4,15 +4,15 @@
 #include <stdbool.h>
 #include <time.h>
 #include <unistd.h>
-#include <string.h>
 #if defined(__WIN32__)
     #include <windows.h>
 #endif*
+#define MAX 100
 
 typedef struct{
     int id;             // Player's ID from 1 to 4
     long balance;       // Balance of the player
-    char username[10];  // Username of the player
+    char username[MAX]; // Username of the player
     int position;       // ID of the player's current cell
     int cellType;       // Type of the player's current cell
     int ownedField[26]; // ID of each owned fields
@@ -20,6 +20,7 @@ typedef struct{
     int comCard[10];    // ID of possessed community card
     bool inJail;        // True if the player is in jail, false if not
     bool bankruptcy;    // True if the player is in bankruptcy, false if not
+    char symbol;        // Le symbole du joueur
 }joueur;
 
 typedef struct{
@@ -193,8 +194,8 @@ terrain creationTerrain(terrain instance, int position){
     instance.loyerhotel = donnee[8];
     instance.hypotheque = donnee[9];
     instance.buildings = donnee[10];
-    instance.owned = 0;
-    instance.hotel = 0; 
+    instance.owned = false;
+    instance.hotel = false; 
     return instance;
 }
 
@@ -245,28 +246,22 @@ void creationPlateau(){
     cyborg = creationTerrain(cyborg, 21);
 }
 
-int creationDesJoueurs(int nombreDeJoueurs) {
-
-    int emptyCard[10];
+void creationDesJoueurs(int nombreDeJoueurs) {
+    int emptyCard[16];
     int emptyField[26];
-
-    char pseudoJ1[10];
-    char pseudoJ2[10];
-
-    fgets(pseudoJ1, 10, stdin);
+    char pseudoJ1[MAX];
+    char pseudoJ2[MAX];
+    fgets(pseudoJ1, MAX, stdin);
+    pseudoJ1[strlen(pseudoJ1)-1] = '\0';
+    fgets(pseudoJ2, MAX, stdin);
+    pseudoJ2[strlen(pseudoJ2)-1] = '\0';
+    joueur j1; // ={1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+    //j1.username = pseudoJ1;
+    joueur j2; //= {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
+    //j2.username = pseudoJ2;
     printf("\n");
-    fgets(pseudoJ2, 10, stdin);
-    printf("\n");
-
-    joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
-    joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
-
-    printf("\n");
-
-    printf("Pseudo joueur 1 : %s", j1.username);
+    printf("Pseudo joueur 1 : %s", pseudoJ1);
     printf("Pseudo joueur 2 : %s", j2.username);
-
-    return 0;
 }
 
 void home(){
@@ -310,7 +305,7 @@ void home(){
         scanf("%d", &choice);}while(choice <1 || choice>6);
     }
     switch(choice){
-        case 1 : skip();
+        case 1 : printf("\e[1;1H\e[2J"); // permet de clear la console !!!
         newGame();
         break;
     }
@@ -318,24 +313,45 @@ void home(){
 
 void newGame(){
     int nb_joueurs = 0;
-    do{printf("Veuillez entrer le nombre de joueurs (entre 2 et 6): ");
-    scanf("%d", &nb_joueurs);}while(nb_joueurs<2 || nb_joueurs>6);
+    nb_joueurs = demanderNbJoueurs();
     plateauGraphique();
 }
 
-void skip(){
+void afficherJoueurs(){
+
+}
+
+int demanderNbJoueurs(){
+    int nb_joueurs = 0;
+    do{printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
+    scanf("%d", &nb_joueurs);}while(nb_joueurs<2 || nb_joueurs>4);
+    return nb_joueurs;
+}
+
+void skip(){ // saute 50 lignes
     for (int i = 0; i < 50; i++)
     {
         printf("\n");
     }
 }
 
+void deplacement(int de1, int de2){
+    
+}
+
 int main() {
-    skip();
-    //plateauGraphique();
+    int nb_joueurs = 0;
+    int plateauJeu[36]; // plateau = liste de 36 cases
+    //nb_joueurs = demanderNbJoueurs();
+    //joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
+    //skip();
+    //creationPlateau();
+    plateauGraphique();
+
     //Initialisation
     //srand(time(NULL));
-    home();
+    //home();
+
     //Tests
     //lancerDe();
     //creationDesJoueurs(2);
