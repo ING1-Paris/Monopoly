@@ -261,6 +261,10 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     printf("Pseudo joueur 2 : %s", j2.username);
 }
 
+void clearScreen(){
+    printf("\e[1;1H\e[2J");
+}
+
 int demanderNbJoueurs() {
     int nb_joueurs = 0;
     do {
@@ -354,16 +358,22 @@ void home() {
             scanf("%d", &choice);
         } while (choice < 1 || choice > 6);
     }
-    switch (choice) {
-        case 1:
-            printf("\e[1;1H\e[2J");  // permet de clear la console !!!
-            newGame();
-            break;
+    switch(choice){
+        case 1 : clearScreen(); // permet de clear la console !!!
+        newGame();
+        break;
+        case 4 : clearScreen(); 
+        regles();
+        break;
     }
 }
 
-
-void afficherJoueurs() {}
+void newGame()
+{
+    int nb_joueurs = 0;
+    nb_joueurs = demanderNbJoueurs();
+    plateauGraphique();
+}
 
 
 void skip() {  // saute 50 lignes
@@ -372,25 +382,52 @@ void skip() {  // saute 50 lignes
     }
 }
 
-void deplacement(int de1, int de2) {}
+void deplacement(joueur* player, int plateau[36], int de1, int de2){
+    int somme = de1+de2;
+    player->position += somme;
+}
+
+void regles(){
+    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
+    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
+    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
+    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
+    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
+    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
+    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
+    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
+    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
+    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
+    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
+    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
+    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
+    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
+    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
+}
 
 int main() {
-    srand(time(NULL));
+    //int nb_joueurs, i, de1, de2 = 0;
+    //int plateauJeu[36]; // plateau = liste de 36 cases
+    //nb_joueurs = demanderNbJoueurs();
+    //joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
+    //while("pas la fin"){
+        //joueuractuel = &players[i];
+        //de1 = lancerDe();
+        //de2 = lancerDe();
+        //deplacement(joueuractuel, plateauJeu, de1, de2);
+        //if (joueuractuel->position > 12)
+        //i++;
+    //}
+    skip();
+    //creationPlateau();
+    //plateauGraphique();
 
-    int nb_joueurs = 0;
-    int plateauJeu[36];  // plateau = liste de 36 cases
-    // nb_joueurs = demanderNbJoueurs();
-    // joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la
-    // liste des joueurs skip(); creationPlateau();
-    // plateauGraphique();
+    //Initialisation
+    //srand(time(NULL));
+    home();
 
-    // Initialisation
-    // srand(time(NULL));
-    //home();
-
-    // Tests
-    // lancerDe();
-    creationDesJoueurs(2);
-    // printf("\n");
+    //Tests
+    //creationDesJoueurs(2);
+    //printf("\n");
     return 0;
 }
