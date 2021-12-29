@@ -6,68 +6,73 @@
 #include <unistd.h>
 #include <string.h>
 #if defined(__WIN32__)
-    #include <windows.h>
+#include <windows.h>
 #endif
 
-typedef struct{
-    int id;             // Player's ID from 1 to 4
-    long balance;       // Balance of the player
-    char* username[10];  // Username of the player
-    int position;       // ID of the player's current cell
-    int cellType;       // Type of the player's current cell
-    int* ownedField[26]; // ID of each owned fields
-    int* luckCard[10];   // ID of possessed luck card
-    int* comCard[10];    // ID of possessed community card
-    bool inJail;        // True if the player is in jail, false if not
-    bool bankruptcy;    // True if the player is in bankruptcy, false if not
-}joueur;
+typedef struct
+{
+    int id;              // Player's ID from 1 to 4
+    long balance;        // Balance of the player
+    char *username[10];  // Username of the player
+    int position;        // ID of the player's current cell
+    int cellType;        // Type of the player's current cell
+    int *ownedField[26]; // ID of each owned fields
+    int *luckCard[10];   // ID of possessed luck card
+    int *comCard[10];    // ID of possessed community card
+    bool inJail;         // True if the player is in jail, false if not
+    bool bankruptcy;     // True if the player is in bankruptcy, false if not
+} joueur;
 
-typedef struct{
-    int id;             // Field's ID from 0 to 25
-    int defaultPrice;   // Field's initial price
-    int housePrice;     // Field's house price
-    int loyer;          // Loyer de base
-    int loyermaison1;   // Loyer avec une maison
-    int loyermaison2;   // Loyer avec 2 maisons
-    int loyermaison3;   // Loyer avec 3 maisons
-    int loyermaison4;   // Loyer avec 4 maisons
-    int loyerhotel;     // Loyer avec un hotel
-    int hypotheque;     // Valeur hypothécaire
-    int buildings;      // Amount of buildings in the field
-    bool owned;         // True if owned, False if not
-    bool hotel;         // True if there is a hotel
-    char ownedBy[10];   // Name of the player who owns this field
-}terrain;
+typedef struct
+{
+    int id;           // Field's ID from 0 to 25
+    int defaultPrice; // Field's initial price
+    int housePrice;   // Field's house price
+    int loyer;        // Loyer de base
+    int loyermaison1; // Loyer avec une maison
+    int loyermaison2; // Loyer avec 2 maisons
+    int loyermaison3; // Loyer avec 3 maisons
+    int loyermaison4; // Loyer avec 4 maisons
+    int loyerhotel;   // Loyer avec un hotel
+    int hypotheque;   // Valeur hypothécaire
+    int buildings;    // Amount of buildings in the field
+    bool owned;       // True if owned, False if not
+    bool hotel;       // True if there is a hotel
+    char ownedBy[10]; // Name of the player who owns this field
+} terrain;
 
-
-int lancerDe() {
-    //Retourne un nombre pseudo aléatoire en 1 et 6
+int lancerDe()
+{
+    // Retourne un nombre pseudo aléatoire en 1 et 6
     int nb;
     const int min = 1, max = 6;
-    nb = (rand()%max) + min;
+    nb = (rand() % max) + min;
     printf("%d", nb);
     return nb;
 }
 
-int completeType() {
+int completeType()
+{
     return 0;
 }
 
-void Color(int couleurDuTexte,int couleurDeFond) // fonction d'affichage de couleurs
+void Color(int couleurDuTexte, int couleurDeFond) // fonction d'affichage de couleurs
 {
-    HANDLE H=GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(H,couleurDeFond*16+couleurDuTexte);
+    HANDLE H = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
 }
 
-void gotoligcol( int lig, int col ) {
+void gotoligcol(int lig, int col)
+{
     // ressources
     COORD mycoord;
     mycoord.X = col;
     mycoord.Y = lig;
-    SetConsoleCursorPosition( GetStdHandle( STD_OUTPUT_HANDLE ), mycoord );
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), mycoord);
 }
 
-void creationCase (char titre[15], int x, int y, int couleur, char mode){
+void creationCase(char titre[15], int x, int y, int couleur, char mode)
+{
     /*
     0 : Noir
     1 : Bleu foncé
@@ -86,47 +91,56 @@ void creationCase (char titre[15], int x, int y, int couleur, char mode){
     14 : Jaune
     15 : Blanc
     */
-   
+
     int longueur = 0;
     int bord = 0;
     int limite = 0;
     longueur = strlen(titre);
-    bord = (12-longueur)/2;
-    Color(0,couleur);
-    if (mode == 'h'){
+    bord = (12 - longueur) / 2;
+    Color(0, couleur);
+    if (mode == 'h')
+    {
         limite = 2;
     }
-    else if (mode == 'v'){
+    else if (mode == 'v')
+    {
         limite = 1;
     }
-    for (int i = 0; i<limite; i++){
-        gotoligcol(i+x, y);
-        for (int j = 0; j<12; j++){
+    for (int i = 0; i < limite; i++)
+    {
+        gotoligcol(i + x, y);
+        for (int j = 0; j < 12; j++)
+        {
             printf(" ");
         }
         printf("\n");
     }
-    gotoligcol(x+limite,y);
-    for (int k = 0; k<bord; k++){
+    gotoligcol(x + limite, y);
+    for (int k = 0; k < bord; k++)
+    {
         printf(" ");
     }
-    gotoligcol(x+limite,y+bord);
+    gotoligcol(x + limite, y + bord);
     printf(titre);
-    gotoligcol(x+limite,y+bord+longueur);
-    for(int z=y+bord+longueur; z<y+12; z++){
+    gotoligcol(x + limite, y + bord + longueur);
+    for (int z = y + bord + longueur; z < y + 12; z++)
+    {
         printf(" ");
     }
-    for (int i = 0; i<limite; i++){
-        gotoligcol(i+x+limite+1, y);
-        for (int j = 0; j<12; j++){
+    for (int i = 0; i < limite; i++)
+    {
+        gotoligcol(i + x + limite + 1, y);
+        for (int j = 0; j < 12; j++)
+        {
             printf(" ");
         }
         printf("\n");
     }
-    Color(15,0);
+    Color(15, 0);
 }
 
-void plateauGraphique(){
+void plateauGraphique()
+{
     creationCase("Soundcloud", 0, 0, 15, 'h');
     creationCase("Eminem Show", 5, 0, 4, 'v');
     creationCase("NWTS", 8, 0, 4, 'v');
@@ -169,16 +183,19 @@ void plateauGraphique(){
     creationCase("RacineCarree", 32, 108, 13, 'h');
 }
 
-terrain creationTerrain(terrain instance, int position){
-    FILE* texte = NULL;
+terrain creationTerrain(terrain instance, int position)
+{
+    FILE *texte = NULL;
     char ignore[1024];
     int donnee[11];
     char proprio[10];
     texte = fopen("monopoly.txt", "r");
-    if(texte == NULL){
+    if (texte == NULL)
+    {
         printf("Error: Cannot open");
     }
-    for (int i = 0; i<position; i++){
+    for (int i = 0; i < position; i++)
+    {
         fgets(ignore, sizeof(ignore), texte);
     }
     fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7], &donnee[8], &donnee[9], &donnee[10]);
@@ -194,11 +211,12 @@ terrain creationTerrain(terrain instance, int position){
     instance.hypotheque = donnee[9];
     instance.buildings = donnee[10];
     instance.owned = 0;
-    instance.hotel = 0; 
+    instance.hotel = 0;
     return instance;
 }
 
-void creationPlateau(){
+void creationPlateau()
+{
     terrain racine;
     terrain brol;
     terrain absolution;
@@ -245,7 +263,8 @@ void creationPlateau(){
     cyborg = creationTerrain(cyborg, 21);
 }
 
-int creationDesJoueurs(int nombreDeJoueurs) {
+int creationDesJoueurs(int nombreDeJoueurs)
+{
 
     int emptyCard[10];
     int emptyField[26];
@@ -258,23 +277,12 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     fgets(pseudoJ2, 10, stdin);
     printf("\n");
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-    joueur j1 = {1, 1500, pseudoJ1, 0, 0, emptyField, emptyCard, emptyCard, false, false};
-    joueur j2 = {1, 1500, pseudoJ2, 0, 0, emptyField, emptyCard, emptyCard, false, false};
-=======
-=======
->>>>>>> Stashed changes
     printf("%s\n", pseudoJ1);
 
     printf("%s\n", pseudoJ2);
 
-    struct Joueur j1 = {1, 1500, pseudoJ1, 0, 0, "test", "test", "test", false, false};
-    struct Joueur j2 = {1, 1500, pseudoJ2, 0, 0, "test", "test", "test", false, false};
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+    joueur j1 = {1, 1500, pseudoJ1, 0, 0, "test", "test", "test", false, false};
+    joueur j2 = {1, 1500, pseudoJ2, 0, 0, "test", "test", "test", false, false};
 
     printf("\n");
 
@@ -284,10 +292,10 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     return 0;
 }
 
-<<<<<<< Updated upstream
-void home(){
+void home()
+{
     int choice = 0;
-    gotoligcol(0,0);
+    gotoligcol(0, 0);
     printf("MONO            POLY  	     MONOPOLY	      MONO	  PO   	     MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO        NO");
     printf("\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO      MO        NO         PO         NO      MO        NO           NO      MO");
     printf("\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO        NO       PO          LY       PO        NO       PO            PO    LY");
@@ -300,83 +308,78 @@ void home(){
     printf("\nPOLY		POLY 	    NO      MO        NO        LYNO        NO      MO        NO                    NO      MO        NO               NO");
     printf("\nMONO		POLY	     POLYMONO         PO          MO         POLYMONO         PO                     POLYMONO         POLYMONOPOLY     LY");
     gotoligcol(14, 23);
-    Color(15,2);
-=======
-int main() {
-    /*
-    for (int i = 0; i < 50; i++)
-    {
-        printf("\n");
-    }
-    gotoligcol(6, 16);
->>>>>>> Stashed changes
+    Color(15, 2);
     printf("1-Lancer une nouvelle partie");
     gotoligcol(14, 60);
-    Color(15,5);
+    Color(15, 5);
     printf("2-Sauvegarder la partie");
     gotoligcol(14, 93);
-    Color(15,4);
+    Color(15, 4);
     printf("3-Charger une ancienne partie");
     gotoligcol(16, 33);
-    Color(15,9);
+    Color(15, 9);
     printf("4-Consulter les regles");
     gotoligcol(16, 67);
-    Color(15,11);
+    Color(15, 11);
     printf("5-Credits");
     gotoligcol(16, 89);
-    Color(15,8);
+    Color(15, 8);
     printf("6-Quitter la partie");
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     gotoligcol(19, 0);
-    Color(15,0);
+    Color(15, 0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
     scanf("%d", &choice);
-    if (choice <1 || choice>6){
-        do{printf("--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a nouveau : ");
-        scanf("%d", &choice);}while(choice <1 || choice>6);
+    if (choice < 1 || choice > 6)
+    {
+        do
+        {
+            printf("--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a nouveau : ");
+            scanf("%d", &choice);
+        } while (choice < 1 || choice > 6);
     }
-    switch(choice){
-        case 1 : skip();
+    switch (choice)
+    {
+    case 1:
+        skip();
         newGame();
         break;
     }
 }
-=======
-=======
->>>>>>> Stashed changes
-    */
 
-    //plateau();
+// plateau();
 
-
-    //Initialisation
-        srand(time(NULL));
->>>>>>> Stashed changes
-
-void newGame(){
+// Initialisation
+//srand(time(NULL));
+void newGame()
+{
     int nb_joueurs = 0;
-    do{printf("Veuillez entrer le nombre de joueurs (entre 2 et 6): ");
-    scanf("%d", &nb_joueurs);}while(nb_joueurs<2 || nb_joueurs>6);
+    do
+    {
+        printf("Veuillez entrer le nombre de joueurs (entre 2 et 6): ");
+        scanf("%d", &nb_joueurs);
+    } while (nb_joueurs < 2 || nb_joueurs > 6);
     plateauGraphique();
 }
 
-void skip(){
+void skip()
+{
     for (int i = 0; i < 50; i++)
     {
         printf("\n");
     }
 }
 
-int main() {
+int main()
+{
     skip();
-    //plateauGraphique();
-    //Initialisation
-    //srand(time(NULL));
+    // plateauGraphique();
+    // Initialisation
+    // srand(time(NULL));
     home();
-    //Tests
-    //lancerDe();
-    //creationDesJoueurs(2);
-    //printf("\n");
+    // Tests
+    // lancerDe();
+    // creationDesJoueurs(2);
+    // printf("\n");
     return 0;
 }
