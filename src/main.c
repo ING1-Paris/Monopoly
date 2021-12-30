@@ -5,25 +5,26 @@
 #include <time.h>
 #include <unistd.h>
 #if defined(__WIN32__)
-    #include <windows.h>
+#include <windows.h>
 #endif
 #define MAX 100
 
-typedef struct {
-    int id;              // Player's ID from 1 to 4
-    long balance;        // Balance of the player
+typedef struct t_joueur {
+    int id;               // Player's ID from 1 to 4
+    long balance;         // Balance of the player
     char *username[MAX];  // Username of the player
-    int position;        // ID of the player's current cell
-    int cellType;        // Type of the player's current cell
-    int ownedField[26];  // ID of each owned fields
-    int luckCard[10];    // ID of possessed luck card
-    int comCard[10];     // ID of possessed community card
-    bool inJail;         // True if the player is in jail, false if not
-    bool bankruptcy;     // True if the player is in bankruptcy, false if not
-    char symbol;         // Le symbole du joueur
+    int position;         // ID of the player's current cell
+    int cellType;         // Type of the player's current cell
+    int ownedField[26];   // ID of each owned fields
+    int luckCard[10];     // ID of possessed luck card
+    int comCard[10];      // ID of possessed community card
+    bool inJail;          // True if the player is in jail, false if not
+    bool bankruptcy;      // True if the player is in bankruptcy, false if not
+    char symbol;          // Le symbole du joueur
+    int streakDouble;    // Active number of doubles
 } joueur;
 
-typedef struct {
+typedef struct t_terrain {
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -39,7 +40,6 @@ typedef struct {
     bool hotel;        // True if there is a hotel
     char ownedBy[10];  // Name of the player who owns this field
 } terrain;
-
 
 int lancerDe() {
     // Retourne un nombre pseudo aléatoire en 1 et 6
@@ -261,7 +261,7 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     if (nombreDeJoueurs == 3) {
         printf("Entrez le nom du joueur 3 : ");
         scanf("%s", j3.username);
-        }
+    }
 
     else if (nombreDeJoueurs == 4) {
         printf("Entrez le nom du joueur 4 : ");
@@ -288,166 +288,203 @@ int choixAvatar() {
 
 void clearScreen() {
     printf("\e[1;1H\e[2J");
-    }
+}
 
-    int demanderNbJoueurs() {
-        int nb_joueurs = 0;
+int demanderNbJoueurs() {
+    int nb_joueurs = 0;
+    do {
+        printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
+        scanf("%d", &nb_joueurs);
+    } while (nb_joueurs < 2 || nb_joueurs > 4);
+    return nb_joueurs;
+}
+
+void doubleStreakLimite(joueur player) {
+    printf("Envoyer le joueur en prison + toutes les conditions si y'a double");
+}
+
+
+void afficherMenu() {
+    printf("AFFICHER LE MENU BANDE DE CONS");
+}
+
+void tourJoueur(joueur player) {
+    int choix = 0;
+    int premierDe = 0;
+    int deuxiemeDe = 0;
+    int sommeDe = 0;
+    gotoligcol(30,20);
+    printf("C'est au tour de %s, que veut-il faire ?\n1- Lancer les dés\n2- Retourner au menu",player.username);
+    scanf("%d",&choix);
+
+    if (choix == 1) {
+        premierDe = lancerDe();
+        deuxiemeDe = lancerDe();
+        sommeDe = premierDe + deuxiemeDe;
+        if (premierDe == deuxiemeDe) {
+            player.streakDouble += 1;
+        }
+
+        if (player.streakDouble == 3) {
+            doubleStreakLimite(player);
+        } else {
+            deplacement(player,player.position,sommeDe);
+        }
+    } else {
+        afficherMenu();
+    }
+}
+
+void newGame() {
+    int nb_joueurs = 0;
+    nb_joueurs = demanderNbJoueurs();
+    creationDesJoueurs(nb_joueurs);
+    plateauGraphique();
+    tourJoueur();
+}
+
+void regles() {
+    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
+    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
+    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
+    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
+    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
+    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
+    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
+    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
+    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
+    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
+    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
+    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
+    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
+    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
+    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
+}
+
+void home() {
+    int choice = 0;
+    gotoligcol(0, 0);
+    printf(
+        "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
+        "MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO "
+        "       NO");
+    printf(
+        "\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO "
+        "     MO        NO         PO         NO      MO        NO           NO  "
+        "    MO");
+    printf(
+        "\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO  "
+        "      NO       PO          LY       PO        NO       PO            PO "
+        "   LY");
+    printf(
+        "\nPOLY	MONO	POLY	  LY	      PO      LY  NO      LY      LY   "
+        "       PO      LY          MO      LY          PO      LY             "
+        "LY  PO");
+    printf(
+        "\nMONO	POLY	MONO     MO            LY     MO    PO    PO     MO    "
+        "        LY     MO         NO      MO            LY     MO              "
+        "MONO");
+    printf(
+        "\nPOLY		POLY	NO		MO    NO    LY	  NO    NO     "
+        "         MO    NOPONOMOLYPO      NO              MO    NO               "
+        "NO");
+    printf(
+        "\nMONO		MONO	 PO	       NO     PO      MO  MO     PO    "
+        "        NO     PO                 PO            NO     PO               "
+        "PO");
+    printf(
+        "\nPOLY		POLY	  LY	      PO      LY      NO  LY      LY   "
+        "       PO      LY                  LY          PO      LY               "
+        "LY");
+    printf(
+        "\nMONO		MONO	   MO	     LY       MO        POPO       MO  "
+        "      LY       MO                   MO        LY       MO               "
+        "MO");
+    printf(
+        "\nPOLY		POLY 	    NO      MO        NO        LYNO        NO "
+        "     MO        NO                    NO      MO        NO               "
+        "NO");
+    printf(
+        "\nMONO		POLY	     POLYMONO         PO          MO         "
+        "POLYMONO         PO                     POLYMONO         POLYMONOPOLY   "
+        "  LY");
+    gotoligcol(14, 23);
+    Color(15, 2);
+    printf("1-Lancer une nouvelle partie");
+    gotoligcol(14, 60);
+    Color(15, 5);
+    printf("2-Sauvegarder la partie");
+    gotoligcol(14, 93);
+    Color(15, 4);
+    printf("3-Charger une ancienne partie");
+    gotoligcol(16, 33);
+    Color(15, 9);
+    printf("4-Consulter les regles");
+    gotoligcol(16, 67);
+    Color(15, 11);
+    printf("5-Credits");
+    gotoligcol(16, 89);
+    Color(15, 8);
+    printf("6-Quitter la partie");
+
+    gotoligcol(19, 0);
+    Color(15, 0);
+    printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
+    scanf("%d", &choice);
+    if (choice < 1 || choice > 6) {
         do {
-            printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
-            scanf("%d", &nb_joueurs);
-        } while (nb_joueurs < 2 || nb_joueurs > 4);
-        return nb_joueurs;
+            printf(
+                "--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a "
+                "nouveau : ");
+            scanf("%d", &choice);
+        } while (choice < 1 || choice > 6);
     }
-
-    void newGame() {
-        int nb_joueurs = 0;
-        nb_joueurs = demanderNbJoueurs();
-        creationDesJoueurs(nb_joueurs);
-        plateauGraphique();
+    switch (choice) {
+        case 1:
+            clearScreen();  // permet de clear la console !!!
+            newGame();
+            break;
+        case 4:
+            clearScreen();
+            regles();
+            break;
     }
+}
 
-    void regles() {
-        printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
-        printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
-        printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
-        printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
-        printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
-        printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
-        printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
-        printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
-        printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
-        printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
-        printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
-        printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
-        printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
-        printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
-        printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
+void skip() {  // saute 50 lignes
+    for (int i = 0; i < 50; i++) {
+        printf("\n");
     }
+}
 
-    void home() {
-        int choice = 0;
-        gotoligcol(0, 0);
-        printf(
-            "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
-            "MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO "
-            "       NO");
-        printf(
-            "\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO "
-            "     MO        NO         PO         NO      MO        NO           NO  "
-            "    MO");
-        printf(
-            "\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO  "
-            "      NO       PO          LY       PO        NO       PO            PO "
-            "   LY");
-        printf(
-            "\nPOLY	MONO	POLY	  LY	      PO      LY  NO      LY      LY   "
-            "       PO      LY          MO      LY          PO      LY             "
-            "LY  PO");
-        printf(
-            "\nMONO	POLY	MONO     MO            LY     MO    PO    PO     MO    "
-            "        LY     MO         NO      MO            LY     MO              "
-            "MONO");
-        printf(
-            "\nPOLY		POLY	NO		MO    NO    LY	  NO    NO     "
-            "         MO    NOPONOMOLYPO      NO              MO    NO               "
-            "NO");
-        printf(
-            "\nMONO		MONO	 PO	       NO     PO      MO  MO     PO    "
-            "        NO     PO                 PO            NO     PO               "
-            "PO");
-        printf(
-            "\nPOLY		POLY	  LY	      PO      LY      NO  LY      LY   "
-            "       PO      LY                  LY          PO      LY               "
-            "LY");
-        printf(
-            "\nMONO		MONO	   MO	     LY       MO        POPO       MO  "
-            "      LY       MO                   MO        LY       MO               "
-            "MO");
-        printf(
-            "\nPOLY		POLY 	    NO      MO        NO        LYNO        NO "
-            "     MO        NO                    NO      MO        NO               "
-            "NO");
-        printf(
-            "\nMONO		POLY	     POLYMONO         PO          MO         "
-            "POLYMONO         PO                     POLYMONO         POLYMONOPOLY   "
-            "  LY");
-        gotoligcol(14, 23);
-        Color(15, 2);
-        printf("1-Lancer une nouvelle partie");
-        gotoligcol(14, 60);
-        Color(15, 5);
-        printf("2-Sauvegarder la partie");
-        gotoligcol(14, 93);
-        Color(15, 4);
-        printf("3-Charger une ancienne partie");
-        gotoligcol(16, 33);
-        Color(15, 9);
-        printf("4-Consulter les regles");
-        gotoligcol(16, 67);
-        Color(15, 11);
-        printf("5-Credits");
-        gotoligcol(16, 89);
-        Color(15, 8);
-        printf("6-Quitter la partie");
+void deplacement(joueur player, int plateau[36], int sommeDe){
+    player.position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.",player.username,plateau[36],sommeDe);
+}
 
-        gotoligcol(19, 0);
-        Color(15, 0);
-        printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
-        scanf("%d", &choice);
-        if (choice < 1 || choice > 6) {
-            do {
-                printf(
-                    "--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a "
-                    "nouveau : ");
-                scanf("%d", &choice);
-            } while (choice < 1 || choice > 6);
-        }
-        switch (choice) {
-            case 1:
-                clearScreen();  // permet de clear la console !!!
-                newGame();
-                break;
-            case 4:
-                clearScreen();
-                regles();
-                break;
-        }
-    }
+int main() {
+    // int nb_joueurs, i, de1, de2 = 0;
+    // int plateauJeu[36]; // plateau = liste de 36 cases
+    // nb_joueurs = demanderNbJoueurs();
+    // joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
+    // while("pas la fin"){
+    // joueuractuel = &players[i];
+    // de1 = lancerDe();
+    // de2 = lancerDe();
+    // deplacement(joueuractuel, plateauJeu, de1, de2);
+    // if (joueuractuel->position > 12)
+    // i++;
+    //}
+    skip();
+    // creationPlateau();
+    // plateauGraphique();
 
-    void skip() {  // saute 50 lignes
-        for (int i = 0; i < 50; i++) {
-            printf("\n");
-        }
-    }
+    // Initialisation
+    // srand(time(NULL));
+    home();
 
-    void deplacement(joueur * player, int plateau[36], int de1, int de2) {
-        int somme = de1 + de2;
-        player->position += somme;
-    }
-
-    int main() {
-        // int nb_joueurs, i, de1, de2 = 0;
-        // int plateauJeu[36]; // plateau = liste de 36 cases
-        // nb_joueurs = demanderNbJoueurs();
-        // joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
-        // while("pas la fin"){
-        // joueuractuel = &players[i];
-        // de1 = lancerDe();
-        // de2 = lancerDe();
-        // deplacement(joueuractuel, plateauJeu, de1, de2);
-        // if (joueuractuel->position > 12)
-        // i++;
-        //}
-        skip();
-        // creationPlateau();
-        // plateauGraphique();
-
-        // Initialisation
-        // srand(time(NULL));
-        home();
-
-        // Tests
-        // creationDesJoueurs(2);
-        // printf("\n");
-        return 0;
-    }
+    // Tests
+    // creationDesJoueurs(2);
+    // printf("\n");
+    return 0;
+}
