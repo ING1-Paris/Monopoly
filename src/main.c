@@ -5,11 +5,11 @@
 #include <time.h>
 #include <unistd.h>
 #if defined(__WIN32__)
-    #include <windows.h>
+#include <windows.h>
 #endif
 #define MAX 100
 
-typedef struct {
+typedef struct t_joueur {
     int id;              // Player's ID from 1 to 4
     long balance;        // Balance of the player
     char *username[MAX];  // Username of the player
@@ -18,12 +18,13 @@ typedef struct {
     int ownedField[26];  // ID of each owned fields
     int luckCard[10];    // ID of possessed luck card
     int comCard[10];     // ID of possessed community card
+    int streakDouble;    // Active number of doubles
     bool inJail;         // True if the player is in jail, false if not
     bool bankruptcy;     // True if the player is in bankruptcy, false if not
     char symbol;         // Le symbole du joueur
 } joueur;
 
-typedef struct {
+typedef struct t_terrain{
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -274,11 +275,74 @@ int demanderNbJoueurs() {
     return nb_joueurs;
 }
 
-void newGame() {
+void deplacement(joueur player, int plateau[36], int sommeDe){
+    player.position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.",player.username,plateau[36],sommeDe);
+}
+
+void doubleStreakLimite(joueur player) {
+    printf("Envoyer le joueur en prison + toutes les conditions si y'a double");
+}
+
+
+void afficherMenu() {
+    printf("AFFICHER LE MENU BANDE DE CONS");
+}
+
+void tourJoueur(joueur player) {
+    int choix = 0;
+    int premierDe = 0;
+    int deuxiemeDe = 0;
+    int sommeDe = 0;
+    gotoligcol(30,20);
+    printf("C'est au tour de %s, que veut-il faire ?\n1- Lancer les dés\n2- Retourner au menu",player.username);
+    scanf("%d",&choix);
+
+    if (choix == 1) {
+        premierDe = lancerDe();
+        deuxiemeDe = lancerDe();
+        sommeDe = premierDe + deuxiemeDe;
+        if (premierDe == deuxiemeDe) {
+            player.streakDouble += 1;
+        }
+
+        if (player.streakDouble == 3) {
+            doubleStreakLimite(player);
+        } else {
+            deplacement(player,player.position,sommeDe);
+        }
+    } else {
+        afficherMenu();
+    }
+}
+
+void newGame()
+{
     int nb_joueurs = 0;
     nb_joueurs = demanderNbJoueurs();
     plateauGraphique();
+    tourJoueur();
 }
+
+
+void regles(){
+    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
+    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
+    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
+    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
+    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
+    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
+    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
+    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
+    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
+    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
+    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
+    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
+    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
+    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
+    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
+}
+
 
 void home() {
     int choice = 0;
@@ -368,12 +432,6 @@ void home() {
     }
 }
 
-void newGame()
-{
-    int nb_joueurs = 0;
-    nb_joueurs = demanderNbJoueurs();
-    plateauGraphique();
-}
 
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
@@ -381,28 +439,7 @@ void skip() {  // saute 50 lignes
     }
 }
 
-void deplacement(joueur* player, int plateau[36], int de1, int de2){
-    int somme = de1+de2;
-    player->position += somme;
-}
 
-void regles(){
-    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
-    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
-    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
-    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
-    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
-    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
-    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
-    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
-    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
-    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
-    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
-    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
-    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
-    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
-    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
-}
 
 int main() {
     //int nb_joueurs, i, de1, de2 = 0;
