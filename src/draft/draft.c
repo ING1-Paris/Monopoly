@@ -10,5 +10,6 @@
 #define MAX 100
 
 int main() {
-    int a = 0x0
+    int a = 0x01;
+    printf("%c", a);
 }
