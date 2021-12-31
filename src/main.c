@@ -9,7 +9,7 @@
 #endif
 #define MAX 100
 
-typedef struct {
+typedef struct t_joueur {
     int id;               // Player's ID from 1 to 4
     long balance;         // Balance of the player
     char *username[MAX];  // Username of the player
@@ -21,9 +21,10 @@ typedef struct {
     bool inJail;          // True if the player is in jail, false if not
     bool bankruptcy;      // True if the player is in bankruptcy, false if not
     char symbol;          // Le symbole du joueur
+    int streakDouble;    // Active number of doubles
 } joueur;
 
-typedef struct {
+typedef struct t_terrain {
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -424,9 +425,9 @@ void skip() {  // saute 50 lignes
     }
 }
 
-void deplacement(joueur *player, int plateau[36], int de1, int de2) {
-    int somme = de1 + de2;
-    player->position += somme;
+void deplacement(joueur player, int plateau[36], int sommeDe){
+    player.position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.",player.username,plateau[36],sommeDe);
 }
 
 int main() {
