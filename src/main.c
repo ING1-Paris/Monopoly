@@ -258,12 +258,11 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     printf("Entrez le nom du joueur 2 : ");
     scanf("%s", j2.username);
 
-    if (nombreDeJoueurs == 3) {
+    if (nombreDeJoueurs >= 3) {
         printf("Entrez le nom du joueur 3 : ");
         scanf("%s", j3.username);
     }
-
-    else if (nombreDeJoueurs == 4) {
+    if (nombreDeJoueurs == 4) {
         printf("Entrez le nom du joueur 4 : ");
         scanf("%s", j4.username);
     }
