@@ -1,30 +1,30 @@
+#include <conio.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 #include <unistd.h>
 #if defined(__WIN32__)
-    #include <conio.h>
-    #include <windows.h>
+#include <conio.h>
+#include <windows.h>
 #endif
 #define MAX 100
 
 typedef struct t_joueur {
-    int id;               // Player's ID from 1 to 4
-    long balance;         // Balance of the player
-    char *username[MAX];  // Username of the player
-    int position;         // ID of the player's current cell
-    int cellType;         // Type of the player's current cell
-    int ownedField[26];   // ID of each owned fields
-    int luckCard[10];     // ID of possessed luck card
-    int comCard[10];      // ID of possessed community card
-    bool inJail;          // True if the player is in jail, false if not
-    bool bankruptcy;      // True if the player is in bankruptcy, false if not
-    char symbol;          // Le symbole du joueur
-    int streakDouble;     // Active number of doubles
-    int avatar;           // Hexadecimal code for the avatar selection
+    int id;              // Player's ID from 1 to 4
+    long balance;        // Balance of the player
+    char username[MAX];  // Username of the player
+    int position;        // ID of the player's current cell
+    int cellType;        // Type of the player's current cell
+    int ownedField[26];  // ID of each owned fields
+    int luckCard[10];    // ID of possessed luck card
+    int comCard[10];     // ID of possessed community card
+    bool inJail;         // True if the player is in jail, false if not
+    bool bankruptcy;     // True if the player is in bankruptcy, false if not
+    char symbol;         // Le symbole du joueur
+    int streakDouble;    // Active number of doubles
+    int avatar;          // Hexadecimal code for the avatar selection
 } joueur;
 
 typedef struct t_terrain {
@@ -404,60 +404,41 @@ int choixAvatar(int nbJoueurs, int currentPlayer) {
     return avatar[selection];
 }
 
-int creationDesJoueurs(int nombreDeJoueurs) {
+joueur *creationDesJoueurs(int nombreDeJoueurs) {
     int emptyCard[10];
     int emptyField[26];
 
-    joueur j1 = {1, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
-    joueur j2 = {2, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
-    joueur j3 = {3, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
-    joueur j4 = {4, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
+    joueur *listeJoueurs = (joueur *)malloc(4 * sizeof(joueur));
 
-    display();
-    printf("Entrez le nom du joueur 1 : ");
-    scanf("%s", j1.username);
-    j1.avatar = choixAvatar(nombreDeJoueurs, 1);
-    display();
-    printf("Entrez le nom du joueur 2 : ");
-    scanf("%s", j2.username);
-    j2.avatar = choixAvatar(nombreDeJoueurs, 2);
+    joueur tempJ1 = {1, 1500, "NULL", 0, 0, {0}, {0}, {0}, false, false};
+    joueur tempJ2 = {2, 1500, "NULL", 0, 0, {0}, {0}, {0}, false, false};
+    joueur tempJ3 = {3, 1500, "NULL", 0, 0, {0}, {0}, {0}, false, false};
+    joueur tempJ4 = {4, 1500, "NULL", 0, 0, {0}, {0}, {0}, false, false};
 
-    if (nombreDeJoueurs == 3) {
-        display();
-        printf("Entrez le nom du joueur 3 : ");
-        scanf("%s", j3.username);
-        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
-    }
+    listeJoueurs[0] = tempJ1;
+    listeJoueurs[1] = tempJ2;
+    listeJoueurs[2] = tempJ3;
+    listeJoueurs[3] = tempJ4;
 
-    else if (nombreDeJoueurs == 4) {
+    for (int i = 0; i < nombreDeJoueurs; i++) {
         display();
-        printf("Entrez le nom du joueur 3 : ");
-        scanf("%s", j3.username);
-        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
-        display();
-        printf("Entrez le nom du joueur 4 : ");
-        scanf("%s", j4.username);
-        j4.avatar = choixAvatar(nombreDeJoueurs, 4);
+        printf("Entrez le nom du joueur %d : ", i+1);
+        scanf("%s", listeJoueurs[i].username);
+        listeJoueurs[i].avatar = choixAvatar(nombreDeJoueurs, 1);
     }
 
     display();
     gotoligcol(14, 0);
 
-    printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j1.username, j1.avatar);
-    printf("Pseudo et avatar du joueur 2 : %s  -  %c\n", j2.username, j2.avatar);
-
-    if (nombreDeJoueurs == 3) {
-        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
-    }
-
-    else if (nombreDeJoueurs == 4) {
-        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
-        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j4.username, j4.avatar);
+    for (int i = 0; i < nombreDeJoueurs; i++) {
+        printf("Pseudo et avatar du joueur %d : %s  -  %c\n", i+1, listeJoueurs[i].username, listeJoueurs[i].avatar);
     }
 
     printf("\nChargement de la partie en cours");
 
     animation(20, 0, 75, 50);
+
+    return listeJoueurs;
 }
 
 int demanderNbJoueurs() {
@@ -473,12 +454,26 @@ int demanderNbJoueurs() {
 void newGame() {
     int nb_joueurs = 0;
     nb_joueurs = demanderNbJoueurs();
-    creationDesJoueurs(nb_joueurs);
+
+    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+
+    joueur j1 = pJoueurs[0];
+    joueur j2 = pJoueurs[1];
+    joueur j3 = pJoueurs[2];
+    joueur j4 = pJoueurs[3];
+
+    printf("\n%d\n", j2.id);
+    printf("%s\n", j2.username);
+
+    free(pJoueurs);
+
+    Sleep(5000);
+
     clearScreen();
     plateauGraphique();
 }
 
-void regles(){
+void regles() {
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
     printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
     printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
@@ -495,7 +490,6 @@ void regles(){
     printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
     printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
     printf("\n\nPour revenir au menu principal, appuyez sur une touche.");
-    
 }
 
 void home() {
@@ -557,6 +551,9 @@ void deplacement(joueur player, int plateau[36], int sommeDe) {
     printf("Deplacer %s de la case %d a la case %d.", player.username, plateau[36], sommeDe);
 }
 
+void checkIfOwned(int id) {
+}
+
 int main() {
     // int nb_joueurs, i, de1, de2 = 0;
     // int plateauJeu[36]; // plateau = liste de 36 cases
@@ -582,8 +579,9 @@ int main() {
     // srand(time(NULL));
     home();
 
-    // Tests
     // creationDesJoueurs(2);
+
+    // Tests
     // printf("\n");
     return 0;
 }
