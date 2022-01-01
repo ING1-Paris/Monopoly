@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <conio.h>
 #include <unistd.h>
 #if defined(__WIN32__)
     #include <windows.h>
@@ -280,6 +281,26 @@ void newGame() {
     plateauGraphique();
 }
 
+void regles(){
+    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
+    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
+    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
+    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
+    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
+    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
+    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
+    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
+    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
+    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
+    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
+    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
+    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
+    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
+    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
+    printf("\n\nPour revenir au menu principal, appuyez sur une touche.");
+    
+}
+
 void home() {
     int choice = 0;
     gotoligcol(0, 0);
@@ -368,14 +389,6 @@ void home() {
     }
 }
 
-void newGame()
-{
-    int nb_joueurs = 0;
-    nb_joueurs = demanderNbJoueurs();
-    plateauGraphique();
-}
-
-
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
         printf("\n");
@@ -385,24 +398,6 @@ void skip() {  // saute 50 lignes
 void deplacement(joueur* player, int plateau[36], int de1, int de2){
     int somme = de1+de2;
     player->position += somme;
-}
-
-void regles(){
-    printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
-    printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
-    printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
-    printf("\nSEL                REG     REG			   REGLES                      SER             REG                    REGL");
-    printf("\nREG                SEL	   SEL		          REGLES	               REG             SEL                   REG");
-    printf("\nSEL               REG      REG		         REGLES                        SER             REG                    REGL");
-    printf("\nREG		  SEL      SEL		         REGLE                         REG             SEL                     REGLES");
-    printf("\nSEL		REG        REGLESREGRELESR	EGLE	                       SER             REGLESREGRELESR           REGL");
-    printf("\nREGLESEGLESREGLES          SEL			 REG              SERGLES      REG             SEL                         REGLE");
-    printf("\nREG            SEL         SEL			 REGLE                EGLES    SER             REG                           REGLE");
-    printf("\nSEL             REG        SEL			 REGLES                 ERGEL  REG             SEL                              REGLE");
-    printf("\nREG               SEL      REG			   SERLG                REGLE  SER             REG                                REGLE");
-    printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
-    printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
-    printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
 }
 
 int main() {
