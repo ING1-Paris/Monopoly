@@ -1,4 +1,3 @@
-#include <conio.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +27,7 @@ typedef struct t_joueur {
 } joueur;
 
 typedef struct t_terrain {
+    char *nom;     // Field's name
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -48,7 +48,7 @@ typedef struct t_terrain {
     bool hypotheque;   // True si la case est hypothéquée
 } terrain;
 
-void clearScreen() { //permet de clear la console
+void clearScreen() {  // permet de clear la console
     system("cls");
 }
 
@@ -165,7 +165,7 @@ void creationCase(char titre[15], int x, int y, int couleur) {
 
     int longueur = 0;
     int bord = 0;
-    longueur = strlen(titre);  
+    longueur = strlen(titre);
     bord = (12 - longueur) / 2;
     Color(0, couleur);
     gotoligcol(x, y);
@@ -183,8 +183,8 @@ void creationCase(char titre[15], int x, int y, int couleur) {
     for (int z = y + bord + longueur; z < y + 12; z++) {
         printf(" ");
     }
-    for (int n=0; n<3; n++){
-        gotoligcol(x+2+n, y);
+    for (int n = 0; n < 3; n++) {
+        gotoligcol(x + 2 + n, y);
         for (int j = 0; j < 12; j++) {
             printf(" ");
         }
@@ -259,87 +259,54 @@ void plateauGraphique() {  // création du plateau de base, il reste inchangé a
     creationCase("RacineCarree", 50, 108, 13);
 }
 
-terrain creationTerrain(terrain instance, int position) { //création d'une instance (un album)
-    FILE *texte = NULL;
-    char ignore[1024];
-    int donnee[14];
-    char proprio[10];
-    texte = fopen("monopoly.txt", "r");
-    if (texte == NULL) {
-        printf("Error: Cannot open");
-    }
-    for (int i = 0; i < position; i++) {
-        fgets(ignore, sizeof(ignore), texte);
-    }
-    fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
-           &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
-           &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13]);
-    instance.id = donnee[0];
-    instance.defaultPrice = donnee[1];
-    instance.housePrice = donnee[2];
-    instance.loyer = donnee[3];
-    instance.loyermaison1 = donnee[4];
-    instance.loyermaison2 = donnee[5];
-    instance.loyermaison3 = donnee[6];
-    instance.loyermaison4 = donnee[7];
-    instance.loyerhotel = donnee[8];
-    instance.val_hypoth = donnee[9];
-    instance.buildings = donnee[10];
-    instance.x = donnee[11];
-    instance.y = donnee[12];
-    instance.couleur = donnee[13];
-    instance.owned = false;
-    instance.hotel = false;
-    instance.hypotheque = false;
-    instance.ownedBy = " ";
-    return instance;
-}
+terrain *creationTerrain() {  // création d'une instance (un album)
+    terrain *listeTerrain = (terrain *)malloc(23 * sizeof(terrain));
 
-terrain *creationPlateau() {
-    terrain racine;
-    terrain brol;
-    terrain absolution;
-    terrain platinium;
-    terrain nevermind;
-    terrain ram;
-    terrain onemore;
-    terrain discovery;
-    terrain mmlp;
-    terrain nwts;
-    terrain eminemshow;
-    terrain ornoir;
-    terrain ouestside;
-    terrain civilisation;
-    terrain jukebox;
-    terrain after;
-    terrain thriller;
-    terrain dll;
-    terrain trinity;
-    terrain julius;
-    terrain ipseite;
-    terrain cyborg;
-    racine = creationTerrain(racine, 0);
-    brol = creationTerrain(brol, 1);
-    absolution = creationTerrain(absolution, 2);
-    platinium = creationTerrain(platinium, 3);
-    nevermind = creationTerrain(nevermind, 4);
-    ram = creationTerrain(ram, 5);
-    onemore = creationTerrain(onemore, 6);
-    discovery = creationTerrain(discovery, 7);
-    mmlp = creationTerrain(mmlp, 8);
-    nwts = creationTerrain(nwts, 9);
-    eminemshow = creationTerrain(eminemshow, 10);
-    ornoir = creationTerrain(ornoir, 11);
-    ouestside = creationTerrain(ouestside, 12);
-    civilisation = creationTerrain(civilisation, 13);
-    jukebox = creationTerrain(jukebox, 14);
-    after = creationTerrain(after, 15);
-    thriller = creationTerrain(thriller, 16);
-    dll = creationTerrain(dll, 17);
-    trinity = creationTerrain(trinity, 18);
-    julius = creationTerrain(julius, 19);
-    ipseite = creationTerrain(ipseite, 20);
-    cyborg = creationTerrain(cyborg, 21);
+    terrain instance;
+
+    char *listeNomTerrain[22] = {"racine", "brol", "absolution", "platinium", "nevermind", "ram", "onemore", "discovery", "mmlp",
+                                "nwts", "eminemshow", "ornoir", "ouestside", "civilisation", "jukebox", "after", "thriller", "dll",
+                                "trinity", "julius", "ipseite", "cyborg"};
+
+    for (int i = 0; i < 22; i++) {
+        char *nomCurrent = listeNomTerrain[i];
+
+        FILE *texte = NULL;
+        char ignore[1024];
+        int donnee[14];
+        char proprio[10];
+        texte = fopen("monopoly.txt", "r");
+        if (texte == NULL) {
+            printf("Error: Cannot open");
+        }
+        for (int j = 0; j < i; j++) {
+            fgets(ignore, sizeof(ignore), texte);
+        }
+        fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
+               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
+               &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13]);
+
+        instance.nom = nomCurrent;
+        instance.id = donnee[0];
+        instance.defaultPrice = donnee[1];
+        instance.housePrice = donnee[2];
+        instance.loyer = donnee[3];
+        instance.loyermaison1 = donnee[4];
+        instance.loyermaison2 = donnee[5];
+        instance.loyermaison3 = donnee[6];
+        instance.loyermaison4 = donnee[7];
+        instance.loyerhotel = donnee[8];
+        instance.hypotheque = donnee[9];
+        instance.buildings = donnee[10];
+        instance.x = donnee[11];
+        instance.y = donnee[12];
+        instance.couleur = donnee[13];
+        instance.owned = false;
+        instance.hotel = false;
+
+        listeTerrain[i] = instance;
+    }
+    return listeTerrain;
 }
 
 int choixAvatar(int nbJoueurs, int currentPlayer) {
@@ -446,7 +413,7 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
 
     for (int i = 0; i < nombreDeJoueurs; i++) {
         display();
-        printf("Entrez le nom du joueur %d : ", i+1);
+        printf("Entrez le nom du joueur %d : ", i + 1);
         scanf("%s", listeJoueurs[i].username);
         listeJoueurs[i].avatar = choixAvatar(nombreDeJoueurs, 1);
     }
@@ -455,7 +422,7 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
     gotoligcol(14, 0);
 
     for (int i = 0; i < nombreDeJoueurs; i++) {
-        printf("Pseudo et avatar du joueur %d : %s  -  %c\n", i+1, listeJoueurs[i].username, listeJoueurs[i].avatar);
+        printf("Pseudo et avatar du joueur %d : %s  -  %c\n", i + 1, listeJoueurs[i].username, listeJoueurs[i].avatar);
     }
 
     printf("\nChargement de la partie en cours");
@@ -465,7 +432,7 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
     return listeJoueurs;
 }
 
-int demanderNbJoueurs() { //fonction demandant et renvoyant le nombre de joueurs
+int demanderNbJoueurs() {  // fonction demandant et renvoyant le nombre de joueurs
     int nb_joueurs = 0;
     display();
     do {
@@ -475,44 +442,55 @@ int demanderNbJoueurs() { //fonction demandant et renvoyant le nombre de joueurs
     return nb_joueurs;
 }
 
-void newGame() { // menu de création des joueurs, affiche le plateau de base
-    int nb_joueurs = 0;
-    nb_joueurs = demanderNbJoueurs();
+void deplacement(joueur *player, int plateau[36], int sommeDe) {
+    player->position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.", player->username, plateau[36], sommeDe);
+}
+
+void newGame() {  // menu de création des joueurs, affiche le plateau de base
+    const int nb_joueurs = demanderNbJoueurs();
 
     joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
 
-    joueur j1 = pJoueurs[0];
+    /*joueur j1 = pJoueurs[0];
     joueur j2 = pJoueurs[1];
     joueur j3 = pJoueurs[2];
-    joueur j4 = pJoueurs[3];
+    joueur j4 = pJoueurs[3];*/
 
-    //printf("%d",pTerrains[0].loyer);
-    //printf("\n%d\n", j2.id);
-    //printf("%s\n", j2.username);
+    terrain *pTerrains = creationTerrain();
 
-    free(pJoueurs);
+    terrain terrain1 = pTerrains[0];
+    printf("\n%s\n",terrain1.nom);
 
     Sleep(5000);
 
+    free(pJoueurs);
+    free(pTerrains);
+
     clearScreen();
-    plateauGraphique();
+    //plateauGraphique();
     int i, de1, de2, sommeDe = 0;
-    int plateauJeu[36]; // plateau = liste de 36 cases
-    joueur* joueuractuel;
-    while(j1.balance != 0 || j2.balance != 0 || j3.balance != 0 || j4.balance != 0){
-         joueuractuel = &pJoueurs[i];
-         de1 = lancerDe();
-         de2 = lancerDe();
-         sommeDe = de1 + de2;
-         deplacement(joueuractuel, plateauJeu, sommeDe);
-         if (joueuractuel->position < 12){
-             printf("%d", joueuractuel->position);
-         }
-         i++;
+    int plateauJeu[36];          // plateau = liste de 36 cases
+
+    joueur *joueuractuel;
+    // terrain plateauDeJeu[22];
+    // plateauDeJeu[0] = creationTerrain(plateauDeJeu[0],0);
+    // printf("%d", plateauDeJeu[0].defaultPrice);
+    
+    while (pJoueurs[0].balance != 0 || pJoueurs[1].balance != 0 || pJoueurs[2].balance != 0) {
+        joueuractuel = &pJoueurs[i];
+        de1 = lancerDe();
+        de2 = lancerDe();
+        sommeDe = de1 + de2;
+        deplacement(joueuractuel, plateauJeu, sommeDe);
+        if (joueuractuel->position < 12) {
+            printf("%d", joueuractuel->position);
+        }
+        i++;
     }
 }
 
-void regles(){ // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
+void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
     char sortie;
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
     printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
@@ -529,13 +507,14 @@ void regles(){ // affichage des règles du jeu : exit avec lettre 'a' ; accessib
     printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
     printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
     printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
-    do{printf("\nPour revenir au menu principal, appuyez sur la touche 'a'. ");
-    scanf("%c", &sortie);}while(sortie != 'a'); // à régler, ça print 2 fois pour x raison
+    do {
+        printf("\nPour revenir au menu principal, appuyez sur la touche 'a'. ");
+        scanf("%c", &sortie);
+    } while (sortie != 'a');  // à régler, ça print 2 fois pour x raison
     clearScreen();
-    home();
 }
 
-void home() { // menu principal du jeu
+void home() {  // menu principal du jeu
     int choice = 0;
 
     showLogo();
@@ -583,25 +562,21 @@ void home() { // menu principal du jeu
     }
 }
 
+
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
         printf("\n");
     }
 }
 
-void deplacement(joueur* player, int plateau[36], int sommeDe) {
-    player->position += sommeDe;
-    printf("Deplacer %s de la case %d a la case %d.", player->username, plateau[36], sommeDe);
-}
 
 void checkIfOwned(int id) {
 }
 
 int main() {
-    //clearScreen();
-
-    //choixAvatar();
-    //  creationPlateau();
+    clearScreen();
+    // choixAvatar();
+    //   creationPlateau();
 
     // Initialisation
     // srand(time(NULL));
