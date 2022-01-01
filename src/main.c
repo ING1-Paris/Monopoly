@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 #include <unistd.h>
 #if defined(__WIN32__)
     #include <conio.h>
@@ -42,10 +41,13 @@ typedef struct t_terrain {
     bool owned;        // True if owned, False if not
     bool hotel;        // True if there is a hotel
     char ownedBy[10];  // Name of the player who owns this field
+    int x;             // X position
+    int y;             // Y position
+    int couleur;       // Color of the cell
 } terrain;
 
-void clearScreen() {
-    printf("\e[1;1H\e[2J");
+void clearScreen() { //permet de clear la console
+    system("cls");
 }
 
 void gotoligcol(int lig, int col) {
@@ -139,7 +141,7 @@ void Color(int couleurDuTexte, int couleurDeFond) {  // fonction d'affichage de 
     SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
 }
 
-void creationCase(char titre[15], int x, int y, int couleur, char mode) {
+void creationCase(char titre[15], int x, int y, int couleur) {
     /*
     0 : Noir
     1 : Bleu foncé
@@ -161,34 +163,26 @@ void creationCase(char titre[15], int x, int y, int couleur, char mode) {
 
     int longueur = 0;
     int bord = 0;
-    int limite = 0;
-    longueur = strlen(titre);
+    longueur = strlen(titre);  
     bord = (12 - longueur) / 2;
     Color(0, couleur);
-    if (mode == 'h') {
-        limite = 2;
-    } else if (mode == 'v') {
-        limite = 1;
+    gotoligcol(x, y);
+    for (int j = 0; j < 12; j++) {
+        printf(" ");
     }
-    for (int i = 0; i < limite; i++) {
-        gotoligcol(i + x, y);
-        for (int j = 0; j < 12; j++) {
-            printf(" ");
-        }
-        printf("\n");
-    }
-    gotoligcol(x + limite, y);
+    printf("\n");
+    gotoligcol(x + 1, y);
     for (int k = 0; k < bord; k++) {
         printf(" ");
     }
-    gotoligcol(x + limite, y + bord);
+    gotoligcol(x + 1, y + bord);
     printf(titre);
-    gotoligcol(x + limite, y + bord + longueur);
+    gotoligcol(x + 1, y + bord + longueur);
     for (int z = y + bord + longueur; z < y + 12; z++) {
         printf(" ");
     }
-    for (int i = 0; i < limite; i++) {
-        gotoligcol(i + x + limite + 1, y);
+    for (int n=0; n<3; n++){
+        gotoligcol(x+2+n, y);
         for (int j = 0; j < 12; j++) {
             printf(" ");
         }
@@ -197,53 +191,89 @@ void creationCase(char titre[15], int x, int y, int couleur, char mode) {
     Color(15, 0);
 }
 
-void plateauGraphique() {
-    creationCase("Soundcloud", 0, 0, 15, 'h');
-    creationCase("Eminem Show", 5, 0, 4, 'v');
-    creationCase("NWTS", 8, 0, 4, 'v');
-    creationCase("Communaute", 11, 0, 15, 'v');
-    creationCase("MMLP", 14, 0, 4, 'v');
-    creationCase("Zenith", 17, 0, 15, 'v');
-    creationCase("Discovery", 20, 0, 5, 'v');
-    creationCase("OneMoreLove", 23, 0, 5, 'v');
-    creationCase("Sacem", 26, 0, 15, 'v');
-    creationCase("RAM", 29, 0, 5, 'v');
-    creationCase("Finito", 32, 0, 15, 'h');
-    creationCase("Or Noir", 0, 12, 12, 'h');
-    creationCase("Chance", 0, 24, 15, 'h');
-    creationCase("Ouest Side", 0, 36, 12, 'h');
-    creationCase("Civilisation", 0, 48, 12, 'h');
-    creationCase("Zenith", 0, 60, 15, 'h');
-    creationCase("Unorth.Juke", 0, 72, 14, 'h');
-    creationCase("After Hours", 0, 84, 14, 'h');
-    creationCase("Sacem", 0, 96, 15, 'h');
-    creationCase("Thriller", 0, 108, 14, 'h');
-    creationCase("Drama", 0, 120, 15, 'h');
-    creationCase("DLL", 5, 120, 2, 'v');
-    creationCase("Trinity", 8, 120, 2, 'v');
-    creationCase("Communaute", 11, 120, 15, 'v');
-    creationCase("Julius", 14, 120, 2, 'v');
-    creationCase("Zenith", 17, 120, 15, 'v');
-    creationCase("Chance", 20, 120, 15, 'v');
-    creationCase("Ipseite", 23, 120, 1, 'v');
-    creationCase("Sacem", 26, 120, 15, 'v');
-    creationCase("Cyborg", 29, 120, 1, 'v');
-    creationCase("DEPART", 32, 120, 15, 'h');
-    creationCase("Nevermind", 32, 12, 11, 'h');
-    creationCase("Plat.Collec", 32, 24, 11, 'h');
-    creationCase("Chance", 32, 36, 15, 'h');
-    creationCase("Absolution", 32, 48, 11, 'h');
-    creationCase("Zenith", 32, 60, 15, 'h');
-    creationCase("Sacem", 32, 72, 15, 'h');
-    creationCase("Brol", 32, 84, 13, 'h');
-    creationCase("Communaute", 32, 96, 15, 'h');
-    creationCase("RacineCarree", 32, 108, 13, 'h');
+void caseOccupee(int position){
+
 }
 
-terrain creationTerrain(terrain instance, int position) {
+void positionJoueur(joueur player){
+
+}
+
+void terrainAchete(terrain album){ //vérifie si un terrain est occupé pour afficher son loyer à la place de son prix de base
+    int nombreMaisons;
+    nombreMaisons = album.buildings;
+    if (album.owned == true){
+        switch(nombreMaisons){
+            case 0: gotoligcol(album.x+3, album.y+6); 
+            printf("%d €", album.loyer);
+            break;
+            case 1: gotoligcol(album.x+3, album.y+6);
+            printf("%d €", album.loyermaison1);
+            break;
+            case 2: gotoligcol(album.x+3, album.y+5); 
+            printf("%d €", album.loyermaison2);
+            break;
+            case 3: gotoligcol(album.x+3, album.y+5); 
+            printf("%d €", album.loyermaison3);
+            break;
+            case 4: gotoligcol(album.x+3, album.y+4); 
+            printf("%d €", album.loyermaison4);
+            break;
+        }
+    }
+    if (album.hotel == true){
+        gotoligcol(album.x+3, album.y+4);
+        printf("%d €", album.loyerhotel);
+    }
+}
+
+void plateauGraphique() {  // création du plateau de base, il reste inchangé après
+    creationCase("Soundcloud", 0, 0, 15);
+    creationCase("Eminem Show", 5, 0, 4);
+    creationCase("NWTS", 10, 0, 4);
+    creationCase("Communaute", 15, 0, 15);
+    creationCase("MMLP", 20, 0, 4);
+    creationCase("Zenith", 25, 0, 15);
+    creationCase("Discovery", 30, 0, 7);
+    creationCase("OneMoreLove", 35, 0, 7);
+    creationCase("Sacem", 40, 0, 15);
+    creationCase("RAM", 45, 0, 7);
+    creationCase("Finito", 50, 0, 15);
+    creationCase("Or Noir", 0, 12, 12);
+    creationCase("Chance", 0, 24, 15);
+    creationCase("Ouest Side", 0, 36, 12);
+    creationCase("Civilisation", 0, 48, 12);
+    creationCase("Zenith", 0, 60, 15);
+    creationCase("Unorth.Juke", 0, 72, 14);
+    creationCase("After Hours", 0, 84, 14);
+    creationCase("Sacem", 0, 96, 15);
+    creationCase("Thriller", 0, 108, 14);
+    creationCase("Drama", 0, 120, 15);
+    creationCase("DLL", 5, 120, 2);
+    creationCase("Trinity", 10, 120, 2);
+    creationCase("Communaute", 15, 120, 15);
+    creationCase("Julius", 20, 120, 2);
+    creationCase("Zenith", 25, 120, 15);
+    creationCase("Chance", 30, 120, 15);
+    creationCase("Ipseite", 35, 120, 10);
+    creationCase("Sacem", 40, 120, 15);
+    creationCase("Cyborg", 45, 120, 10);
+    creationCase("DEPART", 50, 120, 15);
+    creationCase("Nevermind", 50, 12, 11);
+    creationCase("Plat.Collec", 50, 24, 11);
+    creationCase("Chance", 50, 36, 15);
+    creationCase("Absolution", 50, 48, 11);
+    creationCase("Zenith", 50, 60, 15);
+    creationCase("Sacem", 50, 72, 15);
+    creationCase("Brol", 50, 84, 13);
+    creationCase("Communaute", 50, 96, 15);
+    creationCase("RacineCarree", 50, 108, 13);
+}
+
+terrain creationTerrain(terrain instance, int position) { //création d'une instance (un album)
     FILE *texte = NULL;
     char ignore[1024];
-    int donnee[11];
+    int donnee[14];
     char proprio[10];
     texte = fopen("monopoly.txt", "r");
     if (texte == NULL) {
@@ -252,9 +282,9 @@ terrain creationTerrain(terrain instance, int position) {
     for (int i = 0; i < position; i++) {
         fgets(ignore, sizeof(ignore), texte);
     }
-    fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
+    fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
            &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
-           &donnee[8], &donnee[9], &donnee[10]);
+           &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], donnee[13]);
     instance.id = donnee[0];
     instance.defaultPrice = donnee[1];
     instance.housePrice = donnee[2];
@@ -266,12 +296,15 @@ terrain creationTerrain(terrain instance, int position) {
     instance.loyerhotel = donnee[8];
     instance.hypotheque = donnee[9];
     instance.buildings = donnee[10];
+    instance.x = donnee[11];
+    instance.y = donnee[12];
+    instance.couleur = donnee[13];
     instance.owned = false;
     instance.hotel = false;
     return instance;
 }
 
-void creationPlateau() {
+terrain creationPlateau() {
     terrain racine;
     terrain brol;
     terrain absolution;
@@ -388,7 +421,7 @@ int choixAvatar(int nbJoueurs, int currentPlayer) {
     }
 
     gotoligcol(18, 5);
-    printf("Selection enregistre");
+    printf("Selection enregistree");
     animation(20, 0, 50, 28);
 
     /*
@@ -404,7 +437,7 @@ int choixAvatar(int nbJoueurs, int currentPlayer) {
     return avatar[selection];
 }
 
-int creationDesJoueurs(int nombreDeJoueurs) {
+int creationDesJoueurs(int nombreDeJoueurs) { // fonction de création des joueurs
     int emptyCard[10];
     int emptyField[26];
 
@@ -460,7 +493,7 @@ int creationDesJoueurs(int nombreDeJoueurs) {
     animation(20, 0, 75, 50);
 }
 
-int demanderNbJoueurs() {
+int demanderNbJoueurs() { //fonction demandant et renvoyant le nombre de joueurs
     int nb_joueurs = 0;
     display();
     do {
@@ -470,15 +503,34 @@ int demanderNbJoueurs() {
     return nb_joueurs;
 }
 
-void newGame() {
+void newGame() { // menu de création des joueurs, affiche le plateau de base
     int nb_joueurs = 0;
     nb_joueurs = demanderNbJoueurs();
     creationDesJoueurs(nb_joueurs);
     clearScreen();
     plateauGraphique();
+    int i, de1, de2, sommeDe = 0;
+    int plateauJeu[36]; // plateau = liste de 36 cases
+    joueur players[nb_joueurs]; // players[nb_joueurs] est la liste des joueurs
+    joueur* joueuractuel;
+    //terrain plateauDeJeu[22];
+    //plateauDeJeu[0] = creationTerrain(plateauDeJeu[0],0);
+    //printf("%d", plateauDeJeu[0].defaultPrice);
+    while(players[0].balance != 0 || players[1].balance != 0 || players[2].balance != 0){
+         joueuractuel = &players[i];
+         de1 = lancerDe();
+         de2 = lancerDe();
+         sommeDe = de1 + de2;
+         deplacement(joueuractuel, plateauJeu, sommeDe);
+         if (joueuractuel->position < 12){
+             printf("%d", joueuractuel->position);
+         }
+         i++;
+    }
 }
 
-void regles(){
+void regles(){ // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
+    char sortie;
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
     printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
     printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
@@ -494,11 +546,13 @@ void regles(){
     printf("\nSEL                REG     SEL                      REGLE            SERLG     REG             SEL                               REGLE");
     printf("\nREG                 SEL    REG                        SERGLER      REGLES      SER             REG                           REGLES");
     printf("\nSEL                   REG  SELGERSELGERSELGERSEL          REGLESSERGLE         REGLESREGLESREG SELGERSELGERSELGERSEL  REGREGLESREG");
-    printf("\n\nPour revenir au menu principal, appuyez sur une touche.");
-    
+    do{printf("\nPour revenir au menu principal, appuyez sur la touche 'a'. ");
+    scanf("%c", &sortie);}while(sortie != 'a'); // à régler, ça print 2 fois pour x raison
+    clearScreen();
+    home();
 }
 
-void home() {
+void home() { // menu principal du jeu
     int choice = 0;
 
     showLogo();
@@ -536,7 +590,7 @@ void home() {
     }
     switch (choice) {
         case 1:
-            clearScreen();  // permet de clear la console !!!
+            clearScreen();
             newGame();
             break;
         case 4:
@@ -552,38 +606,19 @@ void skip() {  // saute 50 lignes
     }
 }
 
-void deplacement(joueur player, int plateau[36], int sommeDe) {
-    player.position += sommeDe;
-    printf("Deplacer %s de la case %d a la case %d.", player.username, plateau[36], sommeDe);
+void deplacement(joueur* player, int plateau[36], int sommeDe) {
+    player->position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.", player->username, plateau[36], sommeDe);
 }
 
 int main() {
-    // int nb_joueurs, i, de1, de2 = 0;
-    // int plateauJeu[36]; // plateau = liste de 36 cases
-    // nb_joueurs = demanderNbJoueurs();
-    // joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
-    // while("pas la fin"){
-    // joueuractuel = &players[i];
-    // de1 = lancerDe();
-    // de2 = lancerDe();
-    // deplacement(joueuractuel, plateauJeu, de1, de2);
-    // if (joueuractuel->position > 12)
-    // i++;
-    //}
-
     clearScreen();
-    // choixAvatar();
-
-    // skip();
+    //choixAvatar();
     //  creationPlateau();
-    //  plateauGraphique();
 
     // Initialisation
     // srand(time(NULL));
     home();
 
-    // Tests
-    // creationDesJoueurs(2);
-    // printf("\n");
     return 0;
 }
