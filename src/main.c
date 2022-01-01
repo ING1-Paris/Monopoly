@@ -37,14 +37,15 @@ typedef struct t_terrain {
     int loyermaison3;  // Loyer avec 3 maisons
     int loyermaison4;  // Loyer avec 4 maisons
     int loyerhotel;    // Loyer avec un hotel
-    int hypotheque;    // Valeur hypothécaire
+    int val_hypoth;    // Valeur hypothécaire
     int buildings;     // Amount of buildings in the field
     bool owned;        // True if owned, False if not
     bool hotel;        // True if there is a hotel
-    char ownedBy[10];  // Name of the player who owns this field
+    int ownedBy;       // Name of the player who owns this field
     int x;             // X position
     int y;             // Y position
     int couleur;       // Color of the cell
+    bool hypotheque;   // True si la case est hypothéquée
 } terrain;
 
 void clearScreen() { //permet de clear la console
@@ -192,40 +193,27 @@ void creationCase(char titre[15], int x, int y, int couleur) {
     Color(15, 0);
 }
 
-void caseOccupee(int position){
-
-}
-
-void positionJoueur(joueur player){
-
-}
-
 void terrainAchete(terrain album){ //vérifie si un terrain est occupé pour afficher son loyer à la place de son prix de base
-    int nombreMaisons;
-    nombreMaisons = album.buildings;
+    int longueur = (12-strlen(album.ownedBy))/2;
+    Color(0, album.couleur);
     if (album.owned == true){
-        switch(nombreMaisons){
-            case 0: gotoligcol(album.x+3, album.y+6); 
-            printf("%d €", album.loyer);
-            break;
-            case 1: gotoligcol(album.x+3, album.y+6);
-            printf("%d €", album.loyermaison1);
-            break;
-            case 2: gotoligcol(album.x+3, album.y+5); 
-            printf("%d €", album.loyermaison2);
-            break;
-            case 3: gotoligcol(album.x+3, album.y+5); 
-            printf("%d €", album.loyermaison3);
-            break;
-            case 4: gotoligcol(album.x+3, album.y+4); 
-            printf("%d €", album.loyermaison4);
-            break;
-        }
+        gotoligcol(album.x+3,album.y+longueur);
+        printf("%s",album.ownedBy);
     }
-    if (album.hotel == true){
-        gotoligcol(album.x+3, album.y+4);
-        printf("%d €", album.loyerhotel);
+    Color(15, 0);
+}
+
+void ifHypotheque(terrain album){ //fonction vérifiant si une case est hypothéquée
+    Color(0, album.couleur);
+    if (album.hypotheque == true){
+        gotoligcol(album.x+4, album.y+1);
+        printf("H");
     }
+    Color(15, 0);
+}
+
+void achatAlbum(){
+
 }
 
 void plateauGraphique() {  // création du plateau de base, il reste inchangé après
@@ -285,7 +273,7 @@ terrain creationTerrain(terrain instance, int position) { //création d'une inst
     }
     fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
            &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
-           &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], donnee[13]);
+           &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13]);
     instance.id = donnee[0];
     instance.defaultPrice = donnee[1];
     instance.housePrice = donnee[2];
@@ -295,17 +283,19 @@ terrain creationTerrain(terrain instance, int position) { //création d'une inst
     instance.loyermaison3 = donnee[6];
     instance.loyermaison4 = donnee[7];
     instance.loyerhotel = donnee[8];
-    instance.hypotheque = donnee[9];
+    instance.val_hypoth = donnee[9];
     instance.buildings = donnee[10];
     instance.x = donnee[11];
     instance.y = donnee[12];
     instance.couleur = donnee[13];
     instance.owned = false;
     instance.hotel = false;
+    instance.hypotheque = false;
+    instance.ownedBy = " ";
     return instance;
 }
 
-terrain creationPlateau() {
+terrain *creationPlateau() {
     terrain racine;
     terrain brol;
     terrain absolution;
@@ -496,8 +486,9 @@ void newGame() { // menu de création des joueurs, affiche le plateau de base
     joueur j3 = pJoueurs[2];
     joueur j4 = pJoueurs[3];
 
-    printf("\n%d\n", j2.id);
-    printf("%s\n", j2.username);
+    //printf("%d",pTerrains[0].loyer);
+    //printf("\n%d\n", j2.id);
+    //printf("%s\n", j2.username);
 
     free(pJoueurs);
 
@@ -507,13 +498,9 @@ void newGame() { // menu de création des joueurs, affiche le plateau de base
     plateauGraphique();
     int i, de1, de2, sommeDe = 0;
     int plateauJeu[36]; // plateau = liste de 36 cases
-    joueur players[nb_joueurs]; // players[nb_joueurs] est la liste des joueurs
     joueur* joueuractuel;
-    //terrain plateauDeJeu[22];
-    //plateauDeJeu[0] = creationTerrain(plateauDeJeu[0],0);
-    //printf("%d", plateauDeJeu[0].defaultPrice);
-    while(players[0].balance != 0 || players[1].balance != 0 || players[2].balance != 0){
-         joueuractuel = &players[i];
+    while(j1.balance != 0 || j2.balance != 0 || j3.balance != 0 || j4.balance != 0){
+         joueuractuel = &pJoueurs[i];
          de1 = lancerDe();
          de2 = lancerDe();
          sommeDe = de1 + de2;
@@ -611,13 +598,13 @@ void checkIfOwned(int id) {
 }
 
 int main() {
-    clearScreen();
+    //clearScreen();
+
     //choixAvatar();
     //  creationPlateau();
 
     // Initialisation
     // srand(time(NULL));
-    home();
-
+    //home();
     return 0;
 }
