@@ -6,25 +6,28 @@
 #include <conio.h>
 #include <unistd.h>
 #if defined(__WIN32__)
+    #include <conio.h>
     #include <windows.h>
 #endif
 #define MAX 100
 
-typedef struct {
-    int id;              // Player's ID from 1 to 4
-    long balance;        // Balance of the player
+typedef struct t_joueur {
+    int id;               // Player's ID from 1 to 4
+    long balance;         // Balance of the player
     char *username[MAX];  // Username of the player
-    int position;        // ID of the player's current cell
-    int cellType;        // Type of the player's current cell
-    int ownedField[26];  // ID of each owned fields
-    int luckCard[10];    // ID of possessed luck card
-    int comCard[10];     // ID of possessed community card
-    bool inJail;         // True if the player is in jail, false if not
-    bool bankruptcy;     // True if the player is in bankruptcy, false if not
-    char symbol;         // Le symbole du joueur
+    int position;         // ID of the player's current cell
+    int cellType;         // Type of the player's current cell
+    int ownedField[26];   // ID of each owned fields
+    int luckCard[10];     // ID of possessed luck card
+    int comCard[10];      // ID of possessed community card
+    bool inJail;          // True if the player is in jail, false if not
+    bool bankruptcy;      // True if the player is in bankruptcy, false if not
+    char symbol;          // Le symbole du joueur
+    int streakDouble;     // Active number of doubles
+    int avatar;           // Hexadecimal code for the avatar selection
 } joueur;
 
-typedef struct {
+typedef struct t_terrain {
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -41,6 +44,17 @@ typedef struct {
     char ownedBy[10];  // Name of the player who owns this field
 } terrain;
 
+void clearScreen() {
+    printf("\e[1;1H\e[2J");
+}
+
+void gotoligcol(int lig, int col) {
+    // ressources
+    COORD mycoord;
+    mycoord.X = col;
+    mycoord.Y = lig;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), mycoord);
+}
 
 int lancerDe() {
     // Retourne un nombre pseudo aléatoire en 1 et 6
@@ -51,19 +65,78 @@ int lancerDe() {
     return nb;
 }
 
-int completeType() { return 0; }
+void showLogo() {
+    gotoligcol(0, 0);
+    printf(
+        "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
+        "MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO "
+        "       NO");
+    printf(
+        "\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO "
+        "     MO        NO         PO         NO      MO        NO           NO  "
+        "    MO");
+    printf(
+        "\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO  "
+        "      NO       PO          LY       PO        NO       PO            PO "
+        "   LY");
+    printf(
+        "\nPOLY	MONO	POLY	  LY	      PO      LY  NO      LY      LY   "
+        "       PO      LY          MO      LY          PO      LY             "
+        "LY  PO");
+    printf(
+        "\nMONO	POLY	MONO     MO            LY     MO    PO    PO     MO    "
+        "        LY     MO         NO      MO            LY     MO              "
+        "MONO");
+    printf(
+        "\nPOLY		POLY	NO		MO    NO    LY	  NO    NO     "
+        "         MO    NOPONOMOLYPO      NO              MO    NO               "
+        "NO");
+    printf(
+        "\nMONO		MONO	 PO	       NO     PO      MO  MO     PO    "
+        "        NO     PO                 PO            NO     PO               "
+        "PO");
+    printf(
+        "\nPOLY		POLY	  LY	      PO      LY      NO  LY      LY   "
+        "       PO      LY                  LY          PO      LY               "
+        "LY");
+    printf(
+        "\nMONO		MONO	   MO	     LY       MO        POPO       MO  "
+        "      LY       MO                   MO        LY       MO               "
+        "MO");
+    printf(
+        "\nPOLY		POLY 	    NO      MO        NO        LYNO        NO "
+        "     MO        NO                    NO      MO        NO               "
+        "NO");
+    printf(
+        "\nMONO		POLY	     POLYMONO         PO          MO         "
+        "POLYMONO         PO                     POLYMONO         POLYMONOPOLY   "
+        "  LY");
+    gotoligcol(14, 5);
+}
+
+void display() {
+    clearScreen();
+    showLogo();
+}
+
+void animation(int y, int x, int ms, int lenght) {
+    int i;
+    gotoligcol(y, x);
+    printf("|");
+    for (i = 0; i < lenght; i++) {
+        printf("-");
+    }
+    printf("|");
+    gotoligcol(y, x + 1);
+    for (int i = 0; i < lenght; i++) {
+        printf("#");
+        Sleep(ms);
+    }
+}
 
 void Color(int couleurDuTexte, int couleurDeFond) {  // fonction d'affichage de couleurs
     HANDLE H = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(H, couleurDeFond * 16 + couleurDuTexte);
-}
-
-void gotoligcol(int lig, int col) {
-    // ressources
-    COORD mycoord;
-    mycoord.X = col;
-    mycoord.Y = lig;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), mycoord);
 }
 
 void creationCase(char titre[15], int x, int y, int couleur, char mode) {
@@ -245,29 +318,151 @@ void creationPlateau() {
     cyborg = creationTerrain(cyborg, 21);
 }
 
+int choixAvatar(int nbJoueurs, int currentPlayer) {
+    bool end = false;
+    int av;
+    int key, c;
+    int avatar[10] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0B, 0x0C, 0x0E, 0x0F};
+    int selection = 0;
+    display();
+    printf("Veuillez choisir votre avatar");
+    gotoligcol(17, 7);
+    printf("<---     --->");
+    gotoligcol(17, 13);
+    printf("%c", avatar[selection]);
+    while (!end) {
+        gotoligcol(17, 13);
+        if (kbhit()) {
+            key = getch();
+            switch (key) {
+                case 75:
+                    if (selection > 0) {
+                        selection = selection - 1;
+                    }
+                    printf("%c", avatar[selection]);
+                    break;
+
+                case 77:
+                    if (selection < 9) {
+                        selection++;
+                    }
+                    printf("%c", avatar[selection]);
+                    break;
+                case 13:
+                    end = true;
+                    break;
+                    /* Pour vérifier si l'avat est déjà pris
+                    av = avatar[selection];
+                    switch (currentPlayer) {
+                        case 1:
+                            if ((av == j2.avatar) || (av == j3.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 2:
+                            if ((av == j1.avatar) || (av == j3.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 3:
+                            if ((av == j1.avatar) || (av == j2.avatar) || (av == j4.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        case 4:
+                            if ((av == j1.avatar) || (av == j2.avatar) || (av == j3.avatar)) {
+                                printf("Avatar deja choisi !");
+                            } else {
+                                end = true;
+                            }
+                            break;
+                        {*/
+            }
+        }
+    }
+
+    gotoligcol(18, 5);
+    printf("Selection enregistre");
+    animation(20, 0, 50, 28);
+
+    /*
+    for (c = selection - 1; c < 10 - 1; c++)
+        avatar[c] = avatar[c + 1];
+
+    printf("Resultant array:\n");
+
+    for (c = 0; c < 10 - 1; c++)
+        printf("%c\n", avatar[c]);
+    */
+
+    return avatar[selection];
+}
+
 int creationDesJoueurs(int nombreDeJoueurs) {
     int emptyCard[10];
     int emptyField[26];
 
-    joueur j1 = {1, 1500, "NULL", 0, 0, "test", "test", "test", false, false};
-    joueur j2 = {1, 1500, "NULL", 0, 0, "test", "test", "test", false, false};
+    joueur j1 = {1, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
+    joueur j2 = {2, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
+    joueur j3 = {3, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
+    joueur j4 = {4, 1500, "NULL", 0, 0, "NULL", "NULL", "NULL", false, false};
 
+    display();
+    printf("Entrez le nom du joueur 1 : ");
     scanf("%s", j1.username);
-    printf("\n");
+    j1.avatar = choixAvatar(nombreDeJoueurs, 1);
+    display();
+    printf("Entrez le nom du joueur 2 : ");
     scanf("%s", j2.username);
-    printf("\n");
+    j2.avatar = choixAvatar(nombreDeJoueurs, 2);
 
-    printf("\n");
-    printf("Pseudo joueur 1 : %s", j1.username);
-    printf("Pseudo joueur 2 : %s", j2.username);
-}
+    if (nombreDeJoueurs == 3) {
+        display();
+        printf("Entrez le nom du joueur 3 : ");
+        scanf("%s", j3.username);
+        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
+    }
 
-void clearScreen(){
-    printf("\e[1;1H\e[2J");
+    else if (nombreDeJoueurs == 4) {
+        display();
+        printf("Entrez le nom du joueur 3 : ");
+        scanf("%s", j3.username);
+        j3.avatar = choixAvatar(nombreDeJoueurs, 3);
+        display();
+        printf("Entrez le nom du joueur 4 : ");
+        scanf("%s", j4.username);
+        j4.avatar = choixAvatar(nombreDeJoueurs, 4);
+    }
+
+    display();
+    gotoligcol(14, 0);
+
+    printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j1.username, j1.avatar);
+    printf("Pseudo et avatar du joueur 2 : %s  -  %c\n", j2.username, j2.avatar);
+
+    if (nombreDeJoueurs == 3) {
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
+    }
+
+    else if (nombreDeJoueurs == 4) {
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j3.username, j3.avatar);
+        printf("Pseudo et avatar du joueur 1 : %s  -  %c\n", j4.username, j4.avatar);
+    }
+
+    printf("\nChargement de la partie en cours");
+
+    animation(20, 0, 75, 50);
 }
 
 int demanderNbJoueurs() {
     int nb_joueurs = 0;
+    display();
     do {
         printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
         scanf("%d", &nb_joueurs);
@@ -278,6 +473,8 @@ int demanderNbJoueurs() {
 void newGame() {
     int nb_joueurs = 0;
     nb_joueurs = demanderNbJoueurs();
+    creationDesJoueurs(nb_joueurs);
+    clearScreen();
     plateauGraphique();
 }
 
@@ -303,51 +500,9 @@ void regles(){
 
 void home() {
     int choice = 0;
-    gotoligcol(0, 0);
-    printf(
-        "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
-        "MONOPOLY         MONOPOLYMONO           MONOPOLY         MO          MO "
-        "       NO");
-    printf(
-        "\nPOLYMONO    MONOPOLY	    NO      MO        NOPO        NO        NO "
-        "     MO        NO         PO         NO      MO        NO           NO  "
-        "    MO");
-    printf(
-        "\nMONOPOLY    POLYMONO	   PO	     NO       PO  MO      MO       PO  "
-        "      NO       PO          LY       PO        NO       PO            PO "
-        "   LY");
-    printf(
-        "\nPOLY	MONO	POLY	  LY	      PO      LY  NO      LY      LY   "
-        "       PO      LY          MO      LY          PO      LY             "
-        "LY  PO");
-    printf(
-        "\nMONO	POLY	MONO     MO            LY     MO    PO    PO     MO    "
-        "        LY     MO         NO      MO            LY     MO              "
-        "MONO");
-    printf(
-        "\nPOLY		POLY	NO		MO    NO    LY	  NO    NO     "
-        "         MO    NOPONOMOLYPO      NO              MO    NO               "
-        "NO");
-    printf(
-        "\nMONO		MONO	 PO	       NO     PO      MO  MO     PO    "
-        "        NO     PO                 PO            NO     PO               "
-        "PO");
-    printf(
-        "\nPOLY		POLY	  LY	      PO      LY      NO  LY      LY   "
-        "       PO      LY                  LY          PO      LY               "
-        "LY");
-    printf(
-        "\nMONO		MONO	   MO	     LY       MO        POPO       MO  "
-        "      LY       MO                   MO        LY       MO               "
-        "MO");
-    printf(
-        "\nPOLY		POLY 	    NO      MO        NO        LYNO        NO "
-        "     MO        NO                    NO      MO        NO               "
-        "NO");
-    printf(
-        "\nMONO		POLY	     POLYMONO         PO          MO         "
-        "POLYMONO         PO                     POLYMONO         POLYMONOPOLY   "
-        "  LY");
+
+    showLogo();
+
     gotoligcol(14, 23);
     Color(15, 2);
     printf("1-Lancer une nouvelle partie");
@@ -379,13 +534,15 @@ void home() {
             scanf("%d", &choice);
         } while (choice < 1 || choice > 6);
     }
-    switch(choice){
-        case 1 : clearScreen(); // permet de clear la console !!!
-        newGame();
-        break;
-        case 4 : clearScreen(); 
-        regles();
-        break;
+    switch (choice) {
+        case 1:
+            clearScreen();  // permet de clear la console !!!
+            newGame();
+            break;
+        case 4:
+            clearScreen();
+            regles();
+            break;
     }
 }
 
@@ -395,34 +552,38 @@ void skip() {  // saute 50 lignes
     }
 }
 
-void deplacement(joueur* player, int plateau[36], int de1, int de2){
-    int somme = de1+de2;
-    player->position += somme;
+void deplacement(joueur player, int plateau[36], int sommeDe) {
+    player.position += sommeDe;
+    printf("Deplacer %s de la case %d a la case %d.", player.username, plateau[36], sommeDe);
 }
 
 int main() {
-    //int nb_joueurs, i, de1, de2 = 0;
-    //int plateauJeu[36]; // plateau = liste de 36 cases
-    //nb_joueurs = demanderNbJoueurs();
-    //joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
-    //while("pas la fin"){
-        //joueuractuel = &players[i];
-        //de1 = lancerDe();
-        //de2 = lancerDe();
-        //deplacement(joueuractuel, plateauJeu, de1, de2);
-        //if (joueuractuel->position > 12)
-        //i++;
+    // int nb_joueurs, i, de1, de2 = 0;
+    // int plateauJeu[36]; // plateau = liste de 36 cases
+    // nb_joueurs = demanderNbJoueurs();
+    // joueur players[nb_joueurs], *joueuractuel; // players[nb_joueurs] est la liste des joueurs
+    // while("pas la fin"){
+    // joueuractuel = &players[i];
+    // de1 = lancerDe();
+    // de2 = lancerDe();
+    // deplacement(joueuractuel, plateauJeu, de1, de2);
+    // if (joueuractuel->position > 12)
+    // i++;
     //}
-    skip();
-    //creationPlateau();
-    //plateauGraphique();
 
-    //Initialisation
-    //srand(time(NULL));
+    clearScreen();
+    // choixAvatar();
+
+    // skip();
+    //  creationPlateau();
+    //  plateauGraphique();
+
+    // Initialisation
+    // srand(time(NULL));
     home();
 
-    //Tests
-    //creationDesJoueurs(2);
-    //printf("\n");
+    // Tests
+    // creationDesJoueurs(2);
+    // printf("\n");
     return 0;
 }
