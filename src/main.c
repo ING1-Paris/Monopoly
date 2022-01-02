@@ -436,7 +436,7 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
 
     printf("\n%s\n", pTerrains[0].nom);
 
-    Sleep(5000);
+    Sleep(2000);
 
     free(pJoueurs);
     free(pTerrains);
