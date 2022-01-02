@@ -1,0 +1,42 @@
+------------------------------------
+creationCase("Soundcloud", 0, 0, 15);
+
+
+creationCase("Communaute", 15, 0, 15);
+
+creationCase("Zenith", 25, 0, 15);
+
+
+creationCase("Sacem", 40, 0, 15);
+
+creationCase("Finito", 50, 0, 15);
+
+creationCase("Chance", 0, 24, 15);
+
+
+creationCase("Zenith", 0, 60, 15);
+
+
+creationCase("Sacem", 0, 96, 15);
+
+creationCase("Drama", 0, 120, 15);
+
+
+creationCase("Communaute", 15, 120, 15);
+
+creationCase("Zenith", 25, 120, 15);
+creationCase("Chance", 30, 120, 15);
+
+creationCase("Sacem", 40, 120, 15);
+
+creationCase("DEPART", 50, 120, 15);
+
+
+creationCase("Chance", 50, 36, 15);
+
+creationCase("Zenith", 50, 60, 15);
+creationCase("Sacem", 50, 72, 15);
+
+creationCase("Communaute", 50, 96, 15);
+
+--------------------
