@@ -41,7 +41,7 @@ typedef struct t_terrain {
     int buildings;     // Amount of buildings in the field
     bool owned;        // True if owned, False if not
     bool hotel;        // True if there is a hotel
-    int ownedBy;       // Name of the player who owns this field
+    int ownedBy;       // ID of the player who owns this field
     int x;             // X position
     int y;             // Y position
     int couleur;       // Color of the cell
@@ -193,12 +193,21 @@ void creationCase(char titre[15], int x, int y, int couleur) {
     Color(15, 0);
 }
 
-void terrainAchete(terrain album){ //vérifie si un terrain est occupé pour afficher son loyer à la place de son prix de base
-    int longueur = (12-strlen(album.ownedBy))/2;
+void terrainAchete(joueur players[], terrain album){ //vérifie si un terrain est occupé pour afficher son proprio à la place de son prix de base
+    int longueur = 0;
     Color(0, album.couleur);
     if (album.owned == true){
-        gotoligcol(album.x+3,album.y+longueur);
-        printf("%s",album.ownedBy);
+        for(int i=0; i<4; i++){
+            if (album.ownedBy == players[i].id){
+                longueur = (12-strlen(players[i].username))/2;
+                gotoligcol(album.x+3,album.y+longueur);
+                printf("%s",players[i].username);
+            }
+        }
+    }
+    else{
+        gotoligcol(album.x+3,album.y+5);
+        printf("%d %c",album.defaultPrice, 0x24); // essayer de print le symbole € avec
     }
     Color(15, 0);
 }
@@ -212,8 +221,20 @@ void ifHypotheque(terrain album){ //fonction vérifiant si une case est hypothé
     Color(15, 0);
 }
 
-void achatAlbum(){
+joueur updateJoueur(joueur currentplayer, terrain album){ //fonction d'achat d'un terrain --> partie joueur
+    int i = 0;
+    currentplayer.balance -= album.defaultPrice;
+    while (currentplayer.ownedField[i] != 0){
+        i++;
+    }
+    currentplayer.ownedField[i] = album.id;
+    return currentplayer;
+}
 
+terrain updateTerrain(joueur currentplayer, terrain album){ //fonction d'achat d'un terrain --> partie terrain
+    album.owned = true;
+    album.ownedBy = currentplayer.id;
+    return album;
 }
 
 void plateauGraphique() {  // création du plateau de base, il reste inchangé après
@@ -303,6 +324,7 @@ terrain *creationTerrain() {  // création d'une instance (un album)
         instance.couleur = donnee[13];
         instance.owned = false;
         instance.hotel = false;
+        instance.hypotheque = false;
 
         listeTerrain[i] = instance;
     }
@@ -451,32 +473,36 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     const int nb_joueurs = demanderNbJoueurs();
 
     joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+    terrain *pTerrains = creationTerrain();
 
     /*joueur j1 = pJoueurs[0];
     joueur j2 = pJoueurs[1];
     joueur j3 = pJoueurs[2];
     joueur j4 = pJoueurs[3];*/
 
-    terrain *pTerrains = creationTerrain();
-
-    terrain terrain1 = pTerrains[0];
-    printf("\n%s\n",terrain1.nom);
+    clearScreen();
+    plateauGraphique();
+    pJoueurs[1] = updateJoueur(pJoueurs[1], pTerrains[0]);
+    pTerrains[0] = updateTerrain(pJoueurs[1], pTerrains[0]);
+    pJoueurs[0] = updateJoueur(pJoueurs[0], pTerrains[2]);
+    pTerrains[2] = updateTerrain(pJoueurs[0], pTerrains[2]);
+    terrainAchete(pJoueurs, pTerrains[0]);
+    terrainAchete(pJoueurs, pTerrains[2]);
+    gotoligcol(0,140);
+    printf("%d %d", pJoueurs[0].balance, pJoueurs[1].balance);
+    printf("%d %d", pTerrains[0].ownedBy, pTerrains[2].ownedBy);
 
     Sleep(5000);
 
     free(pJoueurs);
     free(pTerrains);
 
-    clearScreen();
-    //plateauGraphique();
+    //clearScreen();
     int i, de1, de2, sommeDe = 0;
     int plateauJeu[36];          // plateau = liste de 36 cases
 
     joueur *joueuractuel;
     // terrain plateauDeJeu[22];
-    // plateauDeJeu[0] = creationTerrain(plateauDeJeu[0],0);
-    // printf("%d", plateauDeJeu[0].defaultPrice);
-    
     while (pJoueurs[0].balance != 0 || pJoueurs[1].balance != 0 || pJoueurs[2].balance != 0) {
         joueuractuel = &pJoueurs[i];
         de1 = lancerDe();
@@ -569,12 +595,9 @@ void skip() {  // saute 50 lignes
     }
 }
 
-
-void checkIfOwned(int id) {
-}
-
 int main() {
     clearScreen();
+    home();
     // choixAvatar();
     //   creationPlateau();
 

@@ -22,4 +22,4 @@
 22 400 200 50 200 600 1400 1700 2000 200 0 45 120 10 0 false false false
 
 ID ; Prix_achat ; Prix_maison ; Loyer_rien ; Loyers_maison (x4) ; Loyer_hôtel ; Val_hypothèque ; Nb_maisons ; position_x ; position_y
-couleur; nom_proprio ; occupé ? ; hôtel ?
+couleur; id_proprio ; occupé ? ; hôtel ?
