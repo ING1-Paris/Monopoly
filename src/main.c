@@ -237,6 +237,24 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
         char *nomCurrent = currentTerrain.nom;
         creationCase(nomCurrent, currentTerrain.x, currentTerrain.y, currentTerrain.couleur);
     }
+    creationCase("Soundcloud", 0, 0, 15);
+    creationCase("Communaute", 15, 0, 15);
+    creationCase("Zenith", 25, 0, 15);
+    creationCase("Sacem", 40, 0, 15);
+    creationCase("Finito", 50, 0, 15);
+    creationCase("Chance", 0, 24, 15);
+    creationCase("Zenith", 0, 60, 15);
+    creationCase("Sacem", 0, 96, 15);
+    creationCase("Drama", 0, 120, 15);
+    creationCase("Communaute", 15, 120, 15);
+    creationCase("Zenith", 25, 120, 15);
+    creationCase("Chance", 30, 120, 15);
+    creationCase("Sacem", 40, 120, 15);
+    creationCase("DEPART", 50, 120, 15);
+    creationCase("Chance", 50, 36, 15);
+    creationCase("Zenith", 50, 60, 15);
+    creationCase("Sacem", 50, 72, 15);
+    creationCase("Communaute", 50, 96, 15);
 }
 
 terrain *creationTerrain() {  // création d'une instance (un album)
@@ -244,9 +262,9 @@ terrain *creationTerrain() {  // création d'une instance (un album)
 
     terrain instance;
 
-    char *listeNomTerrain[22] = {"racine", "brol", "absolution", "platinium", "nevermind", "ram", "onemore", "discovery", "mmlp",
-                                 "nwts", "eminemshow", "ornoir", "ouestside", "civilisation", "jukebox", "after", "thriller", "dll",
-                                 "trinity", "julius", "ipseite", "cyborg"};
+    char *listeNomTerrain[22] = {"Eminem Show", "NWTS", "MMLP", "Discovery", "OneMoreLove", "RAM", "Or Noir", "Ouest Side",
+                                 "Civilisation", "Unorth.Juke", "After Hours", "Thriller", "DLL", "Trinity", "JVLIVS", "Ipseite", "Cyborg",
+                                 "Nevermind", "Plat.Collec", "Absolution", "Brol", "RacineCarree"};
 
     for (int i = 0; i < 22; i++) {
         char *nomCurrent = listeNomTerrain[i];
@@ -286,6 +304,8 @@ terrain *creationTerrain() {  // création d'une instance (un album)
 
         listeTerrain[i] = instance;
     }
+
+
     return listeTerrain;
 }
 
