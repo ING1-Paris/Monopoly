@@ -27,7 +27,7 @@ typedef struct t_joueur {
 } joueur;
 
 typedef struct t_terrain {
-    char *nom;     // Field's name
+    char *nom;         // Field's name
     int id;            // Field's ID from 0 to 25
     int defaultPrice;  // Field's initial price
     int housePrice;    // Field's house price
@@ -231,47 +231,12 @@ void terrainAchete(terrain album) {  // vérifie si un terrain est occupé pour 
     }
 }
 
-void plateauGraphique() {  // création du plateau de base, il reste inchangé après
-    creationCase("Soundcloud", 0, 0, 15);
-    creationCase("Eminem Show", 5, 0, 4);
-    creationCase("NWTS", 10, 0, 4);
-    creationCase("Communaute", 15, 0, 15);
-    creationCase("MMLP", 20, 0, 4);
-    creationCase("Zenith", 25, 0, 15);
-    creationCase("Discovery", 30, 0, 7);
-    creationCase("OneMoreLove", 35, 0, 7);
-    creationCase("Sacem", 40, 0, 15);
-    creationCase("RAM", 45, 0, 7);
-    creationCase("Finito", 50, 0, 15);
-    creationCase("Or Noir", 0, 12, 12);
-    creationCase("Chance", 0, 24, 15);
-    creationCase("Ouest Side", 0, 36, 12);
-    creationCase("Civilisation", 0, 48, 12);
-    creationCase("Zenith", 0, 60, 15);
-    creationCase("Unorth.Juke", 0, 72, 14);
-    creationCase("After Hours", 0, 84, 14);
-    creationCase("Sacem", 0, 96, 15);
-    creationCase("Thriller", 0, 108, 14);
-    creationCase("Drama", 0, 120, 15);
-    creationCase("DLL", 5, 120, 2);
-    creationCase("Trinity", 10, 120, 2);
-    creationCase("Communaute", 15, 120, 15);
-    creationCase("Julius", 20, 120, 2);
-    creationCase("Zenith", 25, 120, 15);
-    creationCase("Chance", 30, 120, 15);
-    creationCase("Ipseite", 35, 120, 10);
-    creationCase("Sacem", 40, 120, 15);
-    creationCase("Cyborg", 45, 120, 10);
-    creationCase("DEPART", 50, 120, 15);
-    creationCase("Nevermind", 50, 12, 11);
-    creationCase("Plat.Collec", 50, 24, 11);
-    creationCase("Chance", 50, 36, 15);
-    creationCase("Absolution", 50, 48, 11);
-    creationCase("Zenith", 50, 60, 15);
-    creationCase("Sacem", 50, 72, 15);
-    creationCase("Brol", 50, 84, 13);
-    creationCase("Communaute", 50, 96, 15);
-    creationCase("RacineCarree", 50, 108, 13);
+void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base, il reste inchangé après
+    for (int i = 0; i < 22; i++) {
+        terrain currentTerrain = listeTerrains[i];
+        char *nomCurrent = currentTerrain.nom;
+        creationCase(nomCurrent, currentTerrain.x, currentTerrain.y, currentTerrain.couleur);
+    }
 }
 
 terrain *creationTerrain() {  // création d'une instance (un album)
@@ -280,8 +245,8 @@ terrain *creationTerrain() {  // création d'une instance (un album)
     terrain instance;
 
     char *listeNomTerrain[22] = {"racine", "brol", "absolution", "platinium", "nevermind", "ram", "onemore", "discovery", "mmlp",
-                                "nwts", "eminemshow", "ornoir", "ouestside", "civilisation", "jukebox", "after", "thriller", "dll",
-                                "trinity", "julius", "ipseite", "cyborg"};
+                                 "nwts", "eminemshow", "ornoir", "ouestside", "civilisation", "jukebox", "after", "thriller", "dll",
+                                 "trinity", "julius", "ipseite", "cyborg"};
 
     for (int i = 0; i < 22; i++) {
         char *nomCurrent = listeNomTerrain[i];
@@ -467,15 +432,9 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
 
     joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
 
-    /*joueur j1 = pJoueurs[0];
-    joueur j2 = pJoueurs[1];
-    joueur j3 = pJoueurs[2];
-    joueur j4 = pJoueurs[3];*/
-
     terrain *pTerrains = creationTerrain();
 
-    terrain terrain1 = pTerrains[0];
-    printf("\n%s\n",terrain1.nom);
+    printf("\n%s\n", pTerrains[0].nom);
 
     Sleep(5000);
 
@@ -483,26 +442,12 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     free(pTerrains);
 
     clearScreen();
-    //plateauGraphique();
+    plateauGraphique(pTerrains);
+
     int i, de1, de2, sommeDe = 0;
-    int plateauJeu[36];          // plateau = liste de 36 cases
+    int plateauJeu[36];  // plateau = liste de 36 cases
 
     joueur *joueuractuel;
-    // terrain plateauDeJeu[22];
-    // plateauDeJeu[0] = creationTerrain(plateauDeJeu[0],0);
-    // printf("%d", plateauDeJeu[0].defaultPrice);
-    
-    while (pJoueurs[0].balance != 0 || pJoueurs[1].balance != 0 || pJoueurs[2].balance != 0) {
-        joueuractuel = &pJoueurs[i];
-        de1 = lancerDe();
-        de2 = lancerDe();
-        sommeDe = de1 + de2;
-        deplacement(joueuractuel, plateauJeu, sommeDe);
-        if (joueuractuel->position < 12) {
-            printf("%d", joueuractuel->position);
-        }
-        i++;
-    }
 }
 
 void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
@@ -556,14 +501,12 @@ void home() {  // menu principal du jeu
     gotoligcol(19, 0);
     Color(15, 0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
-    scanf("%d", &choice);
-    if (choice < 1 || choice > 6) {
-        do {
-            printf(
-                "--> Votre saisie n'est pas valide. Veuillez entrer un chiffre a "
-                "nouveau : ");
-            scanf("%d", &choice);
-        } while (choice < 1 || choice > 6);
+    scanf(" %s", &choice);
+    int choix = (int)choice;
+
+    while (choice < 1 || choice > 6) {
+        printf("Votre saisie (%d) n'est pas valide. Veuillez entrer un chiffre a nouveau : \n", choice);
+        scanf(" %d", &choice);
     }
     switch (choice) {
         case 1:
@@ -577,13 +520,11 @@ void home() {  // menu principal du jeu
     }
 }
 
-
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
         printf("\n");
     }
 }
-
 
 void checkIfOwned(int id) {
 }
