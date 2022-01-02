@@ -22,7 +22,8 @@ typedef struct t_joueur {
     bool inJail;         // True if the player is in jail, false if not
     bool bankruptcy;     // True if the player is in bankruptcy, false if not
     char symbol;         // Le symbole du joueur
-    int streakDouble;    // Active number of doubles
+    int streakDouble;     // Active number of doubles
+    int timeInJail;       // Times in prison
     int avatar;          // Hexadecimal code for the avatar selection
 } joueur;
 
@@ -243,6 +244,7 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
         char *nomCurrent = currentTerrain.nom;
         creationCase(nomCurrent, currentTerrain.x, currentTerrain.y, currentTerrain.couleur);
     }
+<<<<<<< Updated upstream
     creationCase("Soundcloud", 0, 0, 15);
     creationCase("Communaute", 15, 0, 15);
     creationCase("Zenith", 25, 0, 15);
@@ -261,6 +263,9 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
     creationCase("Zenith", 50, 60, 15);
     creationCase("Sacem", 50, 72, 15);
     creationCase("Communaute", 50, 96, 15);
+=======
+    
+>>>>>>> Stashed changes
 }
 
 terrain *creationTerrain() {  // création d'une instance (un album)
@@ -449,6 +454,7 @@ int demanderNbJoueurs() {  // fonction demandant et renvoyant le nombre de joueu
     return nb_joueurs;
 }
 
+<<<<<<< Updated upstream
 void deplacement(joueur *player, int plateau[36], int sommeDe) {
     player->position += sommeDe;
     printf("Deplacer %s de la case %d a la case %d.", player->username, plateau[36], sommeDe);
@@ -489,6 +495,8 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     joueur *joueuractuel;
 }
 
+=======
+>>>>>>> Stashed changes
 void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
     char sortie;
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
@@ -511,6 +519,30 @@ void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; access
         scanf("%c", &sortie);
     } while (sortie != 'a');  // à régler, ça print 2 fois pour x raison
     clearScreen();
+}
+
+void newGame() {  // menu de création des joueurs, affiche le plateau de base
+    const int nb_joueurs = demanderNbJoueurs();
+
+    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+
+    terrain *pTerrains = creationTerrain();
+
+    printf("\n%s\n", pTerrains[0].nom);
+    gotoligcol(29, 15);
+    free(pJoueurs);
+    free(pTerrains);
+
+    clearScreen();
+    plateauGraphique(pTerrains);
+    gotoligcol(14, 93);
+    
+    joueur tempJ1 = {4, 1500, "NULLE", 0, 0, {0}, {0}, {0}, false, false};
+    tourJoueur(tempJ1);
+    int i, de1, de2, sommeDe = 0;
+    int plateauJeu[36];  // plateau = liste de 36 cases
+
+    joueur *joueuractuel;
 }
 
 void home() {  // menu principal du jeu
@@ -557,6 +589,213 @@ void home() {  // menu principal du jeu
             break;
     }
 }
+
+void doubleStreakLimite(joueur player) {
+    printf("Envoyer le joueur en prison + toutes les conditions si y'a double");
+    player.position = 30;
+}
+
+void deplacement(joueur player, int sommeDe) {
+    gotoligcol(25, 50);
+    printf("Deplacer %s de la case %d a la case %d.", *player.username, player.position, sommeDe);
+    player.position += sommeDe;
+}
+
+void tourPartie2(joueur player, bool rejouer) {
+    int choix = 0;
+    int proprietaire = 0;
+    int loyer = 333;
+    int type = 1;
+    if (proprietaire != 0) {
+        gotoligcol(25, 15);
+        printf("%s est chez %d !", *player.username, proprietaire);
+        gotoligcol(26, 15);
+        printf("Le joueur doit payer un montant de :");
+        gotoligcol(27, 15);
+        printf("%f €", loyer);
+        gotoligcol(28, 15);
+        printf("Appuyez sur 'Entree' pour continuer.");
+        gotoligcol(29, 15);
+        printf("APPELER LA FONCTION terrainOccupe()");
+        gotoligcol(30, 15);
+        scanf("%d", &choix);
+    } else if (type == 2) {
+        gotoligcol(29, 15);
+        printf("APPELER LA FONCTION caseChance()");
+    } else if (type == 3) {
+        gotoligcol(29, 15);
+        printf("APPELER LA FONCTION caseCommunaute()");
+    } else if (type == 4) {
+        gotoligcol(29, 15);
+        printf("APPELER LA FONCTION caseTaxe()");
+    } else if (type == 4) {
+        gotoligcol(29, 15);
+        printf("APPELER LA FONCTION caseParcGratuit()");
+    } 
+    else {
+        gotoligcol(25, 15);
+        printf("%s peut maintenant :", *player.username);
+        gotoligcol(26, 15);
+        printf("1- Acheter la propriete");
+        gotoligcol(27, 15);
+        printf("2- Acheter une maison ou un hotel");
+        gotoligcol(28, 15);
+        printf("3- Obtenir des informations sur un terrain");
+        gotoligcol(29, 15);
+        printf("4- Finir le tour et passer au joueur suivant");
+        gotoligcol(30, 15);
+        printf(">> ");
+        fflush(stdin);
+        scanf("%d", &choix);
+        clearScreen();
+        terrain *pTerrains = creationTerrain();
+        plateauGraphique(pTerrains);
+        if (choix == 1) {
+            gotoligcol(26, 30);
+            printf("Lancer la fonction ACHAT DE PROPRIETE");
+        } else if (choix == 2) {
+            gotoligcol(26, 30);
+            printf("Lancer la fonction INFORMATION SUR UNE PROPRIETE");
+        } else if (choix == 3) {
+            if (!rejouer) {
+                gotoligcol(26, 30);
+                printf("Passer au tour du joueur suivant");
+            } else {
+                gotoligcol(26, 30);
+                printf("On fait rejouer le joueur");
+            }
+        } else {
+            gotoligcol(26, 30);
+            printf("Le choix ne correspond a aucune des options");
+        }
+    }
+}
+
+void tourNormal(joueur player, bool rejouer) {
+    int premierDe = 0;
+    int deuxiemeDe = 0;
+    int sommeDe = 0;
+    int choix = 0;
+    clearScreen();
+    terrain *pTerrains = creationTerrain();
+    plateauGraphique(pTerrains);
+    
+
+    if (rejouer) {
+        gotoligcol(27, 15);
+        printf("%s rejoue, il a fait un double :", *player.username);
+    } else {
+        gotoligcol(27, 15);
+        printf("Tour de %s, options :", *player.username);
+    }
+
+    gotoligcol(28, 15);
+    printf("1- Lancer les des");
+    gotoligcol(29, 15);
+    printf("2- Retourner au menu");
+    gotoligcol(30, 15);
+    printf(">> ");
+    fflush(stdin);
+    scanf("%d", &choix);
+
+    if (choix == 1) {
+        premierDe = lancerDe();
+        deuxiemeDe = lancerDe();
+        sommeDe = premierDe + deuxiemeDe;
+        gotoligcol(18, 50);
+        printf("Premier de : %d", premierDe);
+        gotoligcol(19, 50);
+        printf("Deuxieme de : %d", deuxiemeDe);
+        if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
+            player.streakDouble += 1;
+            gotoligcol(10, 50);
+            printf("%s a fait un double !", *player.username);
+
+            if (player.streakDouble == 3) {  // Soit il en a fait 3 d'affilés alors il a des malus (prison etc)
+                printf("Le joueur a fait 3 doubles d'affiles.");
+                doubleStreakLimite(player);
+
+            } else {  // Soit il n'en est pas à 3 et peut donc jouer 2 fois
+                gotoligcol(16, 50);
+                printf("Le joueur a fait un double et peut donc rejouer");
+                deplacement(player, sommeDe);
+                tourPartie2(player, true);
+                tourNormal(player, true);
+            }
+        } else {  // Si le joueur ne fait pas de double
+            tourPartie2(player, false);
+        }
+
+    } else if (choix == 2) {
+        home();
+    }
+}
+
+void tourPrison(joueur player) {
+    int premierDe = 0;
+    int deuxiemeDe = 0;
+    int sommeDe = 0;
+    int choix = 0;
+
+    gotoligcol(25, 15);
+    printf("C'est au tour de %s : il est en prison depuis %d tours.", *player.username, player.timeInJail);
+    gotoligcol(26, 15);
+    printf("Il peut :");
+    gotoligcol(27, 15);
+    printf("1- Continuer le tour");
+    gotoligcol(28, 15);
+    printf("2- Retourner au menu");
+    gotoligcol(29, 15);
+    printf(">> ");
+    scanf("%d", &choix);
+    if (choix == 1) {                  // Continuer le tour
+        if (player.timeInJail == 3) {  // Si il est en prison depuis 3 tours
+            player.timeInJail = 0;
+            player.balance -= 50;
+            gotoligcol(28, 15);
+            printf("%s perd donc 50€ et peut a nouveau jouer normalement.", *player.username);
+            gotoligcol(25, 15);
+            tourNormal(player, false);
+
+        } else {  // Si il est en prison depuis moins de 3 tours
+            player.timeInJail += 1;
+            premierDe = lancerDe();
+            deuxiemeDe = lancerDe();
+            sommeDe = premierDe + deuxiemeDe;
+            if (premierDe == deuxiemeDe) {  // Si il fait un double
+                gotoligcol(28, 15);
+                printf("%s a fait un double ! Il sort de prison et avance de %d cases.", *player.username, sommeDe);
+                deplacement(player, sommeDe);
+                tourPartie2(player, false);
+            } else {  // Si il ne fait pas un double
+                gotoligcol(28, 15);
+                printf("%s n'a pas fait de double et reste en prison...", *player.username);
+                gotoligcol(29, 15);
+                printf("LANCER TOUR JOUEUR SUIVANT");
+            }
+        }
+    } else if (choix == 2) {
+        home();
+    }
+}
+
+void tourJoueur(joueur player) {
+    int choix = 0;
+    if (player.position == 30) {
+        tourPrison(player);
+    } else {
+        tourNormal(player, false);
+        
+        gotoligcol(27, 15);
+        Color(15,2);
+        printf("%s rejoue, il aEEEEE fait un double :", *player.username);
+        scanf("%d",&choix);
+    }
+}
+
+
+
+
 
 void skip() {  // saute 50 lignes
     for (int i = 0; i < 50; i++) {
