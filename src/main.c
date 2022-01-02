@@ -501,12 +501,11 @@ void home() {  // menu principal du jeu
     gotoligcol(19, 0);
     Color(15, 0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
-    scanf(" %s", &choice);
-    int choix = (int)choice;
+    scanf("%d", &choice);
 
     while (choice < 1 || choice > 6) {
         printf("Votre saisie (%d) n'est pas valide. Veuillez entrer un chiffre a nouveau : \n", choice);
-        scanf(" %d", &choice);
+        scanf("%d", &choice);
     }
     switch (choice) {
         case 1:
