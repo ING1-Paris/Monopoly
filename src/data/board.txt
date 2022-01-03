@@ -1,0 +1,40 @@
+0;DEPART;50;20
+1;RacineCarree;50;108
+2;Communaute;
+3;Brol;50;84
+4;Sacem;
+5;Zenith;
+6;Absolution;50;
+7;Chance;
+8;Plat.Collec;
+9;Nevermind;
+10;Finito;50;0
+11;RAM;
+12;Sacem;
+13;OneMoreLove;
+14;Discovery;
+15;Zenith;
+16;MMLP;
+17;Communaute;
+18;NWTS;
+19;Eminem Show;
+20;Soundcloud;0;0
+21;Or Noir;
+22;Chance;
+23;Ouest Side;
+24;Civilisation;
+25;Zenith;
+26;Unorth.Juke;
+27;After Hours;
+28;Sacem;
+29;Thriller;
+30;Drama;0;120
+31;DLL;
+32;Trinity;
+33;Communaute;
+34;JVLIVS;
+35;Zenith;
+36;Chance;
+37;Ipseite;
+38;Sacem;
+39;Cyborg;
