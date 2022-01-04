@@ -766,7 +766,7 @@ void skip() {  // saute 50 lignes
 }
 
 void afficherJoueurPlateau() {
-    int posJoueur[4] = {5, 12, 28, 12};
+    int posJoueur[4] = {5, 5, 12, 12};
 
     // joueur joueurs[], terrain terrains[]
 
@@ -783,18 +783,51 @@ void afficherJoueurPlateau() {
     for (int i = 0; i < 4; i++) {
         currentPos = posJoueur[i];
 
-        if (currentPos = pos1) {
-            nbPos1++;
-        } else if (currentPos = pos2) {
-            nbPos2++;
-        } else if (currentPos = pos3) {
-            nbPos3++;
-        } else if (currentPos = pos4) {
-            nbPos4++;
+        if (currentPos != -1) {
+            if (currentPos == pos1) {
+                nbPos1++;
+            } else if (currentPos == pos2) {
+                nbPos2++;
+            } else if (currentPos == pos3) {
+                nbPos3++;
+            } else if (currentPos == pos4) {
+                nbPos4++;
+            }
         }
     }
+    printf("|ID|Position|Nombre|\n");
+    printf("| 1|      %d|    %d|\n", pos1, nbPos1);
+    printf("| 2|      %d|    %d|\n", pos2, nbPos2);
+    printf("| 3|      %d|    %d|\n", pos3, nbPos3);
+    printf("| 4|      %d|    %d|\n\n", pos4, nbPos4);
 
-    printf("%d - %d - %d - %d", nbPos1, nbPos2, nbPos3, nbPos4);
+    if (pos1 == pos2) {
+        nbPos2 = nbPos1;
+    }
+    if (pos1 == pos3) {
+        nbPos3 = nbPos1;
+    }
+    if (pos1 == pos4) {
+        nbPos4 = nbPos1;
+    }
+    if (pos2 == pos3) {
+        nbPos3 = nbPos2;
+    }
+    if (pos2 == pos4) {
+        nbPos4 = nbPos2;
+    }
+    if (pos3 == pos4) {
+        nbPos4 = nbPos3;
+    }
+
+    printf("|ID|Position|Nombre|\n");
+    printf("| 1|      %d|    %d|\n", pos1, nbPos1);
+    printf("| 2|      %d|    %d|\n", pos2, nbPos2);
+    printf("| 3|      %d|    %d|\n", pos3, nbPos3);
+    printf("| 4|      %d|    %d|\n\n", pos4, nbPos4);
+
+    int posList[4] = {pos1, pos2, pos3, pos4};
+    int nbPosList[4] = {nbPos1, nbPos2, nbPos3, nbPos4};
 }
 
 int main() {
