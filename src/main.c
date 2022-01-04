@@ -565,7 +565,11 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     clearScreen();
     plateauGraphique(pTerrains);
     
+    gotoligcol(28, 15);
+    printf("ICI : %d",pJoueurs[0].balance);
     while(pJoueurs[0].balance > 0){
+        gotoligcol(28, 15);
+        printf("LA");
         gotoligcol(6, 110);
         printf("Tour n°%d",nbTours);
         joueur joueuractuel = pJoueurs[i];
@@ -809,7 +813,7 @@ void tourNormal(terrain* listeTerrain, joueur* listePlayers, int currentPlayer, 
     joueur player = listePlayers[currentPlayer];
     clearScreen();
     plateauGraphique(listeTerrain);
-
+    
     if (rejouer) {
         gotoligcol(25, 15);
         printf("%s rejoue, il a fait un double :", player.username);
@@ -943,7 +947,6 @@ void tourPrison(terrain* listeTerrain, joueur* listePlayers, int currentPlayer) 
 }
 
 void tourJoueur(terrain* listeTerrain, joueur* listePlayers, int currentPlayer, bool rejouer) {
-    int choix = 0;
     if (listePlayers[currentPlayer].position == 10) {
         tourPrison(listeTerrain, listePlayers, currentPlayer);
     } else {
