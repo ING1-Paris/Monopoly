@@ -783,18 +783,26 @@ void afficherJoueurPlateau() {
     for (int i = 0; i < 4; i++) {
         currentPos = posJoueur[i];
 
-        if (currentPos = pos1) {
+        if (currentPos == pos1) {
             nbPos1++;
-        } else if (currentPos = pos2) {
+        } else if (currentPos == pos2) {
             nbPos2++;
-        } else if (currentPos = pos3) {
+        } else if (currentPos == pos3) {
             nbPos3++;
-        } else if (currentPos = pos4) {
+        } else if (currentPos == pos4) {
             nbPos4++;
         }
     }
 
     printf("%d - %d - %d - %d", nbPos1, nbPos2, nbPos3, nbPos4);
+
+    int nbPosList[4] = {nbPos1, nbPos2, nbPos3, nbPos4};
+    int nbPosCurrent;
+
+    for (int i = 0; i < 4; i++) {
+        nbPosCurrent = nbPosList[i];
+
+    }
 }
 
 int main() {
