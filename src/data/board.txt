@@ -1,40 +1,40 @@
 0;DEPART;50;20
 1;RacineCarree;50;108
-2;Communaute;
+2;Communaute;50;96
 3;Brol;50;84
-4;Sacem;
-5;Zenith;
-6;Absolution;50;
-7;Chance;
-8;Plat.Collec;
-9;Nevermind;
+4;Sacem;50;72
+5;Zenith;50;60
+6;Absolution;50;48
+7;Chance;50;36
+8;Plat.Collec;50;24
+9;Nevermind;50;12
 10;Finito;50;0
-11;RAM;
-12;Sacem;
-13;OneMoreLove;
-14;Discovery;
-15;Zenith;
-16;MMLP;
-17;Communaute;
-18;NWTS;
-19;Eminem Show;
+11;RAM;45;11
+12;Sacem;40;0
+13;OneMoreLove;35;0
+14;Discovery;30;0
+15;Zenith;25;0
+16;MMLP;20;0
+17;Communaute;15;0
+18;NWTS;10;0
+19;Eminem Show;5;0
 20;Soundcloud;0;0
-21;Or Noir;
-22;Chance;
-23;Ouest Side;
-24;Civilisation;
-25;Zenith;
-26;Unorth.Juke;
-27;After Hours;
-28;Sacem;
-29;Thriller;
+21;Or Noir;0;12
+22;Chance;0;24
+23;Ouest Side;0;36
+24;Civilisation;0;48
+25;Zenith;0;60
+26;Unorth.Juke;0;72
+27;After Hours;0;84
+28;Sacem;0;96
+29;Thriller;0;108
 30;Drama;0;120
-31;DLL;
-32;Trinity;
-33;Communaute;
-34;JVLIVS;
-35;Zenith;
-36;Chance;
-37;Ipseite;
-38;Sacem;
-39;Cyborg;
+31;DLL;5;120
+32;Trinity;10;120
+33;Communaute;15;120
+34;JVLIVS;20;120
+35;Zenith;25;120
+36;Chance;30;120
+37;Ipseite;35;120
+38;Sacem;40;120
+39;Cyborg;45;120
