@@ -899,7 +899,7 @@ void tourJoueur(terrain* listeTerrain, joueur player, bool rejouer) {
     if (player.position == 10) {
         tourPrison(listeTerrain, player);
     } else {
-        tourNormal(listeTerrain, player, false);
+        tourNormal(listeTerrain, player, rejouer);
     }
 }
 
