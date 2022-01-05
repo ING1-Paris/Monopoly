@@ -17,13 +17,8 @@ typedef struct t_joueur {
     int position;        // ID of the player's current cell
     int cellType;        // Type of the player's current cell
     int ownedField[26];  // ID of each owned fields
-<<<<<<< HEAD
     bool cartePrison;    // Carte sortie de prison
     bool carteDenonciation;     // carte chance pour payer moins chere
-=======
-    bool sortiePrison;    // ID of possessed luck card
-    bool loyerDivise;     // ID of possessed community card
->>>>>>> 67ff6a03b3f69761166e7eb754e45136e043e8f4
     bool inJail;         // True if the player is in jail, false if not
     bool bankruptcy;     // True if the player is in bankruptcy, false if not
     char symbol;         // Le symbole du joueur
@@ -308,28 +303,6 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
     for (int i = 0; i < 22; i++) {
         terrain currentTerrain = listeTerrains[i];
         char *nomCurrent = currentTerrain.nom;
-<<<<<<< HEAD
-        creationCase(nomCurrent, currentTerrain.x, currentTerrain.y, currentTerrain.couleur);
-    }
-    creationCase("Soundcloud", 0, 0, 15);
-    creationCase("Communaute", 15, 0, 15);
-    creationCase("Zenith", 25, 0, 15);
-    creationCase("Sacem", 40, 0, 15);
-    creationCase("Finito", 50, 0, 15);
-    creationCase("Chance", 0, 24, 15);
-    creationCase("Zenith", 0, 60, 15);
-    creationCase("Sacem", 0, 96, 15);
-    creationCase("Drama", 0, 120, 15);
-    creationCase("Communaute", 15, 120, 15);
-    creationCase("Zenith", 25, 120, 15);
-    creationCase("Chance", 30, 120, 15);
-    creationCase("Sacem", 40, 120, 15);
-    creationCase("DEPART", 50, 120, 15);
-    creationCase("Chance", 50, 36, 15);
-    creationCase("Zenith", 50, 60, 15);
-    creationCase("Sacem", 50, 72, 15);
-    creationCase("Communaute", 50, 96, 15);
-=======
         creationCase(nomCurrent, currentTerrain.x, currentTerrain.y, currentTerrain.id, currentTerrain.couleur);
     }
     creationCase("Soundcloud", 0, 0, 0, couleurCaseNeutre);
@@ -345,12 +318,12 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
     creationCase("Zenith", 25, 130, 0, couleurCaseNeutre);
     creationCase("Chance", 30, 130, 0, couleurCaseNeutre);
     creationCase("Sacem", 40, 130, 0, couleurCaseNeutre);
+
     creationCase("DEPART", 50, 130, 0, couleurCaseNeutre);
     creationCase("Chance", 50, 39, 0, couleurCaseNeutre);
     creationCase("Zenith", 50, 65, 0, couleurCaseNeutre);
     creationCase("Sacem", 50, 78, 0, couleurCaseNeutre);
     creationCase("Communaute", 50, 104, 0, couleurCaseNeutre);
->>>>>>> 67ff6a03b3f69761166e7eb754e45136e043e8f4
 }
 
 terrain *creationTerrain() {  // création d'une instance (un album)
@@ -539,8 +512,6 @@ int demanderNbJoueurs() {  // fonction demandant et renvoyant le nombre de joueu
     return nb_joueurs;
 }
 
-<<<<<<< HEAD
-=======
 void infoAlbum(terrain field){ // fonction affichant toutes les infos d'un album
     gotoligcol(23,20);
     printf("Album : %s", field.nom);
@@ -620,7 +591,6 @@ void retourMenu(){ // fonction intermédiaire pour revenir dans le menu principa
     home();
 }
 
->>>>>>> 67ff6a03b3f69761166e7eb754e45136e043e8f4
 void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
     char sortie;
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
@@ -645,30 +615,6 @@ void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; access
     retourMenu();
 }
 
-<<<<<<< HEAD
-void newGame() {  // menu de création des joueurs, affiche le plateau de base
-    const int nb_joueurs = demanderNbJoueurs();
-
-    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
-
-    terrain *pTerrains = creationTerrain();
-
-    printf("\n%s\n", pTerrains[0].nom);
-    gotoligcol(29, 15);
-    free(pJoueurs);
-    free(pTerrains);
-
-    clearScreen();
-    plateauGraphique(pTerrains);
-    gotoligcol(14, 93);
-    
-    joueur tempJ1 = {4, 1500, "NULLE", 0, 0, {0}, {0}, {0}, false, false};
-    tourJoueur(tempJ1);
-    int i, de1, de2, sommeDe = 0;
-    int plateauJeu[36];  // plateau = liste de 36 cases
-
-    joueur joueuractuel;
-=======
 void credits(){  // affichage des crédits du jeu : exit avec lettre 'a' ; accessible via le menu principal
     char sortie;
     printf("        CERDTSCREDITSCER     CREDITSCREDITSCRE	      CREDITSCREDITSCRE  CREDITSCR	 CREDITSCREDITSCRE   CREDITSCREDITSCRE     CREDITSCREDITSC");
@@ -689,7 +635,6 @@ void credits(){  // affichage des crédits du jeu : exit avec lettre 'a' ; acces
         scanf("%c", &sortie);
     } while (sortie != 'a');  // à régler, ça print 2 fois pour x raison
     retourMenu();
->>>>>>> 67ff6a03b3f69761166e7eb754e45136e043e8f4
 }
 
 void home() {  // menu principal du jeu
@@ -1013,11 +958,6 @@ void tourJoueur(terrain* listeTerrain, joueur* listePlayers, int currentPlayer, 
 void afficherJoueurPlateau() {
     int posJoueur[4] = {5, 5, 12, 12};
 
-<<<<<<< HEAD
-void skip() {  // saute 50 lignes
-    for (int i = 0; i < 50; i++) {
-        printf("\n");
-=======
     // joueur joueurs[], terrain terrains[]
 
     /*for (int i = 0; i < 4; i++) {
@@ -1044,7 +984,6 @@ void skip() {  // saute 50 lignes
                 nbPos4++;
             }
         }
->>>>>>> 67ff6a03b3f69761166e7eb754e45136e043e8f4
     }
     printf("|ID|Position|Nombre|\n");
     printf("| 1|      %d|    %d|\n", pos1, nbPos1);
@@ -1092,3 +1031,111 @@ int main() {
     //home();
     return 0;
 }
+
+
+/*void communaute(joueur currentplayer, terrain *listeTerrains){
+    int nb;
+    const int min = 1, max = 16;
+    nb = (rand() % max) + min;
+    if (nb == 1){
+        printf("Vous achetez des streams. Versez 50$ a la banque")
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 2){
+        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque")
+        currentplayer.balance -= 100;
+    }
+    else if (nb == 3){
+        printf("Vous faites un exces de vitesse. Versez 10$ a la banque")
+        currentplayer.balance -= 10;
+    }
+    else if (nb == 4){
+        printf("Un fans vous donne 50$")
+        currentplayer.balance += 50;
+    }
+    else if (nb == 5){
+        printf("Vous faites un showcase. Recevez 100$")
+        currentplayer.balance += 100;
+    }
+    else if (nb == 6){
+        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque")
+        currentplayer.balance -= 100;
+    }
+    else if (nb == 7){
+        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque")
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 8){
+        printf("Vous etes top1 spotify . Recevez 50$ a la banque")
+        currentplayer.balance += 50;
+    }
+    else if (nb == 9){
+        printf("Vous signez un nouveau label. Recevez 200$")
+        currentplayer.balance += 200;
+    }
+    else if (nb == 10){
+        printf("Payez 20$ d'impots pour chacun de vos terrain")
+        int prix=0;
+        for (int i  == 0; i<26; i++)
+        {
+            if (currentplayer.ownedField[i] == 1)
+            {
+                prix +=10;
+            }
+        }
+        printf("Vous avez payer %d$ taxes",prix)
+        currentplayer.balance -= prix;
+    }
+    else if (nb == 11){
+        int reparation = 0;
+        printf("Payer 50$ de réparation sur chacun de vos hotels.")
+        for (int i == 0; i<22;i++)
+        {
+            if (listeTerrain[i].ownedBy == currentplayer.id)
+            {
+                if (listeTerrain[i].hotel == true)
+                {
+                reparation += 50;
+                }
+            }
+        }
+        printf("Vous avez payez %d reparation",reparation)
+        currentplayer.balance += reparation;
+    else if (nb == 12)
+    {
+        printf("Allez en prison")
+        currentplayer.position = 10;
+        currentplayer.inJail = true;
+    }
+    else if (nb == 13)
+    {
+        char choix = '';
+        printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance")
+        scanf("%s", choix)
+        if (choix == '1')
+        {
+            currentplayer.balance -= 10;
+        }
+        else
+        {
+            chance(joueur currentplayer)
+        }
+    }
+    else if (nb == 14)
+    {
+        printf("Vous aidez un fans dans le besoin et vous lui donnez 25$")
+        currentplayer.balance -= 25;
+    } 
+    else if (nb == 15)
+    {
+        printf("Allez à la case départ")
+        currentplayer.position = 0;
+        currentplayer.balance += 200;
+    }
+    else 
+    {
+        printf("Vous aidez un jeune rappeur à commencer. Versez 50$ à la banque")
+        currentplayer.balance -= 50;
+    }
+
+} */
