@@ -1012,6 +1012,8 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
     terrain *pTerrains = creationTerrain();
 
+    //test
+
     /*joueur j1 = pJoueurs[0];
     joueur j2 = pJoueurs[1];
     joueur j3 = pJoueurs[2];
