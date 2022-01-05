@@ -393,7 +393,7 @@ terrain *creationTerrain() {  // création d'une instance (un album)
 
 
 void afficherJoueurPlateau(joueur *joueurs, terrain *terrains) {
-    int posJoueur[4] = {0};
+    int posJoueur[4] = {7,14,20,31};
 
     /*for (int i = 0; i < 4; i++) {
         posJoueur[i] = joueurs[i].position;
@@ -447,13 +447,13 @@ void afficherJoueurPlateau(joueur *joueurs, terrain *terrains) {
         nbPos4 = nbPos3;
     }
 
-    /*
+    
     printf("|ID|Position|Nombre|\n");
     printf("| 1|      %d|    %d|\n", pos1, nbPos1);
     printf("| 2|      %d|    %d|\n", pos2, nbPos2);
     printf("| 3|      %d|    %d|\n", pos3, nbPos3);
     printf("| 4|      %d|    %d|\n\n", pos4, nbPos4);
-    */
+    
     int posList[4] = {pos1, pos2, pos3, pos4};
     int nbPosList[4] = {nbPos1, nbPos2, nbPos3, nbPos4};
     
