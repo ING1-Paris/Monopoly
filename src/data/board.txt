@@ -1,5 +1,5 @@
 0;50;130;DEPART
-1;50;117;RacineCarree
+1;50;117;Racine Carree
 2;50;104;Communaute
 3;50;91;Brol
 4;50;78;Sacem
@@ -11,7 +11,7 @@
 10;50;0;Finito
 11;45;0;RAM
 12;40;0;Sacem
-13;35;0;OneMoreLove
+13;35;0;One More Love
 14;30;0;Discovery
 15;25;0;Zenith
 16;20;0;MMLP
