@@ -678,7 +678,6 @@ joueur deplacement(joueur player, int sommeDe) {
     return player;
 }
 
-//*
 void tourPartie2(terrain *listeTerrain, joueur *listePlayers, int currentPlayer, bool rejouer) {
     int terrainactuel, choix, proprietaire, nbMaisons, idalbum, loyer = 0;
     joueur player = listePlayers[currentPlayer];
@@ -959,11 +958,7 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     //afficherJoueurPlateau(pJoueurs, pTerrains, bList);
 
 
-    gotoligcol(28, 15);
-    printf("ICI : %d", pJoueurs[0].balance);
     while (pJoueurs[0].balance > 0) {
-        gotoligcol(28, 15);
-        printf("LA");
         gotoligcol(6, 110);
         printf("Tour n°%d", nbTours);
         joueur joueuractuel = pJoueurs[i];
@@ -1129,7 +1124,6 @@ int main() {
     // Sleep(10000);    // Decommente pour voir les warnings
 
     srand(time(NULL));
-
     system("cls");
     home();
 
