@@ -6,3 +6,4 @@ Monopoly/Monopoly.xcodeproj/xcuserdata/kinanlakhdar.xcuserdatad/xcschemes/xcsche
 src/main
 *.exe
 *.DS_Store
+*.o

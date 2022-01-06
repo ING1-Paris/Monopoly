@@ -1,5 +1,7 @@
 #include "lib.h"
 
+#define DEBUG_WAIT 1 //Set to 1 to disable loading
+
 typedef struct t_box {
     int id;
     int x;
@@ -954,9 +956,6 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
         }
     }
 }
-
-void afficherJoueurPlateau() {
-    int posJoueur[4] = {5, 5, 12, 12};
 
 void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases) {
     int posJoueur[4] = {7, 14, 20, 31};
