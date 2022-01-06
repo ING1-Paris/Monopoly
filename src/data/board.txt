@@ -1,0 +1,40 @@
+0;50;130;DEPART
+1;50;117;RacineCarree
+2;50;104;Communaute
+3;50;91;Brol
+4;50;78;Sacem
+5;50;65;Zenith
+6;50;52;Absolution
+7;50;39;Chance
+8;50;26;Plat.Collec
+9;50;13;Nevermind
+10;50;0;Finito
+11;45;0;RAM
+12;40;0;Sacem
+13;35;0;OneMoreLove
+14;30;0;Discovery
+15;25;0;Zenith
+16;20;0;MMLP
+17;15;0;Communaute
+18;10;0;NWTS
+19;5;0;Eminem Show
+20;0;0;Soundcloud
+21;0;13;Or Noir
+22;0;26;Chance
+23;0;39;Ouest Side
+24;0;52;Civilisation
+25;0;65;Zenith
+26;0;78;Unorth.Juke
+27;0;91;After Hours
+28;0;104;Sacem
+29;0;117;Thriller
+30;0;130;Drama
+31;5;130;DLL
+32;10;130;Trinity
+33;15;130;Communaute
+34;20;130;JVLIVS
+35;25;130;Zenith
+36;30;130;Chance
+37;35;130;Ipseite
+38;40;130;Sacem
+39;45;130;Cyborg
