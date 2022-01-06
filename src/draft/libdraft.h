@@ -102,7 +102,7 @@ void tourPrison(terrain *listeTerrain, joueur *listePlayers, int currentPlayer);
 void tourJoueur(terrain *listeTerrain, joueur *listePlayers, int currentPlayer, bool rejouer);
 void newGame();
 
-void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases);
+void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases, int i, int j, int k, int l);
 int caseColorId(int id);
 
 #endif
