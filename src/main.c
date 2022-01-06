@@ -1,54 +1,4 @@
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-#if defined(__WIN32__)
-#include <conio.h>
-#include <windows.h>
-#endif
-#define MAX 100
-
-typedef struct t_joueur {
-    int id;              // Player's ID from 1 to 4
-    long balance;        // Balance of the player
-    char username[MAX];  // Username of the player
-    int position;        // ID of the player's current cell
-    int cellType;        // Type of the player's current cell
-    int ownedField[26];  // ID of each owned fields
-    bool cartePrison;    // Carte sortie de prison
-    bool carteDenonciation;     // carte chance pour payer moins chere
-    bool inJail;         // True if the player is in jail, false if not
-    bool bankruptcy;     // True if the player is in bankruptcy, false if not
-    char symbol;         // Le symbole du joueur
-    int streakDouble;    // Active number of doubles
-    int timeInJail;      // Times in prison
-    int avatar;          // Hexadecimal code for the avatar selection
-} joueur;
-
-typedef struct t_terrain {
-    char *nom;         // Field's name
-    int id;            // Field's ID from 0 to 25
-    int idOnBoard;     // Field's ID from 0 to 39 (board reference)
-    int defaultPrice;  // Field's initial price
-    int housePrice;    // Field's house price
-    int loyer;         // Loyer de base
-    int loyermaison1;  // Loyer avec une maison
-    int loyermaison2;  // Loyer avec 2 maisons
-    int loyermaison3;  // Loyer avec 3 maisons
-    int loyermaison4;  // Loyer avec 4 maisons
-    int loyerhotel;    // Loyer avec un hotel
-    int val_hypoth;    // Valeur hypothécaire
-    int buildings;     // Amount of buildings in the field
-    bool owned;        // True if owned, False if not
-    bool hotel;        // True if there is a hotel
-    int ownedBy;       // ID of the player who owns this field
-    int x;             // X position
-    int y;             // Y position
-    int couleur;       // Color of the cell
-    bool hypotheque;   // True si la case est hypothéquée
-} terrain;
+#include "lib.h"
 
 void clearScreen() {  // permet de clear la console
     system("cls");
@@ -545,46 +495,6 @@ void infoAlbum(terrain field){ // fonction affichant toutes les infos d'un album
     printf("La valeur de la revente est estimee a %d%c", field.val_hypoth, 0x24);
 }
 
-void newGame() {  // menu de création des joueurs, affiche le plateau de base
-    const int nb_joueurs = demanderNbJoueurs();
-    int i = 0;
-    int nbTours = 1;
-
-    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
-    terrain *pTerrains = creationTerrain();
-
-    /*joueur j1 = pJoueurs[0];
-    joueur j2 = pJoueurs[1];
-    joueur j3 = pJoueurs[2];
-    joueur j4 = pJoueurs[3];*/
-
-    Sleep(2000);
-
-    free(pJoueurs);
-    free(pTerrains);
-
-    clearScreen();
-    plateauGraphique(pTerrains);
-    
-    gotoligcol(28, 15);
-    printf("ICI : %d",pJoueurs[0].balance);
-    while(pJoueurs[0].balance > 0){
-        gotoligcol(28, 15);
-        printf("LA");
-        gotoligcol(6, 110);
-        printf("Tour n°%d",nbTours);
-        joueur joueuractuel = pJoueurs[i];
-        tourJoueur(pTerrains, pJoueurs, i, false);
-        nbTours+=1;
-        i++;
-        gotoligcol(22, 58);
-        printf("C'est au tour de %s !", pJoueurs[i].username);
-        animation(23, 53, 150, 30);
-        if(i >= nb_joueurs){
-            i = 0;
-        }
-    }
-}
 
 void retourMenu(){ // fonction intermédiaire pour revenir dans le menu principal
     clearScreen();
@@ -696,7 +606,7 @@ joueur doubleStreakLimite(joueur player) {
 
 int cartePrisonEnJeu(joueur* listePlayers){
     for (int i = 0; i<4; i++){
-        if (listePlayers[i].sortiePrison == true){
+        if (listePlayers[i].cartePrison == true){
             return listePlayers[i].id;
         } else{
             return 0;
@@ -902,9 +812,9 @@ void tourPrison(terrain* listeTerrain, joueur* listePlayers, int currentPlayer) 
             gotoligcol(28, 15);
             printf("2- Tenter d'obtenir un double");
             gotoligcol(29, 15);
-            if(player.sortiePrison == true){
+            if(player.cartePrison == true){
                 printf("3- Utiliser votre carte 'Sortie de prison'");
-            } else if (player.sortiePrison != true && idJPrison != 0) {
+            } else if (player.cartePrison != true && idJPrison != 0) {
                 printf("3- Acheter la carte du joueur %d", idJPrison);
             }
             do{scanf("%d", &choix2);}while(choix2 < 1 || choix2 > 2);
@@ -948,10 +858,51 @@ void tourPrison(terrain* listeTerrain, joueur* listePlayers, int currentPlayer) 
 }
 
 void tourJoueur(terrain* listeTerrain, joueur* listePlayers, int currentPlayer, bool rejouer) {
-    if (listePlayers[currentPlayer].position == 10) {
+    if ((listePlayers[currentPlayer]).position == 10) {
         tourPrison(listeTerrain, listePlayers, currentPlayer);
     } else {
         tourNormal(listeTerrain, listePlayers, currentPlayer, rejouer);
+    }
+}
+
+void newGame() {  // menu de création des joueurs, affiche le plateau de base
+    const int nb_joueurs = demanderNbJoueurs();
+    int i = 0;
+    int nbTours = 1;
+
+    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+    terrain *pTerrains = creationTerrain();
+
+    /*joueur j1 = pJoueurs[0];
+    joueur j2 = pJoueurs[1];
+    joueur j3 = pJoueurs[2];
+    joueur j4 = pJoueurs[3];*/
+
+    Sleep(2000);
+
+    free(pJoueurs);
+    free(pTerrains);
+
+    clearScreen();
+    plateauGraphique(pTerrains);
+
+    gotoligcol(28, 15);
+    printf("ICI : %d", pJoueurs[0].balance);
+    while (pJoueurs[0].balance > 0) {
+        gotoligcol(28, 15);
+        printf("LA");
+        gotoligcol(6, 110);
+        printf("Tour n°%d", nbTours);
+        joueur joueuractuel = pJoueurs[i];
+        tourJoueur(pTerrains, pJoueurs, i, false);
+        nbTours += 1;
+        i++;
+        gotoligcol(22, 58);
+        printf("C'est au tour de %s !", pJoueurs[i].username);
+        animation(23, 53, 150, 30);
+        if (i >= nb_joueurs) {
+            i = 0;
+        }
     }
 }
 
