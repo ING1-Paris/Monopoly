@@ -1,0 +1,25 @@
+1 60 50 2 10 30 90 160 250 30 0 50 108 13 0 false false false
+2 60 50 4 20 60 180 320 450 30 0 50 84 13 0 false false false
+3 100 50 6 30 90 270 400 550 50 0 50 48 11 0 false false false
+4 100 50 6 30 90 270 400 550 50 0 50 24 11 0 false false false
+5 120 50 8 40 100 300 450 600 60 0 50 12 11 0 false false false
+6 140 100 10 50 150 450 625 750 70 0 45 0 7 0 false false false
+7 140 100 10 50 150 450 625 750 70 0 35 0 7 0 false false false
+8 160 100 12 60 180 500 700 900 80 0 30 0 7 0 false false false
+9 180 100 14 70 200 550 750 950 90 0 20 0 4 0 false false false
+10 180 100 14 70 200 550 750 950 90 0 10 0 4 0 false false false
+11 200 100 16 80 220 600 800 1000 100 0 5 0 4 0 false false false
+12 220 150 18 90 250 700 875 1050 110 0 0 12 12 0 false false false
+13 220 150 18 90 250 700 875 1050 110 0 0 36 12 0 false false false 
+14 240 150 20 100 300 750 925 1100 120 0 0 48 12 0 false false false
+15 260 150 22 110 330 800 975 1150 130 0 0 72 14 0 false false false
+16 260 150 22 110 330 800 975 1150 130 0 0 84 14 0 false false false
+17 280 150 24 120 360 850 1025 1200 140 0 0 108 14 0 false false false
+18 300 200 26 130 390 900 1100 1275 150 0 5 120 2 0 false false false
+19 300 200 26 130 390 900 1100 1275 150 0 10 120 2 0 false false false
+20 320 200 28 150 450 1000 1200 1400 160 0 20 120 2 0 false false false
+21 350 200 35 175 500 1100 1300 1500 175 0 35 120 10 0 false false false
+22 400 200 50 200 600 1400 1700 2000 200 0 45 120 10 0 false false false
+
+ID ; Prix_achat ; Prix_maison ; Loyer_rien ; Loyers_maison (x4) ; Loyer_hôtel ; Val_hypothèque ; Nb_maisons ; position_x ; position_y
+couleur; id_proprio ; occupé ? ; hôtel ?

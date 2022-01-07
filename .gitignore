@@ -5,3 +5,5 @@ Monopoly.xcworkspace
 Monopoly/Monopoly.xcodeproj/xcuserdata/kinanlakhdar.xcuserdatad/xcschemes/xcschememanagement.plist
 src/main
 *.exe
+*.DS_Store
+*.o
