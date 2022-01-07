@@ -901,6 +901,9 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 } while (choix2 < 1 || choix2 > 3);
             } else if (player->sortiePrison != true && idJPrison != 0) {
                 printf("3- Acheter la carte du joueur %d", idJPrison);
+                do {
+                    scanf("%d", &choix2);
+                } while (choix2 < 1 || choix2 > 3);
             }
             do {
                 scanf("%d", &choix2);
@@ -916,12 +919,9 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                     player->streakDouble += 1;
                     gotoligcol(10, 50);
                     printf("%s a fait un double ! Il peut donc rejouer.", player->username);
-                    // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, true);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true);
-                    // listePlayers = tourJoueur(listeTerrain, listePlayers, currentPlayer, true);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true);
                 } else {
-                    // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, false);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false);
                 }
             } else if (choix2 == 2) {
@@ -929,7 +929,6 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                     gotoligcol(28, 15);
                     printf("%s a fait un double ! Il sort de prison et avance de %d cases.", player->username, sommeDe);
                     deplacement(player, sommeDe);
-                    // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, false);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false);
                 } else {
                     gotoligcol(28, 15);
@@ -943,9 +942,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                     player->streakDouble += 1;
                     gotoligcol(10, 50);
                     printf("%s a fait un double ! Il peut donc rejouer.", player->username);
-                    // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, true);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true);
-                    // listePlayers = tourJoueur(listeTerrain, listePlayers, currentPlayer, true);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true);
                 } else {
                     // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, false);
@@ -968,9 +965,8 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 }
             }
         }
-        else if (choix2 == 2) {
-            home();
-        }
+    } else if (choix1 == 2) {
+        home();
     }
 }
 
@@ -1025,16 +1021,15 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true);
             }
             // !
-            } else {  // Si le joueur ne fait pas de double
-                deplacement(player, sommeDe);
-                // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, false);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false);
-            }
-        } else if (choix == 2){
-            home();
+        } else {  // Si le joueur ne fait pas de double
+            deplacement(player, sommeDe);
+            // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, false);
+            tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false);
         }
+    } else if (choix == 2) {
+        home();
     }
-
+}
 
 void newGame() {  // menu de création des joueurs, affiche le plateau de base
     const int nb_joueurs = demanderNbJoueurs();
