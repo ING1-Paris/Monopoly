@@ -1048,11 +1048,11 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
         Color(15, 0);
         gotoligcol(6, 120);
         printf("Tour n%c%d", 0x60, nbTours);
-        joueur joueuractuel = pJoueurs[i];
+        joueur* joueuractuel = &pJoueurs[i];
         tourJoueur(pTerrains, ppJoueurs, bList, i, false);
         Color(15, 0);
         gotoligcol(7, 15);
-        printf("Pos joueur : %d", joueuractuel.position);
+        printf("Pos joueur : %d", joueuractuel->position);
         nbTours += 1;
         i++;
         if (i >= nb_joueurs) {
