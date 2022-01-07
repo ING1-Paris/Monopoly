@@ -77,7 +77,7 @@ void clearCoords(int xA, int yA, int xB, int yB);
 void creationCase(char titre[15], int x, int y, int id, int couleur);
 void terrainAchete(joueur **players, terrain album);
 void ifHypotheque(terrain album);
-void updateTour(terrain* listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer);
+void updateTour(terrain* listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, int nbJoueurs);
 void acheterTerrainJ(joueur* currentplayer, terrain album);
 terrain acheterTerrainT(joueur currentplayer, terrain album);
 terrain acheterMaisonT(joueur currentplayer, terrain album);
@@ -98,13 +98,13 @@ void home();
 joueur doubleStreakLimite(joueur player);
 int cartePrisonEnJeu(joueur **listePlayers);
 void deplacement(joueur* player, int sommeDe);
-void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer);
-void tourNormal(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer);
-void tourPrison(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer);
-void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer);
+void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
+void tourNormal(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
+void tourPrison(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, int nbJoueurs);
+void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
 void newGame();
 
-void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases);
+void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int nbJoueurs);
 int caseColorId(int id);
 
 #endif
