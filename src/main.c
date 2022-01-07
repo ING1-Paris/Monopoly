@@ -259,7 +259,7 @@ void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     joueur* player = listePlayers[currentPlayer];
     clearScreen();
     gotoligcol(6, 15);
-    printf("Montant du joueur %s : %c", (player)->username, (player)->balance);
+    printf("Montant du joueur %s : %d", (player)->username, (player)->balance);
     plateauGraphique(listeTerrain);
     afficherJoueurPlateau(listePlayers, listeTerrain, listeCases, nbJoueurs);
     for (int n = 0; n < 22; n++) {
@@ -564,13 +564,13 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
 }
 
 int demanderNbJoueurs() {  // fonction demandant et renvoyant le nombre de joueurs
-    int nb_joueurs = 0;
+    int nbJoueur = 0;
     display();
     do {
         printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
-        scanf("%d", &nb_joueurs);
-    } while (nb_joueurs < 2 || nb_joueurs > 4);
-    return nb_joueurs;
+        scanf("%d", &nbJoueur);
+    } while (nbJoueur < 2 || nbJoueur > 4);
+    return nbJoueur;
 }
 
 void home() {  // menu principal du jeu
@@ -950,7 +950,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
                     (player)->streakDouble += 1;
                     gotoligcol(10, 50);
-                    printf("%s a fait un double ! Il peut donc rejouer.", (player)->username);
+                    printf("%s a fait un double ! Il peut donc rejouer.", player->username);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs);
                 } else {
@@ -973,7 +973,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
                     (player)->streakDouble += 1;
                     gotoligcol(10, 50);
-                    printf("%s a fait un double ! Il peut donc rejouer.", (player)->username);
+                    printf("%s a fait un double ! Il peut donc rejouer.", player->username);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs);
                 } else {
@@ -1057,6 +1057,7 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
             } else {  // Soit il n'en est pas à 3 et peut donc jouer 2 fois
                 gotoligcol(16, 50);
                 printf("Le joueur a fait un double et peut donc rejouer");
+                Sleep(2000);
                 deplacement(player, sommeDe);
                 // listePlayers = tourPartie2(listeTerrain, listePlayers, currentPlayer, true);
                 tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs);
@@ -1075,11 +1076,11 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
 }
 
 void newGame() {  // menu de création des joueurs, affiche le plateau de base
-    const int nb_joueurs = demanderNbJoueurs();
+    const int nbJoueurs = demanderNbJoueurs();
     int i = 0;
     int nbTours = 1;
 
-    joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+    joueur *pJoueurs = creationDesJoueurs(nbJoueurs);
     terrain *pTerrains = creationTerrain();
     box *bList = creationBox();
 
@@ -1091,13 +1092,13 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
         gotoligcol(6, 120);
         printf("Tour n%c%d", 0xF10, nbTours);
         joueur* joueuractuel = &pJoueurs[i];
-        tourJoueur(pTerrains, &pJoueurs, bList, i, false, nb_joueurs);
+        tourJoueur(pTerrains, &pJoueurs, bList, i, false, nbJoueurs);
         Color(15, 0);
         gotoligcol(7, 15);
         printf("Pos joueur : %d", (joueuractuel)->position);
         nbTours += 1;
         i++;
-        if (i >= nb_joueurs) {
+        if (i >= nbJoueurs) {
             i = 0;
         }
         gotoligcol(22, 58);
@@ -1166,7 +1167,6 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
             }
         }
     }
-
     if (pos1 == pos2) {
         nbPos2 = nbPos1;
     }
@@ -1199,14 +1199,14 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
         fprintf(pf, "ID : %d|X : %d|Y : %d\n", cases[i].id, cases[i].x, cases[i].y);
     }
     for (int i = 0; i < nbJoueurs; i++) {
-        printf("Jouer numero :  %d", i);
+        // printf("Jouer numero :  %d", i);
         if (nbPosList[i] == 1) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 6, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 6);
-            printf("avant le pointeur");
+            // printf("avant le pointeur");
             printf("%c", joueurs[i]->avatar);
-            printf("apres le pointeur ");
+            // printf("apres le pointeur ");
         } else if (nbPosList[i] == 2) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 4, i);
