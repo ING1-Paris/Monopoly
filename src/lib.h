@@ -75,9 +75,9 @@ void display();
 void animation(int y, int x, int ms, int lenght);
 void clearCoords(int xA, int yA, int xB, int yB);
 void creationCase(char titre[15], int x, int y, int id, int couleur);
-void terrainAchete(joueur players[], terrain album);
+void terrainAchete(joueur **players, terrain album);
 void ifHypotheque(terrain album);
-void updateTour(terrain* listeTerrain, joueur *listePlayers, box* listeCases, int currentPlayer);
+void updateTour(terrain* listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer);
 void acheterTerrainJ(joueur* currentplayer, terrain album);
 terrain acheterTerrainT(joueur currentplayer, terrain album);
 terrain acheterMaisonT(joueur currentplayer, terrain album);
@@ -104,7 +104,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box* listeCases, i
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer);
 void newGame();
 
-void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases);
+void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases);
 int caseColorId(int id);
 
 #endif

@@ -120,18 +120,6 @@ void clearCoords(int xA, int yA, int xB, int yB) {  // permet de clear une zone 
     }
 }
 
-void clearCoords(int xA, int yA, int xB, int yB) {  // permet de clear une zone via ses coordonnées
-    Color(0, 0);
-    gotoligcol(yA, xA);
-    for (int i = yA; i < yB; i++) {
-        gotoligcol(yA + i, xA);
-        for (int j = xA; j < xB; j++) {
-            printf(" ");
-        }
-        printf("\n");
-    }
-}
-
 void creationCase(char titre[15], int x, int y, int id, int couleur) {  // fonction de création des cases
     /*
     0 : Noir
@@ -231,15 +219,15 @@ void batiments(terrain album) {  // fonction qui affiche les maisons/hôtels
     }
 }
 
-void terrainAchete(joueur players[], terrain album) {  // vérifie si un terrain est occupé pour afficher son proprio à la place de son prix de base
+void terrainAchete(joueur **players, terrain album) {  // vérifie si un terrain est occupé pour afficher son proprio à la place de son prix de base
     int longueur = 0;
     Color(0, album.couleur);
     if (album.owned == true) {
         for (int i = 0; i < 4; i++) {
-            if (album.ownedBy == players[i].id) {
-                longueur = (13 - strlen(players[i].username)) / 2;
+            if (album.ownedBy == players[i]->id) {
+                longueur = (13 - strlen(players[i]->username)) / 2;
                 gotoligcol(album.x + 3, album.y + longueur);
-                printf("%s", players[i].username);
+                printf("%s", players[i]->username);
             }
         }
     } else {
@@ -266,11 +254,12 @@ void acheterTerrainJ(joueur *currentplayer, terrain album) {  // fonction d'acha
     }
     currentplayer->ownedField[i] = album.id;
 }
-void updateTour(terrain *listeTerrain, joueur *listePlayers, box *listeCases, int currentPlayer) {
-    joueur player = listePlayers[currentPlayer];
+
+void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer) {
+    joueur* player = listePlayers[currentPlayer];
     clearScreen();
     gotoligcol(6, 15);
-    printf("Montant du joueur %s : %c", player.username, player.balance);
+    printf("Montant du joueur %s : %c", player->username, player->balance);
     plateauGraphique(listeTerrain);
     afficherJoueurPlateau(listePlayers, listeTerrain, listeCases);
     for (int n = 0; n < 22; n++) {
@@ -854,7 +843,6 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
 }
 
 void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer) {
-    updateTour(listeTerrain, listePlayers, listeCases, currentPlayer);
     Color(15, 0);
     int premierDe = 0;
     int deuxiemeDe = 0;
@@ -986,8 +974,6 @@ void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
 void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer) {
     int premierDe, deuxiemeDe, sommeDe, choix = 0;
     joueur *player = listePlayers[currentPlayer];
-    // clearScreen();
-    // plateauGraphique(listeTerrain);
 
     if (rejouer) {
         gotoligcol(25, 15);
@@ -1037,11 +1023,10 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     int nbTours = 1;
 
     joueur *pJoueurs = creationDesJoueurs(nb_joueurs);
+    joueur **ppJoueurs = NULL;
+    ppJoueurs = &pJoueurs;
     terrain *pTerrains = creationTerrain();
     box *bList = creationBox();
-
-    clearScreen();
-    plateauGraphique(pTerrains);
 
     // afficherJoueurPlateau(pJoueurs, pTerrains, bList);
 
@@ -1052,17 +1037,15 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
         gotoligcol(6, 120);
         printf("Tour n%c%d", 0x60, nbTours);
         joueur joueuractuel = pJoueurs[i];
-        gotoligcol(6, 15);
-        printf("Solde du joueur %s : %d", joueuractuel.username, joueuractuel.balance);
+        tourJoueur(pTerrains, ppJoueurs, bList, i, false);
+        Color(15, 0);
         gotoligcol(7, 15);
         printf("Pos joueur : %d", joueuractuel.position);
-        tourJoueur(pTerrains, pJoueurs, bList, i, false);
         nbTours += 1;
         i++;
         if (i >= nb_joueurs) {
             i = 0;
         }
-        Color(15, 0);
         gotoligcol(22, 58);
         printf("C'est au tour de %s !", pJoueurs[i].username);
         animation(23, 53, 150, 30);
@@ -1096,11 +1079,11 @@ int caseColorId(int id) {
     return color;
 }
 
-void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases) {
+void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases) {
     int posJoueur[4] = {-1, -1, -1, -1};
 
     for (int i = 0; i < 4; i++) {
-        posJoueur[i] = joueurs[i].position;
+        posJoueur[i] = joueurs[i]->position;
     }
 
     FILE *pf = fopen("data/output.txt", "w");
@@ -1166,43 +1149,43 @@ void afficherJoueurPlateau(joueur *joueurs, terrain *terrains, box *cases) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 6, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 6);
-            printf("%c", joueurs[i].avatar);
+            printf("%c", joueurs[i]->avatar);
         } else if (nbPosList[i] == 2) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 4, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 4);
-            printf("%c", joueurs[i].avatar);
+            printf("%c", joueurs[i]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 8, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 8);
-            printf("%c", joueurs[i + 1].avatar);
+            printf("%c", joueurs[i + 1]->avatar);
             i++;
         } else if (nbPosList[i] == 3) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 3, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 3);
-            printf("%c", joueurs[i].avatar);
+            printf("%c", joueurs[i]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 6, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 6);
-            printf("%c", joueurs[i + 1].avatar);
+            printf("%c", joueurs[i + 1]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 9, i + 2);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 9);
-            printf("%c", joueurs[i + 2].avatar);
+            printf("%c", joueurs[i + 2]->avatar);
             i++;
             i++;
         } else if (nbPosList[i] == 4) {
             Color(0, caseColorId(cases[posList[i]].id));
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 3, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 3);
-            printf("%c", joueurs[i].avatar);
+            printf("%c", joueurs[i]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 5, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 5);
-            printf("%c", joueurs[i + 1].avatar);
+            printf("%c", joueurs[i + 1]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 7, i + 2);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 7);
-            printf("%c", joueurs[i + 2].avatar);
+            printf("%c", joueurs[i + 2]->avatar);
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 9, i + 3);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 9);
-            printf("%c", joueurs[i + 3].avatar);
+            printf("%c", joueurs[i + 3]->avatar);
             i++;
             i++;
             i++;
