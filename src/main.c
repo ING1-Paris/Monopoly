@@ -982,6 +982,18 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
         gotoligcol(27, 15);
         printf("Tour de %s, options :", player->username);
     }
+    
+    gotoligcol(28, 15);
+    printf("1- Lancer les des");
+    gotoligcol(29, 15);
+    printf("2- Retourner au menu");
+    gotoligcol(30, 15);
+    printf(">> ");
+    do
+    {
+        scanf("%d", &choix);
+    } while (choix < 1 || choix > 2);
+
     if (choix == 1) {
         premierDe = lancerDe();
         deuxiemeDe = lancerDe();
