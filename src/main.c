@@ -252,7 +252,9 @@ void acheterTerrainJ(joueur *currentplayer, terrain album) {  // fonction d'acha
     while ((currentplayer)->ownedField[i] != 0) {
         i++;
     }
-    (currentplayer)->ownedField[i] = album.id;
+    currentplayer->ownedField[i] = album.id;
+    printf("Terrain achete : %s  -  %d", album.nom, album.id);
+    Sleep(5000);
 }
 
 void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, int nbJoueurs) {
@@ -847,7 +849,7 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
             gotoligcol(29, 15);
             printf("4- Finir le tour et passer au joueur suivant");
             gotoligcol(30, 15);
-            printf(">>");
+            printf(">> ");
             do {
                 scanf("%d", &choix);
             } while (choix < 1 || choix > 4);
@@ -1256,7 +1258,9 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
 
 int main() {
     // Sleep(10000);    // Decommente pour voir les warnings
-
+    Color(15, 0);
+    system("[console]::windowwidth=100; [console]::windowheight=50; [console]::bufferwidth=[console]::windowwidth");
+    
     srand(time(NULL));
     system("cls");
     home();
