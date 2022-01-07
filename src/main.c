@@ -973,6 +973,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
             home();
         }
     }
+}
 
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, int currentPlayer, bool rejouer) {
     gotoligcol(6, 15);
