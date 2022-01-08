@@ -40,6 +40,43 @@ int lancerDe()
     return nb;
 }
 
+int pioche()
+{
+    srand(time(NULL));
+    int pioche[16];
+    for (int i = 0; i<= 16; i++)
+    {
+        pioche[i] = 0;
+
+    }
+    int nb = 0;
+    int compteur = 0;
+    for (int i = 0; i< 16; i++)
+    {
+        do
+        {
+            compteur = 0;
+            nb = (rand() % 16) + 1;
+            for (int j = 0; j <16; j++)
+            {
+                if (pioche[j] == nb)
+                {
+                    compteur += 1;
+                }
+            }
+            if (compteur == 0)
+            {
+                pioche[i]= nb;
+            }
+        }while (pioche[i] == 0);
+    }
+    /*for (int i = 0; i< 16; i++
+    {
+        printf(" djk %d\n",pioche[i]);
+    }*/
+    return pioche;
+}
+
 void showLogo()
 {
     gotoligcol(0, 0);
@@ -1412,10 +1449,8 @@ int main()
     return 0;
 }
 
-/*void communaute(joueur currentplayer, terrain *listeTerrains){
-    int nb;
-    const int min = 1, max = 16;
-    nb = (rand() % max) + min;
+/*void communaute(joueur currentplayer, terrain *listeTerrains, ){
+    
     if (nb == 1){
         printf("Vous achetez des streams. Versez 50$ a la banque")
         currentplayer.balance -= 50;
