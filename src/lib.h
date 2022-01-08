@@ -82,6 +82,7 @@ void acheterTerrainJ(joueur* currentplayer, terrain album);
 void acheterTerrainT(joueur* currentplayer, terrain* album);
 void acheterMaisonT(joueur* currentplayer, terrain* album);
 void acheterMaisonJ(joueur* currentplayer, terrain album);
+void tourComplet(joueur* player);
 int argentPaye(joueur* currentplayer, terrain album);
 void payerLoyerJ1(joueur* currentplayer, int loyer);
 void toucherLoyerJ2(joueur* currentplayer, int loyer);
