@@ -19,13 +19,11 @@ typedef struct t_joueur {
     long balance;            // Balance of the player
     char username[MAX];      // Username of the player
     int position;            // ID of the player's current cell
-    int cellType;            // Type of the player's current cell
     int ownedField[26];      // ID of each owned fields
     bool sortiePrison;        // Carte sortie de prison
     bool carteDenonciation;  // carte chance pour payer moins chere
     bool inJail;             // True if the player is in jail, false if not
     bool bankruptcy;         // True if the player is in bankruptcy, false if not
-    char symbol;             // Le symbole du joueur
     int streakDouble;        // Active number of doubles
     int timeInJail;          // Times in prison
     int avatar;              // Hexadecimal code for the avatar selection
@@ -93,19 +91,22 @@ joueur *creationDesJoueurs(int nombreDeJoueurs);
 int demanderNbJoueurs();
 void infoAlbum(terrain field);
 void retourMenu();
+void retourMenuInGame(joueur ** listePlayers, joueur* currentplayer, terrain* listeTerrain, int nbJoueurs, bool rejouer, int nbTours);
 void regles();
 void credits();
 void home();
+void homeInGame(joueur ** listePlayers, joueur* currentplayer, terrain* listeTerrain, int nbJoueurs, bool rejouer, int nbTours);
 joueur doubleStreakLimite(joueur player);
 int cartePrisonEnJeu(joueur **listePlayers);
 void deplacement(joueur* player, int sommeDe);
-void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
-void tourNormal(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
-void tourPrison(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, int nbJoueurs);
-void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs);
+void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours);
+void tourNormal(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours);
+void tourPrison(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, int nbJoueurs, bool rejouer, int nbTours);
+void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box* listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours);
 void newGame();
 
 void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int nbJoueurs);
 int caseColorId(int id);
+void faireSauvegarde(joueur ** listePlayers, joueur* currentplayer, terrain* listeTerrain, int nbJoueurs, bool rejouer, int nbTours);
 
 #endif
