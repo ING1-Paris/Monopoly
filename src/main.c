@@ -1107,8 +1107,8 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
 }
 
 void acheterCarteSortie(joueur* detenteur, joueur* enprison){
-    gotoligcol(20,15)
-    printf("%s, saisissez une valeur")
+    gotoligcol(20,15);
+    printf("%s, saisissez une valeur");
 }
 
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
