@@ -235,24 +235,24 @@ void batiments(terrain album) {  // fonction qui affiche les maisons/hôtels
     Color(0, album.couleur);
     if (album.hotel == true) {
         gotoligcol(album.x + 4, album.y + 9);
-        printf("%c", 0xB1);
+        printf("%c", 0xB2);
     } else {
         switch (nbBats) {
             case 1:
                 gotoligcol(album.x + 4, album.y + 12);
-                printf("%c", 0xC7);
+                printf("%c", 0x7F);
                 break;
             case 2:
                 gotoligcol(album.x + 4, album.y + 10);
-                printf("%c %c", 0xC7, 0xC7);
+                printf("%c %c", 0x7F, 0x7F);
                 break;
             case 3:
                 gotoligcol(album.x + 4, album.y + 8);
-                printf("%c %c %c", 0xC7, 0xC7, 0xC7);
+                printf("%c %c %c", 0x7F, 0x7F, 0x7F);
                 break;
             case 4:
                 gotoligcol(album.x + 4, album.y + 6);
-                printf("%c %c %c %c", 0xC7, 0xC7, 0xC7, 0xC7);
+                printf("%c %c %c %c", 0x7F, 0x7F, 0x7F, 0x7F);
                 break;
         }
     }
@@ -455,7 +455,7 @@ terrain *creationTerrain() {  // création d'une instance (un album)
         for (int j = 0; j < i; j++) {
             fgets(ignore, sizeof(ignore), texte);
         }
-        fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[14],
+        fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[14],
                &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
                &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[15]);
 
@@ -897,7 +897,7 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
     int terrainactuel, choix, proprietaire, nbMaisons, idalbum, loyer = 0;
     joueur *player = listePlayers[currentPlayer];
     gotoligcol(6, 120);
-    printf("Tour n%c%d", 0xF10, nbTours);
+    printf("Tour n%c%d", 0xF8, nbTours);
     gotoligcol(6, 15);
     printf("Solde du joueur %s : %d", (player)->username, (player)->balance);
     if ((player)->position == 36 || (player)->position == 7 || (player)->position == 22) {  // cases chance
@@ -1020,7 +1020,6 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
             gotoligcol(28, 15);
             printf("%s perd donc 50%c et peut a nouveau jouer normalement.", (player)->username, 0x24);
             gotoligcol(25, 15);
-            // listePlayers = tourNormal(listeTerrain, listePlayers, currentPlayer, false);
             tourNormal(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
         } else {  // Si il est en prison depuis moins de 3 tours
             gotoligcol(27, 15);
@@ -1047,6 +1046,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
             deuxiemeDe = lancerDe();
             sommeDe = premierDe + deuxiemeDe;
             if (choix2 == 1) {
+                (player)->timeInJail = 0;
                 (player)->balance -= 50;
                 deplacement(player, sommeDe);
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
@@ -1061,6 +1061,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                 }
             } else if (choix2 == 2) {
                 if (premierDe == deuxiemeDe) {  // Si il fait un double
+                    (player)->timeInJail = 0;
                     gotoligcol(28, 15);
                     printf("%s a fait un double ! Il sort de prison et avance de %d cases.", (player)->username, sommeDe);
                     deplacement(player, sommeDe);
@@ -1070,6 +1071,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                     printf("%s n'a pas fait de double et reste en prison...", (player)->username);
                 }
             } else if (choix2 == 3 && (player)->sortiePrison == true) {
+                (player)->timeInJail = 0;
                 gotoligcol(28, 15);
                 printf("%s a utilise sa carte et sort de prison");
                 deplacement(player, sommeDe);
@@ -1084,6 +1086,7 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
                 }
             } else if (choix2 == 3 && (player)->sortiePrison != true && idJPrison != 0) {
+                (player)->timeInJail = 0;
                 // fonction d'achat d'une carte sortie de prison d'un autre joueur
                 deplacement(player, sommeDe);
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
@@ -1103,6 +1106,11 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     }
 }
 
+void acheterCarteSortie(joueur* detenteur, joueur* enprison){
+    gotoligcol(20,15)
+    printf("%s, saisissez une valeur")
+}
+
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
     gotoligcol(6, 15);
     joueur *player = listePlayers[currentPlayer];
@@ -1120,7 +1128,7 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     Color(15, 0);
     joueur *player = listePlayers[currentPlayer];
     gotoligcol(6, 120);
-    printf("Tour n%c%d", 0xF10, nbTours);
+    printf("Tour n%c%d", 0xF8, nbTours);
     gotoligcol(6, 15);
     printf("Solde du joueur %s : %d", (player)->username, (player)->balance);
 
@@ -1401,7 +1409,10 @@ void faireSauvegarde(joueur ** listePlayers, joueur* currentplayer, terrain* lis
         } else {
             fprintf(pf, " true");
         }
-        fprintf(pf, "%d %d %d", listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
+        fprintf(pf, " %d %d %d", listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
+        for (int k = 0; k<26; k++){
+            fprintf(pf, " %d", listePlayers[j]->ownedField[k]);
+        }
         fprintf(pf, "\n");
     }
 
