@@ -50,3 +50,15 @@
 |             | |             | |             | |             |
 --------------- --------------- --------------- ---------------
 6               4, 8             3, 6, 9          3,5,7,9
+
+main.c: In function 'afficherJoueurPlateau':
+main.c:1112:16: warning: passing argument 1 of 'printf' from incompatible pointer type [-Wincompatible-pointer-types]
+         printf(pf, "Le dossier a ActAc ouvert");
+                ^~
+In file included from lib.h:4:0,
+                 from main.c:1:
+c:\mingw\include\stdio.h:454:38: note: expected 'const char *' but argument is of type 'FILE * {aka struct _iobuf *}'
+ _CRTIMP __cdecl __MINGW_NOTHROW  int printf (const char *, ...);
+                                      ^~~~~~
+
+
