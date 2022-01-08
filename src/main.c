@@ -35,7 +35,45 @@ int lancerDe() {
     return nb;
 }
 
-void showLogo() {
+int pioche()
+{
+    srand(time(NULL));
+    int pioche[16];
+    for (int i = 0; i<= 16; i++)
+    {
+        pioche[i] = 0;
+
+    }
+    int nb = 0;
+    int compteur = 0;
+    for (int i = 0; i< 16; i++)
+    {
+        do
+        {
+            compteur = 0;
+            nb = (rand() % 16) + 1;
+            for (int j = 0; j <16; j++)
+            {
+                if (pioche[j] == nb)
+                {
+                    compteur += 1;
+                }
+            }
+            if (compteur == 0)
+            {
+                pioche[i]= nb;
+            }
+        }while (pioche[i] == 0);
+    }
+    /*for (int i = 0; i< 16; i++
+    {
+        printf(" djk %d\n",pioche[i]);
+    }*/
+    return pioche;
+}
+
+void showLogo()
+{
     gotoligcol(0, 0);
     printf(
         "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
@@ -1387,50 +1425,50 @@ int main() {
     return 0;
 }
 
-/*void communaute(joueur currentplayer, terrain *listeTerrains){
-        int nb;
-        const int min = 1, max = 16;
-        nb = (rand() % max) + min;
-        if (nb == 1){
-            printf("Vous achetez des streams. Versez 50$ a la banque")
-            currentplayer.balance -= 50;
-        }
-        else if (nb == 2){
-            printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque")
-            currentplayer.balance -= 100;
-        }
-        else if (nb == 3){
-            printf("Vous faites un exces de vitesse. Versez 10$ a la banque")
-            currentplayer.balance -= 10;
-        }
-        else if (nb == 4){
-            printf("Un fans vous donne 50$")
-            currentplayer.balance += 50;
-        }
-        else if (nb == 5){
-            printf("Vous faites un showcase. Recevez 100$")
-            currentplayer.balance += 100;
-        }
-        else if (nb == 6){
-            printf("Vous tournez un clip à Dubai. Versez 100$ a la banque")
-            currentplayer.balance -= 100;
-        }
-        else if (nb == 7){
-            printf("Vous allez vous inspirer à New York. Versez 50$ a la banque")
-            currentplayer.balance -= 50;
-        }
-        else if (nb == 8){
-            printf("Vous etes top1 spotify . Recevez 50$ a la banque")
-            currentplayer.balance += 50;
-        }
-        else if (nb == 9){
-            printf("Vous signez un nouveau label. Recevez 200$")
-            currentplayer.balance += 200;
-        }
-        else if (nb == 10){
-            printf("Payez 20$ d'impots pour chacun de vos terrain")
-            int prix=0;
-            for (int i  == 0; i<26; i++)
+/*void communaute(joueur currentplayer, terrain *listeTerrains, ){
+    
+    if (nb == 1){
+        printf("Vous achetez des streams. Versez 50$ a la banque")
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 2){
+        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque")
+        currentplayer.balance -= 100;
+    }
+    else if (nb == 3){
+        printf("Vous faites un exces de vitesse. Versez 10$ a la banque")
+        currentplayer.balance -= 10;
+    }
+    else if (nb == 4){
+        printf("Un fans vous donne 50$")
+        currentplayer.balance += 50;
+    }
+    else if (nb == 5){
+        printf("Vous faites un showcase. Recevez 100$")
+        currentplayer.balance += 100;
+    }
+    else if (nb == 6){
+        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque")
+        currentplayer.balance -= 100;
+    }
+    else if (nb == 7){
+        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque")
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 8){
+        printf("Vous etes top1 spotify . Recevez 50$ a la banque")
+        currentplayer.balance += 50;
+    }
+    else if (nb == 9){
+        printf("Vous signez un nouveau label. Recevez 200$")
+        currentplayer.balance += 200;
+    }
+    else if (nb == 10){
+        printf("Payez 20$ d'impots pour chacun de vos terrain")
+        int prix=0;
+        for (int i  == 0; i<26; i++)
+        {
+            if (currentplayer.ownedField[i] == 1)
             {
                 if (currentplayer.ownedField[i] == 1)
                 {

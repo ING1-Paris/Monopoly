@@ -67,6 +67,7 @@ void showCursor(bool show);
 #endif
 
 int lancerDe();
+int pioche();
 void clearScreen();
 void showLogo();
 void display();
