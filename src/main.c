@@ -35,37 +35,89 @@ int lancerDe() {
     return nb;
 }
 
-int pioche()
+int creerPiocheCommu()
 {
     srand(time(NULL));
+    int nb = 0;
+    int compteur = 0;
+    int pioche[16];
+    for (int i = 0; i< 16; i++)
+    {
+        pioche[i] = 0;
+    }
+    FILE* pf = fopen("data/piocheCommu.txt", "w");
+    if (pf == NULL)
+    {
+        printf("Erreur d'ouverture de fichier.");
+    }
+    else
+    {
+        for (int i = 0; i< 16; i++)
+        {
+            do
+            {
+                compteur = 0;
+                nb = (rand() % 16) + 1;
+                for(int j = 0; j <16; j++)
+                {
+                    if (pioche[j] == nb)
+                    {
+                        compteur += 1;
+                    }
+                }
+                if (compteur == 0)
+                {
+                pioche[i]= nb;
+                }
+            }while (pioche[i] == 0);
+            fprintf(pf, "%d ",pioche[i]);
+        }
+    }
+    fclose(pf);
+    pf = NULL;
+    return 0;
+}
+int creerPiocheChance()
+{
+    srand(time(NULL));
+    int nb = 0;
+    int compteur = 0;
     int pioche[16];
     for (int i = 0; i<= 16; i++)
     {
         pioche[i] = 0;
 
     }
-    int nb = 0;
-    int compteur = 0;
-    for (int i = 0; i< 16; i++)
+    FILE* pf = fopen("data/piocheChance.txt", "w");
+    if (pf == NULL)
     {
-        do
-        {
-            compteur = 0;
-            nb = (rand() % 16) + 1;
-            for (int j = 0; j <16; j++)
-            {
-                if (pioche[j] == nb)
-                {
-                    compteur += 1;
-                }
-            }
-            if (compteur == 0)
-            {
-                pioche[i]= nb;
-            }
-        }while (pioche[i] == 0);
+        printf("Erreur d'ouverture de fichier.");
     }
-    return pioche;
+    else
+    {
+        for (int i = 0; i< 16; i++)
+        {
+            do
+            {
+                compteur = 0;
+                nb = (rand() % 16) + 1;
+                for (int j = 0; j <16; j++)
+                {
+                    if (pioche[j] == nb)
+                    {
+                        compteur += 1;
+                    }
+                }
+                if (compteur == 0)
+                {
+                pioche[i]= nb;
+                }
+            }while (pioche[i] == 0);
+        }
+    }
+    fclose(pf);
+    pf = NULL;
+    return 0;
 }
 
 void showLogo()
@@ -898,10 +950,10 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
     printf("Solde du joueur %s : %d", (player)->username, (player)->balance);
     if ((player)->position == 36 || (player)->position == 7 || (player)->position == 22) {  // cases chance
         gotoligcol(26, 15);
-        printf("APPELER LA FONCTION caseChance()");
+        *player = chance(*player);
     } else if ((player)->position == 2 || (player)->position == 17 || (player)->position == 33) {  // cases communauté
         gotoligcol(26, 15);
-        printf("APPELER LA FONCTION caseCommunaute()");
+        *player = communaute(*player, listeTerrain);
     } else if ((player)->position == 4 || (player)->position == 12 || (player)->position == 28 || (player)->position == 38) {  // cases sacem
         player->balance -= 200;
     } else if ((player)->position == 20 || (player)->position == 0) {  // case soundcloud (stationnement libre)
@@ -1186,11 +1238,11 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     const int nbJoueurs = demanderNbJoueurs();
     int i = 0;
     int nbTours = 1;
-
     joueur *pJoueurs = creationDesJoueurs(nbJoueurs);
     terrain *pTerrains = creationTerrain();
     box *bList = creationBox();
-
+    creerPiocheCommu();
+    creerPiocheChance();
     while (pJoueurs[0].balance > 0) {
         clearScreen();
         plateauGraphique(pTerrains);
@@ -1432,49 +1484,61 @@ int main() {
     return 0;
 }
 
-void communaute(joueur currentplayer, terrain *listeTerrain){
+joueur communaute(joueur currentplayer, terrain *listeTerrain){
     int nb;
-    const int min = 1, max = 16;
-    nb = (rand() % max) + min;
+    int donnee[16];
+    int piocheTampon[16];
+    FILE *pf = fopen("data/piocheCommu.txt", "w");
+    if (pf == NULL)
+    {
+        printf("Erreur d'ouverture de fichier.");
+    }
+    else
+    {
+        fscanf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
+               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
+               &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[14], &donnee[15]);
+    }
+    nb = donnee[0];
     if (nb == 1){
-        printf("Vous achetez des streams. Versez 50$ a la banque");
+        printf("Vous achetez des streams. Versez 50%c a la banque", 0x24);
         currentplayer.balance -= 50;
     }
     else if (nb == 2){
-        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque");
+        printf("Vous faites un mauvais demarrage d'album. Versez 100%c a la banque", 0x24);
         currentplayer.balance -= 100;
     }
     else if (nb == 3){
-        printf("Vous faites un exces de vitesse. Versez 10$ a la banque");
+        printf("Vous faites un exces de vitesse. Versez 10%c a la banque",0x24);
         currentplayer.balance -= 10;
     }
     else if (nb == 4){
-        printf("Un fans vous donne 50$");
+        printf("Un fans vous donne 50%c", 0x24);
         currentplayer.balance += 50;
     }
     else if (nb == 5){
-        printf("Vous faites un showcase. Recevez 100$");
+        printf("Vous faites un showcase. Recevez 100%c", 0x24);
         currentplayer.balance += 100;
     }
     else if (nb == 6){
-        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque");
+        printf("Vous tournez un clip a Dubai. Versez 100%c a la banque", 0x24);
         currentplayer.balance -= 100;
     }
     else if (nb == 7){
-        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque");
+        printf("Vous allez vous inspirer a New York. Versez 50%c a la banque", 0x24);
         currentplayer.balance -= 50;
     }
     else if (nb == 8){
-        printf("Vous etes top1 spotify. Recevez 50$ de la banque");
+        printf("Vous etes top1 spotify. Recevez 50%c de la banque", 0x24);
         currentplayer.balance += 50;
     }
     else if (nb == 9){
-        printf("Vous signez un nouveau label. Recevez 200$");
+        printf("Vous signez un nouveau label. Recevez 200%c", 0x24);
         currentplayer.balance += 200;
     }
     else if (nb == 10)
     {
-        printf("Payez 20$ d'impots pour chacun de vos terrain");
+        printf("Payez 20%c d'impots pour chacun de vos terrain",0x24);
         int prix=0;
         for (int i  = 0; i<26; i++)
         {
@@ -1492,7 +1556,7 @@ void communaute(joueur currentplayer, terrain *listeTerrain){
     else if (nb == 11)
     {
         int reparation = 0;
-        printf("Payer 50$ de réparation sur chacun de vos hotels.");
+        printf("Payer 50%c de réparation sur chacun de vos hotels.",0x24 );
         for (int i = 0; i<22;i++)
         {
             if (listeTerrain[i].ownedBy == currentplayer.id)
@@ -1508,27 +1572,38 @@ void communaute(joueur currentplayer, terrain *listeTerrain){
     }
     else if (nb == 12)
     {
-        printf("Allez en prison");
+        printf("Allez en prison" );
         currentplayer.position = 10;
         currentplayer.inJail = true;
     }
     else if (nb == 13)
     {
-        char choix =' ';
-        printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance");
-        scanf("%s", choix);
-        if (choix == '1')
+        printf("Allez vous reposer au Zenith d'apres");
+        if (currentplayer.position > 35 )
         {
-            currentplayer.balance -= 10;
+            currentplayer.balance += 200;
+            currentplayer.position = 5;
         }
-        else
+        else if ( 5 < currentplayer.position < 15)
         {
-            chance(currentplayer,listeTerrain);
+            currentplayer.position = 15;
+        }
+        else if ( 15 < currentplayer.position < 25)
+        {
+            currentplayer.position = 25 ;
+        }
+        else if ( 25 < currentplayer.position < 35)
+        {
+            currentplayer.position = 35;
+        }
+        else 
+        {
+            currentplayer.position = 5;
         }
     }
     else if (nb == 14)
     {
-        printf("Vous aidez un fans dans le besoin et vous lui donnez 25$");
+        printf("Vous aidez un fans dans le besoin et vous lui donnez 25%c", 0x24);
         currentplayer.balance -= 25;
     }
     else if (nb == 15)
@@ -1539,107 +1614,218 @@ void communaute(joueur currentplayer, terrain *listeTerrain){
     }
     else
     {
-        printf("Vous aidez un jeune rappeur à commencer. Versez 50$ à la banque");
+        printf("Vous aidez un jeune rappeur à commencer. Versez 50%c à la banque", 0x24);
         currentplayer.balance -= 50;
     }
-
+    for (int i = 0; i< 16; i++)
+    {
+        piocheTampon[i] = donnee[i+1];
+    }
+    piocheTampon[15] = nb;
+    for(int j = 0; j < 15; j++)
+    {
+        piocheTampon[j] = donnee[j+1];
+    }
+    piocheTampon[15] = nb;
+    for(int j = 0; j < 16; j++)
+    {
+        fprintf(pf, "%d ",piocheTampon[j]);
+    }
+    fclose(pf);
+    pf = NULL;
+    return currentplayer;
 }
-// bonjour
 
-    void chance(joueur currentplayer, terrain *listeTerrain){
+joueur chance(joueur currentplayer){
     int nb;
-    const int min = 1, max = 16;
-    nb = (rand() % max) + min;
-    if (nb == 1){
-        printf("Allez a la case depart");
-        currentplayer.balance += 200;
-        currentplayer.position = 0;
-    }
-    else if (nb == 2){
-        printf("Vous gagnez un pari PMU. Recevez 100%c de la banque", 0x24);
-        currentplayer.balance += 100;
-    }
-    else if (nb == 3){
-        printf("Allez en prison");
-        currentplayer.position = 10;
-        currentplayer.inJail = true;
-    }
-    else if (nb == 4){
-        printf("Carte sortie de prison, a concerver");
-        currentplayer.sortiePrison = true;
-    }
-    else if (nb == 5){
-        printf("Vous denoncez une fraude du proprietaire, vous ne payez pas le loyer, carte a conserver ");
-        currentplayer.carteDenonciation = true;
-    }
-    else if (nb == 6){
-        printf("Vous allez voir un amis en prison");
-        if (currentplayer.position > 10)
-        {
-            currentplayer.balance += 200;
-        }
-        currentplayer.position = 10;
-    }
-    else if (nb == 7){
-        printf("Vous avez bien travaillé. Allez vous reposé à Soundcloud");
-        if (currentplayer.position > 20)
-        {
-            currentplayer.balance += 200;
-        }
-        currentplayer.position = 20;
-    }
-    else if (nb == 8){
-        printf("Vos placements vous rapporte 200%c", 0x24);
-        currentplayer.balance += 50;
-    }
-    else if (nb == 9){
-        char choix =' ';
-        printf("Payer 10%c ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance", 0x24);
-        scanf("%s", choix);
-        if (choix == '1')
-        {
-            currentplayer.balance -= 10;
-        }
-        else
-        {
-            communaute(currentplayer,listeTerrain);
-        }
-    }
-    else if (nb == 10)
+    int donnee[16];
+    int piocheTampon[16];
+    FILE *pf = fopen("data/piocheChance.txt", "w");
+    if (pf == NULL)
     {
-        printf("Payez 20%c d'impots", 0x24);
-        currentplayer.balance -= 20;
-    }
-    else if (nb == 11)
-    {
-        printf("Vous achetez une nouvelle voiture. Payez 50%c", 0x24);
-        currentplayer.balance -= 50;
-    }
-    else if (nb == 12)
-    {
-        printf("Vous etes top un Deezer. Recevez 25%c", 0x24);
-        currentplayer.balance += 25;
-    }
-    else if (nb == 13)
-    {
-        printf("Vous gagnez 500%c au loto", 0x24);
-        currentplayer.balance += 500;
-
-    }
-    else if (nb == 14)
-    {
-        printf("Vous prenez des cours de piano. Payez 50%c", 0x24);
-        currentplayer.balance -= 50;
-    }
-    else if (nb == 15)
-    {
-        printf("Vous faites une pub. ReceveZ 50%c", 0x24);
-        currentplayer.position = 0;
-        currentplayer.balance += 200;
+        printf("Erreur d'ouverture de fichier.");
     }
     else
     {
-        printf("Vous recevez la recompensede revelation de l'annee. Recevez 50%c", 0x24);
-        currentplayer.balance += 50;
+        fscanf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
+               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
+               &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[14], &donnee[15]);
     }
+    nb = donnee[0];
+    if (nb <15 )
+    {
+        if (nb == 1){
+            printf("Allez a la case depart");
+            currentplayer.balance += 200;
+            currentplayer.position = 0;
+        }
+        else if (nb == 2){
+            printf("Vous gagnez un pari PMU. Recevez 100%c.", 0x24);
+            currentplayer.balance += 100;
+        }
+        else if (nb == 3){
+            printf("Allez en prison");
+            currentplayer.position = 10;
+            currentplayer.inJail = true;
+        }
+        else if (nb == 4){
+            printf("Vous recevez la recompensede revelation de l'annee. Recevez 50%c", 0x24);
+            currentplayer.balance += 50;
+        }
+        else if (nb == 5){
+            printf("Vous faites une pub. ReceveZ 50%c", 0x24);
+            currentplayer.balance += 200;
+        }
+        else if (nb == 6){
+            printf("Vous allez voir un amis en prison");
+            if (currentplayer.position > 10)
+            {
+                currentplayer.balance += 200;
+            }
+            currentplayer.position = 10;
+        }
+        else if (nb == 7){
+            printf("Vous avez bien travaillé. Allez vous reposé à Soundcloud");
+            if (currentplayer.position > 20)
+            {
+                currentplayer.balance += 200;
+            }
+            currentplayer.position = 20;
+        }
+        else if (nb == 8){
+            printf("Vos placements vous rapporte 200%c", 0x24);
+            currentplayer.balance += 50;
+        }
+        else if (nb == 9)
+        {
+            printf("Allez vous reposer au Zenith d'apres");
+            if (currentplayer.position > 35 )
+            {
+                currentplayer.balance += 200;
+                currentplayer.position = 5;
+            }
+            else if ( 5 < currentplayer.position < 15)
+            {
+                currentplayer.position = 15;
+            }
+            else if ( 15 < currentplayer.position < 25)
+            {
+                currentplayer.position = 25 ;
+            }
+            else if ( 25 < currentplayer.position < 35)
+            {
+                currentplayer.position = 35;
+            }
+            else 
+            {
+                currentplayer.position = 5;
+            }
+        }
+        else if (nb == 10)
+        {
+            printf("Payez 20%c d'impots", 0x24);
+            currentplayer.balance -= 20;
+        }
+        else if (nb == 11)
+        {
+            printf("Vous achetez une nouvelle voiture. Payez 50%c", 0x24);
+            currentplayer.balance -= 50;
+        }
+        else if (nb == 12)
+        {
+            printf("Vous etes top un Deezer. Recevez 25%c", 0x24);
+            currentplayer.balance += 25;
+        }
+        else if (nb == 13)
+        {
+            printf("Vous gagnez 500%c au loto", 0x24);
+            currentplayer.balance += 500;
 
+        }
+        else
+        {
+            printf("Vous prenez des cours de piano. Payez 50%c", 0x24);
+            currentplayer.balance -= 50;
+        }
+        if (donnee[14] == 0 && donnee[15] == 0)
+        {
+                for (int i = 0; i< 16; i++)
+            {
+                piocheTampon[i] = donnee[i+1];
+            }
+            for(int j = 0; j < 15; j++)
+            {
+                piocheTampon[j] = donnee[j+1];
+            }
+            piocheTampon[13] = nb;
+            piocheTampon[14] = 0;
+            piocheTampon[15] = 0;
+            for(int j = 0; j < 16; j++)
+            {
+                fprintf(pf, "%d ",piocheTampon[j]);
+            }
+        }
+        else if (donnee[14] != 0 && donnee[15] == 0)
+        {
+            for (int i = 0; i< 16; i++)
+            {
+                piocheTampon[i] = donnee[i+1];
+            }
+            for(int j = 0; j < 15; j++)
+            {
+                piocheTampon[j] = donnee[j+1];
+            }
+            piocheTampon[14] = nb;
+            piocheTampon[15] = 0;
+            for(int j = 0; j < 16; j++)
+            {
+                fprintf(pf, "%d ",piocheTampon[j]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i< 16; i++)
+            {
+                piocheTampon[i] = donnee[i+1];
+            }
+            for(int j = 0; j < 15; j++)
+            {
+                piocheTampon[j] = donnee[j+1];
+            }
+            piocheTampon[15] = nb;
+            for(int j = 0; j < 16; j++)
+            {
+                fprintf(pf, "%d ",piocheTampon[j]);
+            }
+        }
+    }
+    else
+    {
+        if (nb == 15)
+        {
+            printf("Vous denoncez une fraude du proprietaire, vous ne payez pas le loyer, carte a conserver ");
+            currentplayer.carteDenonciation = true;
+        }
+        else
+        {
+            printf("Carte sortie de prison, a concerver");
+            currentplayer.sortiePrison = true;
+        }
+        for (int i = 0; i< 16; i++)
+        {
+            piocheTampon[i] = donnee[i+1];
+        }
+        piocheTampon[15] = 0;
+        for(int j = 0; j < 15; j++)
+        {
+            piocheTampon[j] = donnee[j+1];
+        }
+        for(int j = 0; j < 16; j++)
+        {
+            fprintf(pf, "%d ",piocheTampon[j]);
+        }
+    }
+    fclose(pf);
+    pf == NULL;
+    return currentplayer;
+}
