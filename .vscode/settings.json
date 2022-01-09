@@ -1,6 +1,13 @@
 {
    "files.associations": {
       "*.c": "c",
+<<<<<<< HEAD
       "draft.C": "cpp"
+   },
+   "C_Cpp.errorSquiggles": "Enabled"
+=======
+      "draft.C": "cpp",
+      "time.h": "c"
    }
+>>>>>>> dbb009a05ac9653f3f1fff50d8c743221553403e
 }
