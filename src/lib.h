@@ -93,7 +93,7 @@ void payerLoyerJ1(joueur *currentplayer, int loyer);
 void toucherLoyerJ2(joueur *currentplayer, int loyer);
 void plateauGraphique(terrain *listeTerrains);
 terrain *creationTerrain();
-int choixAvatar(int nbJoueurs, int currentPlayer);
+int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar);
 joueur *creationDesJoueurs(int nombreDeJoueurs);
 int demanderNbJoueurs();
 void infoAlbum(terrain field);
