@@ -1073,6 +1073,7 @@ void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; access
     printf("\n\n 3 - Prison : \nLe joueur doit aller en prison s'il fait trois doubles de suite, s'il tire une carte chance lui disant d'aller en prison ou s'il tombe sur la case DRAMA.");
     printf("\nPour sortir de prison le joueur doit faire un double lors de son tour, avoir eu une carte chance lui permettant de sortir de prison ou bien payer 50%c. Au bout de 3 tours, il est oblige de payer 50%c pour sortir.", 0x24, 0x24);
     printf("\nLorsqu'il est envoye en prison, s'il passe par la case depart, le joueur ne recoit pas l'argent qui lui est du.");
+    printf("\nLes cartes Sortie de Prison et Denonciation sont utilisables qu'une seule fois par partie");
     printf("\n\n 4 - Album : \nLorsqu'un joueur tombe sur une case 'album', il :\n    - peut l'acheter s'il a l'argent necessaire pour le faire et si elle n'appartient a personne.");
     printf("\n    - peut acheter des maisons si l'emplacement est deja a lui ou acheter un hotel s'il y a deja 4 maisons sur ce terrain.\n    - doit payer un loyer si l'emplacement appartient a un adversaire.");
     printf("\n    - n'a aucun loyer a payer si la propriete appartient a un adversaire mais est hypothequee.");
@@ -2039,19 +2040,16 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
     }
     else if (nb == 10)
     {
-        printf("Payez 20%c d'impots pour chacun de vos terrain",0x24);
+        printf("Payez 10%c d'impots pour chacun de vos terrain",0x24);
         int prix=0;
         for (int i  = 0; i<26; i++)
         {
-            if (currentplayer.ownedField[i] == 1)
+            if (currentplayer.ownedField[i] != 0)
             {
-                if (currentplayer.ownedField[i] == 1)
-                {
-                    prix +=10;
-                }
+                prix +=10;
             }
-            printf("Vous avez payer %d$ taxes",prix);
-            currentplayer.balance -= prix;
+        printf("Vous avez payer %d$ taxes",prix);
+        currentplayer.balance -= prix;
         }
     }
     else if (nb == 11)
@@ -2064,7 +2062,7 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
             {
                 if (listeTerrain[i].hotel == true)
                 {
-                reparation += 50;
+                    reparation += 50;
                 }
             }
         }
