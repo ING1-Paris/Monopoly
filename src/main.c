@@ -35,7 +35,7 @@ int lancerDe() {
     return nb;
 }
 
-int creerPiocheCommu()
+int creerPiocheCommu() // création de la pioche des cartes communauté
 {
     srand(time(NULL));
     int nb = 0;
@@ -77,7 +77,7 @@ int creerPiocheCommu()
     pf = NULL;
     return 0;
 }
-int creerPiocheChance()
+int creerPiocheChance() // création de la pioche des cartes chance
 {
     srand(time(NULL));
     int nb = 0;
@@ -120,7 +120,7 @@ int creerPiocheChance()
     return 0;
 }
 
-void showLogo() {
+void showLogo() { // affichage du logo monopoly
     gotoligcol(0, 0);
     printf(
         "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
@@ -169,12 +169,12 @@ void showLogo() {
     gotoligcol(14, 5);
 }
 
-void display() {
+void display() { // affichage du logo, avec un clearScreen avant
     clearScreen();
     showLogo();
 }
 
-void animation(int y, int x, int ms, int lenght) {
+void animation(int y, int x, int ms, int lenght) { // création d'une animation d'une barre de chargement
     int i;
     showCursor(false);
     gotoligcol(y, x);
@@ -336,7 +336,7 @@ void ifHypotheque(terrain album) {  // fonction vérifiant si une case est hypot
     Color(15, 0);
 }
 
-void ifFaillite (joueur** listePlayers){
+void ifFaillite (joueur** listePlayers){  // fonction vérifiant si un joueur est en faillite
     for (int i = 0; i < 4; i++){
         if (listePlayers[i]->balance <= 0 && listePlayers[i]->ownedField[0] == 0){
             listePlayers[i]->bankruptcy = true;
@@ -344,8 +344,8 @@ void ifFaillite (joueur** listePlayers){
     }
 }
 
-bool finDuJeu(joueur* listePlayers, int nbJoueurs){
-    gotoligcol(25, 60);
+bool finDuJeu(joueur* listePlayers, int nbJoueurs){ // fonction vérifiant si les joueurs sont en faillite ou non
+    gotoligcol(25, 60);                             // on renvoie true si le jeu est fini, false si non
     switch(nbJoueurs){
         case 2 : 
         if (listePlayers[0].bankruptcy == true){
@@ -409,7 +409,7 @@ void acheterTerrainJ(joueur *currentplayer, terrain album) {  // fonction d'acha
     Sleep(500);
 }
 
-void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, int nbJoueurs) {
+void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, int nbJoueurs) { // fonction qui affiche le terrain à nouveau, avec les changements
     joueur *player = listePlayers[currentPlayer];
     clearScreen();
     gotoligcol(6, 15);
@@ -493,8 +493,8 @@ void leverHypotheque(joueur *currentplayer, terrain album){ // lever l'hypothèq
     }
 }
 
-int compterArgent(joueur* currentPlayer, terrain* listeTerrain){
-    int argentTotal, compteur, idTerrain = 0;
+int compterArgent(joueur* currentPlayer, terrain* listeTerrain){ //fonction qui est censée compter l'argent total du joueur
+    int argentTotal, compteur, idTerrain = 0;                    //en comptant l'argent que rapporte la vente 
     argentTotal += currentPlayer->balance;
     joueur pcurrentplayer = *currentPlayer;
 
