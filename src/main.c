@@ -35,14 +35,22 @@ int lancerDe() {
     return nb;
 }
 
+<<<<<<< Updated upstream
 int creerPiocheCommu() // création de la pioche des cartes communauté
 {
+=======
+int pioche() {
+>>>>>>> Stashed changes
     srand(time(NULL));
     int nb = 0;
     int compteur = 0;
     int pioche[16];
+<<<<<<< Updated upstream
     for (int i = 0; i< 16; i++)
     {
+=======
+    for (int i = 0; i <= 16; i++) {
+>>>>>>> Stashed changes
         pioche[i] = 0;
     }
     FILE* pf = fopen("data/piocheCommu.txt", "w");
@@ -82,6 +90,7 @@ int creerPiocheChance() // création de la pioche des cartes chance
     srand(time(NULL));
     int nb = 0;
     int compteur = 0;
+<<<<<<< Updated upstream
     int pioche[16];
     for (int i = 0; i<= 16; i++)
     {
@@ -114,13 +123,32 @@ int creerPiocheChance() // création de la pioche des cartes chance
                 }
             }while (pioche[i] == 0);
         }
+=======
+    for (int i = 0; i < 16; i++) {
+        do {
+            compteur = 0;
+            nb = (rand() % 16) + 1;
+            for (int j = 0; j < 16; j++) {
+                if (pioche[j] == nb) {
+                    compteur += 1;
+                }
+            }
+            if (compteur == 0) {
+                pioche[i] = nb;
+            }
+        } while (pioche[i] == 0);
+>>>>>>> Stashed changes
     }
     fclose(pf);
     pf = NULL;
     return 0;
 }
 
+<<<<<<< Updated upstream
 void showLogo() { // affichage du logo monopoly
+=======
+void showLogo() {
+>>>>>>> Stashed changes
     gotoligcol(0, 0);
     printf(
         "MONO            POLY  	     MONOPOLY	      MONO	  PO   	     "
@@ -440,6 +468,7 @@ void acheterMaisonJ(joueur *currentplayer, terrain album) {  // fonction d'achat
     currentplayer->balance -= album.housePrice;
 }
 
+<<<<<<< Updated upstream
 void vendreMaisonJ(joueur *currentplayer, terrain album, int nbMaisons) { // fonction de vente d'une maison -> partie joueur
     if (album.hotel == true){
         currentplayer->balance += (album.housePrice)/2;
@@ -540,6 +569,10 @@ void faillite(joueur *currentplayer, terrain *listeTerrain, int sommeApayer){
 
 void tourComplet(joueur* player){ // fonction qui repère si le joueur a fait un tour complet
     if (player->position >= 40){
+=======
+void tourComplet(joueur *player) {  // fonction qui repère si le joueur a fait un tour complet
+    if (player->position >= 40) {
+>>>>>>> Stashed changes
         player->position -= 40;
         player->balance += 200;
     }
@@ -1000,7 +1033,11 @@ void homeInGame(joueur **listePlayers, joueur *currentplayer, terrain *listeTerr
 
 void infoAlbum(terrain field) {  // fonction affichant toutes les infos d'un album
     int revenir = 0;
+<<<<<<< Updated upstream
     clearCoords(15,22,90,33);
+=======
+    clearCoords(15, 22, 90, 32);
+>>>>>>> Stashed changes
     gotoligcol(23, 20);
     printf("Album : %s", field.nom);
     gotoligcol(24, 20);
@@ -1214,6 +1251,7 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
         }
         nbMaisons = listeTerrain[terrainactuel].buildings;
         if (listeTerrain[terrainactuel].owned == true && listeTerrain[terrainactuel].ownedBy != (player)->id) {
+<<<<<<< Updated upstream
             if (listeTerrain[terrainactuel].hypotheque == true){
                 gotoligcol(25,15);
                 printf("Ce terrain est hypotheque, pas besoin de payer !");
@@ -1237,6 +1275,18 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
                 animation(28, 15, 100, 15);
                 toucherLoyerJ2(listePlayers[proprietaire-1], loyer);
             }
+=======
+            proprietaire = listeTerrain[terrainactuel].ownedBy;
+            loyer = argentPaye(player, listeTerrain[terrainactuel]);
+            gotoligcol(25, 15);
+            printf("%s est chez %s !", (player)->username, listePlayers[proprietaire - 1]->username);
+            gotoligcol(26, 15);
+            printf("%s doit lui verser %d%c", (player)->username, loyer, 0x24);
+            // gotoligcol(28, 15);
+            // printf("Appuyez sur 'Entree' pour continuer.");
+            payerLoyerJ1(player, loyer);
+            toucherLoyerJ2(listePlayers[proprietaire - 1], loyer);
+>>>>>>> Stashed changes
         } else {
             gotoligcol(25, 15);
             printf("%s peut maintenant :", (player)->username);
@@ -1292,10 +1342,17 @@ void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, 
                 acheterMaisonJ(player, listeTerrain[terrainactuel]);
                 acheterMaisonT(player, &listeTerrain[terrainactuel]);
             }
+<<<<<<< Updated upstream
         } else if (choix == 4) {
             printf("Saisissez l'ID de l'album sur lequel vous souhaitez des informations :\n");
             do {
                 printf("De 1 a 22 inclus >> ");
+=======
+        } else if (choix == 3) {
+            do {
+                gotoligcol(30, 15);
+                printf("Saisissez l'ID de l'album sur lequel vous souhaitez des informations : ");
+>>>>>>> Stashed changes
                 scanf("%d", &idalbum);
             } while (idalbum < 1 || idalbum > 22);
             infoAlbum(listeTerrain[idalbum - 1]);
@@ -1462,6 +1519,14 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     }
 }
 
+<<<<<<< Updated upstream
+=======
+void acheterCarteSortie(joueur *detenteur, joueur *enprison) {
+    gotoligcol(20, 15)
+        printf("%s, saisissez une valeur")
+}
+
+>>>>>>> Stashed changes
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
     gotoligcol(6, 15);
     joueur *player = listePlayers[currentPlayer];
@@ -1728,6 +1793,7 @@ void faireSauvegarde(joueur **listePlayers, joueur *currentplayer, terrain *list
 
     for (int i = 0; i < 22; i++) {
         fprintf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", listeTerrain[i].id, listeTerrain[i].defaultPrice,
+<<<<<<< Updated upstream
         listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
         listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
         listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
@@ -1740,16 +1806,69 @@ void faireSauvegarde(joueur **listePlayers, joueur *currentplayer, terrain *list
         listePlayers[j]->sortiePrison, listePlayers[j]->carteDenonciation, listePlayers[j]->inJail, listePlayers[j]->bankruptcy,
         listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
         for (int k = 0; k<26; k++){
+=======
+                listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
+                listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
+                listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
+        if (listeTerrain[i].owned == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listeTerrain[i].hotel == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listeTerrain[i].hypotheque == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        fprintf(pf, "\n");
+    }
+
+    for (int j = 0; j < nbJoueurs; j++) {
+        fprintf(pf, "%d %d %s %d", listePlayers[j]->id, listePlayers[j]->balance, listePlayers[j]->username, listePlayers[j]->position);
+        if (listePlayers[j]->sortiePrison == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->carteDenonciation == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->inJail == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->bankruptcy == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        fprintf(pf, " %d %d %d", listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
+        for (int k = 0; k < 26; k++) {
+>>>>>>> Stashed changes
             fprintf(pf, " %d", listePlayers[j]->ownedField[k]);
         }
         fprintf(pf, " %s", listePlayers[j]->username);
         fprintf(pf, "\n");
     }
 
+<<<<<<< Updated upstream
     if (nbJoueurs == 2){
         fprintf(pf, "\n\n\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
     } else if (nbJoueurs == 3){
         fprintf(pf, "\n\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
+=======
+    fprintf(pf, "%d %d", currentplayer->id, nbTours);
+    if (rejouer == true) {
+        fprintf(pf, " true");
+>>>>>>> Stashed changes
     } else {
         fprintf(pf, "\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
     }
@@ -1986,6 +2105,7 @@ int main() {
     return 0;
 }
 
+<<<<<<< Updated upstream
 joueur communaute(joueur currentplayer, terrain *listeTerrain){
     int nb;
     int donnee[16];
@@ -2002,6 +2122,10 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
                &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[14], &donnee[15]);
     }
     nb = donnee[0];
+=======
+/*void communaute(joueur currentplayer, terrain *listeTerrains, ){
+
+>>>>>>> Stashed changes
     if (nb == 1){
         printf("Vous achetez des streams. Versez 50%c a la banque", 0x24);
         currentplayer.balance -= 50;
