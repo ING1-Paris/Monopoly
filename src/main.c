@@ -57,10 +57,6 @@ int pioche() {
             }
         } while (pioche[i] == 0);
     }
-    /*for (int i = 0; i< 16; i++
-    {
-        printf(" djk %d\n",pioche[i]);
-    }*/
     return pioche;
 }
 
@@ -1437,10 +1433,10 @@ void faireSauvegarde(joueur **listePlayers, joueur *currentplayer, terrain *list
 
     for (int i = 0; i < 22; i++) {
         fprintf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", listeTerrain[i].id, listeTerrain[i].defaultPrice,
-                listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
-                listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
-                listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
-        if (listeTerrain[i].owned == false) {
+        listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
+        listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
+        listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
+        if (listeTerrain[i].owned == false){
             fprintf(pf, " false");
         } else {
             fprintf(pf, " true");
@@ -1507,48 +1503,51 @@ int main() {
     return 0;
 }
 
-/*void communaute(joueur currentplayer, terrain *listeTerrains, ){
-
+void communaute(joueur currentplayer, terrain *listeTerrain){
+    int nb;
+    const int min = 1, max = 16;
+    nb = (rand() % max) + min;
     if (nb == 1){
-        printf("Vous achetez des streams. Versez 50$ a la banque")
+        printf("Vous achetez des streams. Versez 50$ a la banque");
         currentplayer.balance -= 50;
     }
     else if (nb == 2){
-        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque")
+        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque");
         currentplayer.balance -= 100;
     }
     else if (nb == 3){
-        printf("Vous faites un exces de vitesse. Versez 10$ a la banque")
+        printf("Vous faites un exces de vitesse. Versez 10$ a la banque");
         currentplayer.balance -= 10;
     }
     else if (nb == 4){
-        printf("Un fans vous donne 50$")
+        printf("Un fans vous donne 50$");
         currentplayer.balance += 50;
     }
     else if (nb == 5){
-        printf("Vous faites un showcase. Recevez 100$")
+        printf("Vous faites un showcase. Recevez 100$");
         currentplayer.balance += 100;
     }
     else if (nb == 6){
-        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque")
+        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque");
         currentplayer.balance -= 100;
     }
     else if (nb == 7){
-        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque")
+        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque");
         currentplayer.balance -= 50;
     }
     else if (nb == 8){
-        printf("Vous etes top1 spotify . Recevez 50$ a la banque")
+        printf("Vous etes top1 spotify. Recevez 50$ de la banque");
         currentplayer.balance += 50;
     }
     else if (nb == 9){
-        printf("Vous signez un nouveau label. Recevez 200$")
+        printf("Vous signez un nouveau label. Recevez 200$");
         currentplayer.balance += 200;
     }
-    else if (nb == 10){
-        printf("Payez 20$ d'impots pour chacun de vos terrain")
+    else if (nb == 10)
+    {
+        printf("Payez 20$ d'impots pour chacun de vos terrain");
         int prix=0;
-        for (int i  == 0; i<26; i++)
+        for (int i  = 0; i<26; i++)
         {
             if (currentplayer.ownedField[i] == 1)
             {
@@ -1557,59 +1556,161 @@ int main() {
                     prix +=10;
                 }
             }
-            printf("Vous avez payer %d$ taxes",prix)
+            printf("Vous avez payer %d$ taxes",prix);
             currentplayer.balance -= prix;
         }
-        else if (nb == 11){
-            int reparation = 0;
-            printf("Payer 50$ de réparation sur chacun de vos hotels.")
-            for (int i == 0; i<22;i++)
+    }
+    else if (nb == 11)
+    {
+        int reparation = 0;
+        printf("Payer 50$ de réparation sur chacun de vos hotels.");
+        for (int i = 0; i<22;i++)
+        {
+            if (listeTerrain[i].ownedBy == currentplayer.id)
             {
-                if (listeTerrain[i].ownedBy == currentplayer.id)
+                if (listeTerrain[i].hotel == true)
                 {
-                    if (listeTerrain[i].hotel == true)
-                    {
-                    reparation += 50;
-                    }
+                reparation += 50;
                 }
             }
-            printf("Vous avez payez %d reparation",reparation)
-            currentplayer.balance += reparation;
-        else if (nb == 12)
-        {
-            printf("Allez en prison")
-            currentplayer.position = 10;
-            currentplayer.inJail = true;
         }
-        else if (nb == 13)
+        printf("Vous avez payez %d reparation",reparation);
+        currentplayer.balance += reparation;
+    }
+    else if (nb == 12)
+    {
+        printf("Allez en prison");
+        currentplayer.position = 10;
+        currentplayer.inJail = true;
+    }
+    else if (nb == 13)
+    {
+        char choix =' ';
+        printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance");
+        scanf("%s", choix);
+        if (choix == '1')
         {
-            char choix = '';
-            printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance")
-            scanf("%s", choix)
-            if (choix == '1')
-            {
-                currentplayer.balance -= 10;
-            }
-            else
-            {
-                chance(joueur currentplayer)
-            }
-        }
-        else if (nb == 14)
-        {
-            printf("Vous aidez un fans dans le besoin et vous lui donnez 25$")
-            currentplayer.balance -= 25;
-        }
-        else if (nb == 15)
-        {
-            printf("Allez à la case départ")
-            currentplayer.position = 0;
-            currentplayer.balance += 200;
+            currentplayer.balance -= 10;
         }
         else
         {
-            printf("Vous aidez un jeune rappeur à commencer. Versez 50$ à la banque")
-            currentplayer.balance -= 50;
+            chance(currentplayer,listeTerrain);
         }
+    }
+    else if (nb == 14)
+    {
+        printf("Vous aidez un fans dans le besoin et vous lui donnez 25$");
+        currentplayer.balance -= 25;
+    }
+    else if (nb == 15)
+    {
+        printf("Allez à la case départ");
+        currentplayer.position = 0;
+        currentplayer.balance += 200;
+    }
+    else
+    {
+        printf("Vous aidez un jeune rappeur à commencer. Versez 50$ à la banque");
+        currentplayer.balance -= 50;
+    }
 
-    } */
+}
+// bonjour
+
+    void chance(joueur currentplayer, terrain *listeTerrain){
+    int nb;
+    const int min = 1, max = 16;
+    nb = (rand() % max) + min;
+    if (nb == 1){
+        printf("Allez a la case depart");
+        currentplayer.balance += 200;
+        currentplayer.position = 0;
+    }
+    else if (nb == 2){
+        printf("Vous gagnez un pari PMU. Recevez 100%c de la banque", 0x24);
+        currentplayer.balance += 100;
+    }
+    else if (nb == 3){
+        printf("Allez en prison");
+        currentplayer.position = 10;
+        currentplayer.inJail = true;
+    }
+    else if (nb == 4){
+        printf("Carte sortie de prison, a concerver");
+        currentplayer.sortiePrison = true;
+    }
+    else if (nb == 5){
+        printf("Vous denoncez une fraude du proprietaire, vous ne payez pas le loyer, carte a conserver ");
+        currentplayer.carteDenonciation = true;
+    }
+    else if (nb == 6){
+        printf("Vous allez voir un amis en prison");
+        if (currentplayer.position > 10)
+        {
+            currentplayer.balance += 200;
+        }
+        currentplayer.position = 10;
+    }
+    else if (nb == 7){
+        printf("Vous avez bien travaillé. Allez vous reposé à Soundcloud");
+        if (currentplayer.position > 20)
+        {
+            currentplayer.balance += 200;
+        }
+        currentplayer.position = 20;
+    }
+    else if (nb == 8){
+        printf("Vos placements vous rapporte 200%c", 0x24);
+        currentplayer.balance += 50;
+    }
+    else if (nb == 9){
+        char choix =' ';
+        printf("Payer 10%c ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance", 0x24);
+        scanf("%s", choix);
+        if (choix == '1')
+        {
+            currentplayer.balance -= 10;
+        }
+        else
+        {
+            communaute(currentplayer,listeTerrain);
+        }
+    }
+    else if (nb == 10)
+    {
+        printf("Payez 20%c d'impots", 0x24);
+        currentplayer.balance -= 20;
+    }
+    else if (nb == 11)
+    {
+        printf("Vous achetez une nouvelle voiture. Payez 50%c", 0x24);
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 12)
+    {
+        printf("Vous etes top un Deezer. Recevez 25%c", 0x24);
+        currentplayer.balance += 25;
+    }
+    else if (nb == 13)
+    {
+        printf("Vous gagnez 500%c au loto", 0x24);
+        currentplayer.balance += 500;
+
+    }
+    else if (nb == 14)
+    {
+        printf("Vous prenez des cours de piano. Payez 50%c", 0x24);
+        currentplayer.balance -= 50;
+    }
+    else if (nb == 15)
+    {
+        printf("Vous faites une pub. ReceveZ 50%c", 0x24);
+        currentplayer.position = 0;
+        currentplayer.balance += 200;
+    }
+    else
+    {
+        printf("Vous recevez la recompensede revelation de l'annee. Recevez 50%c", 0x24);
+        currentplayer.balance += 50;
+    }
+
