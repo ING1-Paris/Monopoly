@@ -1623,13 +1623,10 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
         {
             if (currentplayer.ownedField[i] == 1)
             {
-                if (currentplayer.ownedField[i] == 1)
-                {
-                    prix +=10;
-                }
+                prix +=10;
             }
-            printf("Vous avez payer %d$ taxes",prix);
-            currentplayer.balance -= prix;
+        printf("Vous avez payer %d$ taxes",prix);
+        currentplayer.balance -= prix;
         }
     }
     else if (nb == 11)
@@ -1642,7 +1639,7 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
             {
                 if (listeTerrain[i].hotel == true)
                 {
-                reparation += 50;
+                    reparation += 50;
                 }
             }
         }
