@@ -1618,11 +1618,11 @@ joueur communaute(joueur currentplayer, terrain *listeTerrain){
     }
     else if (nb == 10)
     {
-        printf("Payez 20%c d'impots pour chacun de vos terrain",0x24);
+        printf("Payez 10%c d'impots pour chacun de vos terrain",0x24);
         int prix=0;
         for (int i  = 0; i<26; i++)
         {
-            if (currentplayer.ownedField[i] == 1)
+            if (currentplayer.ownedField[i] != 0)
             {
                 prix +=10;
             }
