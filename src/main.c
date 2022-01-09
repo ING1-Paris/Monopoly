@@ -65,10 +65,6 @@ int pioche()
             }
         }while (pioche[i] == 0);
     }
-    /*for (int i = 0; i< 16; i++
-    {
-        printf(" djk %d\n",pioche[i]);
-    }*/
     return pioche;
 }
 
@@ -768,7 +764,7 @@ void infoAlbum(terrain field) {  // fonction affichant toutes les infos d'un alb
     }
     gotoligcol(32, 20);
     printf("La valeur de la revente est estimee a %d%c", field.val_hypoth, 0x24);
-    do{gotoligcol(33,20); printf("Pour revenir au tour, appuyez sur 1 : "); 
+    do{gotoligcol(33,20); printf("Pour revenir au tour, appuyez sur 1 : ");
     scanf("%d", &revenir);}while(revenir != 1);
 }
 
@@ -1367,12 +1363,12 @@ void faireSauvegarde(joueur ** listePlayers, joueur* currentplayer, terrain* lis
     FILE *pf = fopen("data/save1.txt", "w");
     if (pf == NULL) {
         printf("Erreur d'ouverture de fichier.");
-    } 
+    }
 
     for (int i=0; i<22; i++){
         fprintf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", listeTerrain[i].id, listeTerrain[i].defaultPrice,
         listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
-        listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings, 
+        listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
         listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
         if (listeTerrain[i].owned == false){
             fprintf(pf, " false");
@@ -1436,8 +1432,10 @@ int main() {
     return 0;
 }
 
-/*void communaute(joueur currentplayer, terrain *listeTerrains, JCP QUOI METTRE POUR QUE CA MARCHE MAIS C'EST LA LISTE CREE PAR PIOCHE()){
-    nb = liste[]
+void communaute(joueur currentplayer, terrain *listeTerrain){
+    int nb;
+    const int min = 1, max = 16;
+    nb = (rand() % max) + min;
     if (nb == 1){
         printf("Vous achetez des streams. Versez 50$ a la banque");
         currentplayer.balance -= 50;
@@ -1474,10 +1472,11 @@ int main() {
         printf("Vous signez un nouveau label. Recevez 200$");
         currentplayer.balance += 200;
     }
-    else if (nb == 10){
+    else if (nb == 10)
+    {
         printf("Payez 20$ d'impots pour chacun de vos terrain");
         int prix=0;
-        for (int i  == 0; i<26; i++)
+        for (int i  = 0; i<26; i++)
         {
             if (currentplayer.ownedField[i] == 1)
             {
@@ -1489,10 +1488,12 @@ int main() {
             printf("Vous avez payer %d$ taxes",prix);
             currentplayer.balance -= prix;
         }
-    else if (nb == 11){
+    }
+    else if (nb == 11)
+    {
         int reparation = 0;
         printf("Payer 50$ de réparation sur chacun de vos hotels.");
-        for (int i == 0; i<22;i++)
+        for (int i = 0; i<22;i++)
         {
             if (listeTerrain[i].ownedBy == currentplayer.id)
             {
@@ -1504,6 +1505,7 @@ int main() {
         }
         printf("Vous avez payez %d reparation",reparation);
         currentplayer.balance += reparation;
+    }
     else if (nb == 12)
     {
         printf("Allez en prison");
@@ -1512,7 +1514,7 @@ int main() {
     }
     else if (nb == 13)
     {
-        char choix = '';
+        char choix =' ';
         printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance");
         scanf("%s", choix);
         if (choix == '1')
@@ -1521,7 +1523,7 @@ int main() {
         }
         else
         {
-            chance(joueur currentplayer);
+            chance(currentplayer,listeTerrain);
         }
     }
     else if (nb == 14)
@@ -1541,13 +1543,15 @@ int main() {
         currentplayer.balance -= 50;
     }
 
-} */
+}
+// bonjour
 
-
-    /*void chance(joueur currentplayer, terrain *listeTerrains,JCP QUOI METTRE POUR QUE CA MARCHE MAIS C'EST LA LISTE CREE PAR PIOCHE()){
-    
+    void chance(joueur currentplayer, terrain *listeTerrain){
+    int nb;
+    const int min = 1, max = 16;
+    nb = (rand() % max) + min;
     if (nb == 1){
-        printf("Allez a la case depart")
+        printf("Allez a la case depart");
         currentplayer.balance += 200;
         currentplayer.position = 0;
     }
@@ -1556,7 +1560,7 @@ int main() {
         currentplayer.balance += 100;
     }
     else if (nb == 3){
-        printf("Allez en prison")
+        printf("Allez en prison");
         currentplayer.position = 10;
         currentplayer.inJail = true;
     }
@@ -1589,22 +1593,23 @@ int main() {
         currentplayer.balance += 50;
     }
     else if (nb == 9){
-        char choix = '';
-            printf("Payer 10%c ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance", 0x24);
-            scanf("%s", choix);
-            if (choix == '1')
-            {
-                currentplayer.balance -= 10;
-            }
-            else
-            {
-                communaute(joueur currentplayer);
-            }
-    }
-    else if (nb == 10){
-        printf("Payez 20%c d'impots", 0x24)
-            currentplayer.balance -= 20;
+        char choix =' ';
+        printf("Payer 10%c ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance", 0x24);
+        scanf("%s", choix);
+        if (choix == '1')
+        {
+            currentplayer.balance -= 10;
         }
+        else
+        {
+            communaute(currentplayer,listeTerrain);
+        }
+    }
+    else if (nb == 10)
+    {
+        printf("Payez 20%c d'impots", 0x24);
+        currentplayer.balance -= 20;
+    }
     else if (nb == 11)
     {
         printf("Vous achetez une nouvelle voiture. Payez 50%c", 0x24);
@@ -1636,6 +1641,5 @@ int main() {
     {
         printf("Vous recevez la recompensede revelation de l'annee. Recevez 50%c", 0x24);
         currentplayer.balance += 50;
-    }*/
+    }
 
-    
