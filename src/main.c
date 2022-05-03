@@ -34,91 +34,35 @@ int lancerDe() {
     nb = (rand() % max) + min;
     return nb;
 }
-
-int creerPiocheCommu()
-{
+/*
+int pioche() {
     srand(time(NULL));
-    int nb = 0;
-    int compteur = 0;
     int pioche[16];
-    for (int i = 0; i< 16; i++)
-    {
+    for (int i = 0; i <= 16; i++) {
         pioche[i] = 0;
     }
-    FILE* pf = fopen("data/piocheCommu.txt", "w");
-    if (pf == NULL)
-    {
-        printf("Erreur d'ouverture de fichier.");
-    }
-    else
-    {
-        for (int i = 0; i< 16; i++)
-        {
-            do
-            {
-                compteur = 0;
-                nb = (rand() % 16) + 1;
-                for(int j = 0; j <16; j++)
-                {
-                    if (pioche[j] == nb)
-                    {
-                        compteur += 1;
-                    }
-                }
-                if (compteur == 0)
-                {
-                pioche[i]= nb;
-                }
-            }while (pioche[i] == 0);
-            fprintf(pf, "%d ",pioche[i]);
-        }
-    }
-    fclose(pf);
-    pf = NULL;
-    return 0;
-}
-int creerPiocheChance()
-{
-    srand(time(NULL));
     int nb = 0;
     int compteur = 0;
-    int pioche[16];
-    for (int i = 0; i<= 16; i++)
-    {
-        pioche[i] = 0;
-
-    }
-    FILE* pf = fopen("data/piocheChance.txt", "w");
-    if (pf == NULL)
-    {
-        printf("Erreur d'ouverture de fichier.");
-    }
-    else
-    {
-        for (int i = 0; i< 16; i++)
-        {
-            do
-            {
-                compteur = 0;
-                nb = (rand() % 16) + 1;
-                for (int j = 0; j <16; j++)
-                {
-                    if (pioche[j] == nb)
-                    {
-                        compteur += 1;
-                    }
+    for (int i = 0; i < 16; i++) {
+        do {
+            compteur = 0;
+            nb = (rand() % 16) + 1;
+            for (int j = 0; j < 16; j++) {
+                if (pioche[j] == nb) {
+                    compteur += 1;
                 }
-                if (compteur == 0)
-                {
-                pioche[i]= nb;
-                }
-            }while (pioche[i] == 0);
-        }
+            }
+            if (compteur == 0) {
+                pioche[i] = nb;
+            }
+        } while (pioche[i] == 0);
     }
-    fclose(pf);
-    pf = NULL;
-    return 0;
-}
+    for (int i = 0; i< 16; i++
+    {
+        printf(" djk %d\n",pioche[i]);
+    }
+    return pioche;
+}*/
 
 void showLogo() {
     gotoligcol(0, 0);
@@ -336,67 +280,6 @@ void ifHypotheque(terrain album) {  // fonction vérifiant si une case est hypot
     Color(15, 0);
 }
 
-void ifFaillite (joueur** listePlayers){
-    for (int i = 0; i < 4; i++){
-        if (listePlayers[i]->balance <= 0 && listePlayers[i]->ownedField[0] == 0){
-            listePlayers[i]->bankruptcy = true;
-        }
-    }
-}
-
-bool finDuJeu(joueur* listePlayers, int nbJoueurs){
-    gotoligcol(25, 60);
-    switch(nbJoueurs){
-        case 2 : 
-        if (listePlayers[0].bankruptcy == true){
-            printf("Le joueur 2 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[1].bankruptcy == true){
-            printf("Le joueur 1 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        }
-        break;
-
-        case 3 : 
-        if (listePlayers[0].bankruptcy == true && listePlayers[1].bankruptcy == true){
-            printf("Le joueur 3 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[1].bankruptcy == true && listePlayers[2].bankruptcy == true){
-            printf("Le joueur 1 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[0].bankruptcy == true && listePlayers[2].bankruptcy == true){
-            printf("Le joueur 2 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        }
-        break;
-
-        case 4 :
-        if (listePlayers[0].bankruptcy == true && listePlayers[1].bankruptcy == true && listePlayers[2].bankruptcy == true){
-            printf("Le joueur 4 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[1].bankruptcy == true && listePlayers[2].bankruptcy == true && listePlayers[3].bankruptcy == true){
-            printf("Le joueur 1 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[0].bankruptcy == true && listePlayers[1].bankruptcy == true && listePlayers[3].bankruptcy == true){
-            printf("Le joueur 3 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        } else if (listePlayers[0].bankruptcy == true && listePlayers[2].bankruptcy == true && listePlayers[3].bankruptcy == true){
-            printf("Le joueur 2 remporte la victoire !");
-            animation(26, 65, 500, 15);
-            return true;
-        }
-    }
-    return false;
-}
-
 void acheterTerrainJ(joueur *currentplayer, terrain album) {  // fonction d'achat d'un terrain --> partie joueur
     int i = 0;
     (currentplayer)->balance -= album.defaultPrice;
@@ -404,23 +287,30 @@ void acheterTerrainJ(joueur *currentplayer, terrain album) {  // fonction d'acha
         i++;
     }
     currentplayer->ownedField[i] = album.id;
-    gotoligcol(32, 15);
     printf("Terrain achete : %s  -  %d", album.nom, album.id);
     Sleep(500);
 }
 
 void updateTour(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, int nbJoueurs) {
-    joueur *player = listePlayers[currentPlayer];
+    joueur player = (*listePlayers)[currentPlayer];
+
     clearScreen();
     gotoligcol(6, 15);
-    printf("Solde du joueur %s : %d%c", (player)->username, (player)->balance, 0x24);
+    printf("Solde du joueur %s : %d", (player).username, (player).balance);
+
+    //system("pause");
+
     plateauGraphique(listeTerrain);
+
+    //showJoueur(*listePlayers);
+
     afficherJoueurPlateau(listePlayers, listeTerrain, listeCases, nbJoueurs);
     for (int n = 0; n < 22; n++) {
         terrainAchete(*listePlayers, listeTerrain[n]);
         ifHypotheque(listeTerrain[n]);
         batiments(listeTerrain[n]);
     }
+    //system("pause");
 }
 
 void acheterTerrainT(joueur *currentplayer, terrain *album) {  // fonction d'achat d'un terrain --> partie terrain
@@ -429,136 +319,17 @@ void acheterTerrainT(joueur *currentplayer, terrain *album) {  // fonction d'ach
 }
 
 void acheterMaisonT(joueur *currentplayer, terrain *album) {  // fonction d'achat d'une maison --> partie terrain
-    if (album->buildings == 4){
-        album->hotel = true;
-    } else {
-        album->buildings += 1;
-    }
+    album->buildings += 1;
 }
 
 void acheterMaisonJ(joueur *currentplayer, terrain album) {  // fonction d'achat d'une maison --> partie joueur
     currentplayer->balance -= album.housePrice;
 }
 
-void vendreMaisonJ(joueur *currentplayer, terrain album, int nbMaisons) { // fonction de vente d'une maison -> partie joueur
-    if (album.hotel == true){
-        currentplayer->balance += (album.housePrice)/2;
-    }
-    currentplayer->balance += (album.housePrice)/2;
-}
-
-int vendreMaisonJ2(terrain album, int nbMaisons) { // fonction de vente d'une maison -> partie joueur / partie 2
-    int argentFait = 0;
-    if (album.hotel == true){
-        argentFait += (album.housePrice/2);
-    }
-    argentFait += ((album.housePrice)/2)*nbMaisons;
-    return argentFait;
-}
-
-void vendreMaisonT(joueur *currentplayer, terrain* album, int nbMaisons) { // vente maisons -> partie terrain
-    if (album->hotel == true){
-        album->hotel = false;
-    }
-    album->buildings -= nbMaisons;
-}
-
-void hypothequerTerrainT(joueur *currentplayer, terrain* listeAlbums, terrain album) { // hypothèque d'un terrain -> partie terrain
-    int couleurAlbum = album.couleur;
-    for (int i=0; i<22; i++){
-        if (listeAlbums[i].couleur == couleurAlbum){
-            if (listeAlbums[i].ownedBy == currentplayer->id && listeAlbums[i].buildings > 0){
-                vendreMaisonT(currentplayer, &listeAlbums[i], listeAlbums[i].buildings);
-                vendreMaisonJ(currentplayer, listeAlbums[i], listeAlbums[i].buildings);
-            }
-        }
-    }
-    album.hypotheque = true;
-}
-
-void hypothequerTerrainJ(joueur *currentplayer, terrain album){ // hypothèque d'un terrain -> partie joueur
-    vendreMaisonJ(currentplayer, album, album.buildings);
-    currentplayer->balance += album.val_hypoth;
-}
-
-int hypothequerTerrain2 (terrain album){ // hypothèque d'un terrain -> partie renvoi argent
-    int argentFait = 0;
-    argentFait += album.val_hypoth;
-    return argentFait;
-}
-
-void leverHypotheque(joueur *currentplayer, terrain album){ // lever l'hypothèque
-    if (album.hypotheque == true){
-        currentplayer->balance -= album.val_hypoth+(album.val_hypoth*10/100);
-    }
-}
-
-int compterArgent(joueur* currentPlayer, terrain* listeTerrain){
-    int argentTotal, compteur, idTerrain = 0;
-    argentTotal += currentPlayer->balance;
-    joueur pcurrentplayer = *currentPlayer;
-
-    for (int i = 0; i < 26; i++){
-        if (pcurrentplayer.ownedField[i] != 0){
-            compteur += 1;
-            printf("%d", compteur);
-        }
-    }
-    for (int j=0; j<compteur; j++){
-        idTerrain = pcurrentplayer.ownedField[j];
-        argentTotal += vendreMaisonJ2(listeTerrain[idTerrain], listeTerrain[idTerrain].buildings);
-        printf("%d", argentTotal);
-        argentTotal += hypothequerTerrain2(listeTerrain[idTerrain]);
-        printf("%d", argentTotal);
-    }
-    return argentTotal;
-}
-
-void faillite(joueur *currentplayer, terrain *listeTerrain, int sommeApayer){
-    int argentRestant, i, venteTotale = 0;
-    argentRestant = compterArgent(currentplayer, listeTerrain);
-    printf("%d", argentRestant);
-    printf("%d", argentRestant);
-    printf("%d", argentRestant);
-    printf("%d", argentRestant);
-    printf("%d", argentRestant);
-    Sleep(1000);
-    if (argentRestant > sommeApayer){
-        while (venteTotale < sommeApayer){
-            venteTotale += vendreMaisonJ2(listeTerrain[i], listeTerrain[i].buildings);
-            venteTotale += hypothequerTerrain2(listeTerrain[i]);
-            hypothequerTerrainJ(currentplayer, listeTerrain[i]);
-            hypothequerTerrainT(currentplayer, listeTerrain, listeTerrain[i]);
-            i++;
-        }
-        currentplayer->balance += venteTotale;
-    } else if (argentRestant < sommeApayer){
-        currentplayer->balance = 0;
-        printf("%s n'a pas assez d'argent, il est hors course !", currentplayer->username);
-    }
-}
-
-void tourComplet(joueur* player){ // fonction qui repère si le joueur a fait un tour complet
-    if (player->position >= 40){
+void tourComplet(joueur *player) {  // fonction qui repère si le joueur a fait un tour complet
+    if (player->position >= 40) {
         player->position -= 40;
         player->balance += 200;
-    }
-}
-
-void acheterCarteSortie(joueur* detenteur, joueur* enprison){
-    int montant = 0;
-    char choix[10];
-    gotoligcol(20,15);
-    do{printf("%s, saisissez le prix voulu pour la carte : ", detenteur->username);
-    scanf("%d", &montant);}while(montant < 0);
-    gotoligcol(21,15);
-    do{printf("%s, acceptez-vous de payer ce prix ? Tapez 'Oui' ou 'Non' : ");
-    scanf("%s", choix);}while(choix != "Oui" && choix != "Non");
-    if (choix == "Oui"){
-        enprison->balance -= montant;
-        enprison->sortiePrison = true;
-        detenteur->balance += montant;
-        detenteur->sortiePrison = false;
     }
 }
 
@@ -626,7 +397,7 @@ void plateauGraphique(terrain *listeTerrains) {  // création du plateau de base
 }
 
 box *creationBox() {
-    box *listeCase = (box *)malloc(40 * sizeof(box));
+    box *listeCase = (box *)calloc(40, sizeof(box));
 
     box tempBox;
 
@@ -661,7 +432,7 @@ box *creationBox() {
 }
 
 terrain *creationTerrain() {  // création d'une instance (un album)
-    terrain *listeTerrain = (terrain *)malloc(23 * sizeof(terrain));
+    terrain *listeTerrain = (terrain *)calloc(23, sizeof(terrain));
 
     terrain instance;
 
@@ -714,14 +485,12 @@ terrain *creationTerrain() {  // création d'une instance (un album)
     return listeTerrain;
 }
 
-int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar) {
+int choixAvatar(int nbJoueurs, int currentPlayer, int *) {
     bool end = false;
     int av;
     int key, c;
     int avatar[10] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x0B, 0x0C, 0x0E, 0x0F};
-    int avatarUtilise[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int selection = 0;
-    int useAvatar = 0;
     showCursor(false);
     display();
     printf("Veuillez choisir votre avatar");
@@ -739,8 +508,6 @@ int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar) {
                         selection = selection - 1;
                     }
                     printf("%c", avatar[selection]);
-                    clearCoords(5,15,50,16);
-                    useAvatar = 0;
                     break;
 
                 case 77:
@@ -748,20 +515,9 @@ int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar) {
                         selection++;
                     }
                     printf("%c", avatar[selection]);
-                    clearCoords(5,15,50,16);
-                    useAvatar = 0;
                     break;
                 case 13:
-                        for (int j = 0; j < 4; j++) {
-                            if (avatar[selection] == numAvatar[j]) {
-                                useAvatar += 1;
-                            }
-                    }
-                    if (useAvatar > 0) {
-                        gotoligcol(15,5);
-                        printf("Impossible, cet avatar est deja utilise.");
-                        useAvatar = 0;
-                    } else {end = true;}
+                    end = true;
                     break;
                     /* Pour vérifier si l'avat est déjà pris
                         av = avatar[selection];
@@ -798,6 +554,7 @@ int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar) {
             }
         }
     }
+
     gotoligcol(18, 5);
     printf("Selection enregistree");
     animation(20, 0, 50, 28);
@@ -818,18 +575,12 @@ int choixAvatar(int nbJoueurs, int currentPlayer, int *numAvatar) {
 }
 
 joueur *creationDesJoueurs(int nombreDeJoueurs) {
-    int emptyCard[10];
-    int emptyField[26];
-    char pseudo[10];
-    //int *avatarUtilise = (int *)calloc(4, sizeof(int));
-    int avatarUtilise[4] = {0, 0, 0, 0};
+    joueur *listeJoueurs = malloc(4 * sizeof(joueur));
 
-    joueur *listeJoueurs = (joueur *)malloc(4 * sizeof(joueur));
-
-    joueur tempJ1 = {1, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0, 0};
-    joueur tempJ2 = {2, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0, 0};
-    joueur tempJ3 = {3, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0, 0};
-    joueur tempJ4 = {4, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0, 0};
+    joueur tempJ1 = {1, 1500, "0", -1, {0}, false, false, false, false, 0, 0, 0};
+    joueur tempJ2 = {2, 1500, "0", -1, {0}, false, false, false, false, 0, 0, 0};
+    joueur tempJ3 = {3, 1500, "0", -1, {0}, false, false, false, false, 0, 0, 0};
+    joueur tempJ4 = {4, 1500, "0", -1, {0}, false, false, false, false, 0, 0, 0};
 
     listeJoueurs[0] = tempJ1;
     listeJoueurs[1] = tempJ2;
@@ -838,16 +589,9 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
 
     for (int i = 0; i < nombreDeJoueurs; i++) {
         display();
-        printf("Entrez le nom du joueur %d (10 caracteres maximum): ", i + 1);
-        scanf("%s", pseudo);
-        while (strlen(pseudo) > 10) {
-            printf("\nImpossible, le pseudo doit avoir moins de 10 caracteres :\n>> ");
-            fflush(stdin);
-            scanf("%s", pseudo);
-        }
-        strcpy(listeJoueurs[i].username, pseudo);
-        listeJoueurs[i].avatar = choixAvatar(nombreDeJoueurs, 1, avatarUtilise);
-        avatarUtilise[i] = listeJoueurs[i].avatar;
+        printf("Entrez le nom du joueur %d : ", i + 1);
+        scanf("%s", listeJoueurs[i].username);
+        listeJoueurs[i].avatar = choixAvatar(nombreDeJoueurs, 1);
         listeJoueurs[i].position = 0;
     }
 
@@ -862,21 +606,16 @@ joueur *creationDesJoueurs(int nombreDeJoueurs) {
 
     animation(20, 0, 75, 50);
 
-    //free(avatarUtilise);
-
     return listeJoueurs;
 }
 
 int demanderNbJoueurs() {  // fonction demandant et renvoyant le nombre de joueurs
     int nbJoueur = 0;
     display();
-    printf("Veuillez entrer le nombre de joueurs (entre 2 et 4 inclus) : ");
-    scanf("%d", &nbJoueur);
-    while ((nbJoueur != 2) && (nbJoueur != 3) && (nbJoueur != 4)) {
-        printf("\nLa valeur saisie est invalide (entre 2 et 4 inclus) :\n>> ");
-        fflush(stdin);
+    do {
+        printf("Veuillez entrer le nombre de joueurs (entre 2 et 4): ");
         scanf("%d", &nbJoueur);
-    }
+    } while (nbJoueur < 2 || nbJoueur > 4);
     return nbJoueur;
 }
 
@@ -907,17 +646,13 @@ void home() {  // menu principal du jeu
 
     gotoligcol(19, 0);
     Color(15, 0);
-
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
-    fflush(stdin);
     scanf("%d", &choice);
 
-    while ((choice != 1) && (choice != 2) && (choice != 3) && (choice != 4) && (choice != 5) && (choice != 6)) {
-        printf("\nVotre saisie (%d) n'est pas valide. Valeur attendue : 1, 2, 3, 4, 5 ou 6.\nVeuillez entrer un chiffre a nouveau >> ", choice);
-        fflush(stdin);
+    while (choice < 1 || choice > 6) {
+        printf("Votre saisie (%d) n'est pas valide. Veuillez entrer un chiffre a nouveau : \n", choice);
         scanf("%d", &choice);
     }
-
     switch (choice) {
         case 1:
             clearScreen();
@@ -962,16 +697,13 @@ void homeInGame(joueur **listePlayers, joueur *currentplayer, terrain *listeTerr
     gotoligcol(19, 0);
     Color(15, 0);
     printf("--> Que choisissez-vous de faire ? Tapez un chiffre : ");
-    fflush(stdin);
     scanf("%d", &choice);
 
-    while ((choice != 1) && (choice != 2) && (choice != 3) && (choice != 4) && (choice != 5) && (choice != 6)) {
+    while (choice < 1 || choice > 6) {
         gotoligcol(20, 0);
         printf("Votre saisie (%d) n'est pas valide. Veuillez entrer un chiffre a nouveau : \n", choice);
-        fflush(stdin);
         scanf("%d", &choice);
     }
-
     switch (choice) {
         case 1:
             clearScreen();
@@ -983,9 +715,6 @@ void homeInGame(joueur **listePlayers, joueur *currentplayer, terrain *listeTerr
             printf("La partie a ete sauvegarde !");
             Sleep(2000);
             homeInGame(listePlayers, currentplayer, listeTerrain, nbJoueurs, rejouer, nbTours);
-            break;
-        case 3 :
-            chargerSauvegarde();
             break;
         case 4:
             clearScreen();
@@ -1000,12 +729,12 @@ void homeInGame(joueur **listePlayers, joueur *currentplayer, terrain *listeTerr
 
 void infoAlbum(terrain field) {  // fonction affichant toutes les infos d'un album
     int revenir = 0;
-    clearCoords(15,22,90,33);
+    clearCoords(15, 22, 90, 32);
     gotoligcol(23, 20);
     printf("Album : %s", field.nom);
     gotoligcol(24, 20);
     if (field.owned == true) {
-        printf("L'album appartient au joueur %d", field.ownedBy);
+        printf("L'album appartient a %s", field.ownedBy);
     } else {
         printf("L'album n'appartient a personne.");
     }
@@ -1051,7 +780,7 @@ void retourMenuInGame(joueur **listePlayers, joueur *currentplayer, terrain *lis
 }
 
 void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; accessible via le menu principal
-    int sortie;
+    char sortie;
     printf("REGLESREGLELGERESLRE       SELGERSELGERSELGERSEL          REGLESREGLESERGE     REG	       SELGERSELGERSELGERSEL          REGLESREGLES");
     printf("\nSEL              REG       REL    	               REGLES		       SER	       REG                         REGLES");
     printf("\nREG               REG      SEL                      REGLES    		       REG	       SEL                     REGLES");
@@ -1073,7 +802,6 @@ void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; access
     printf("\n\n 3 - Prison : \nLe joueur doit aller en prison s'il fait trois doubles de suite, s'il tire une carte chance lui disant d'aller en prison ou s'il tombe sur la case DRAMA.");
     printf("\nPour sortir de prison le joueur doit faire un double lors de son tour, avoir eu une carte chance lui permettant de sortir de prison ou bien payer 50%c. Au bout de 3 tours, il est oblige de payer 50%c pour sortir.", 0x24, 0x24);
     printf("\nLorsqu'il est envoye en prison, s'il passe par la case depart, le joueur ne recoit pas l'argent qui lui est du.");
-    printf("\nLes cartes Sortie de Prison et Denonciation sont utilisables qu'une seule fois par partie");
     printf("\n\n 4 - Album : \nLorsqu'un joueur tombe sur une case 'album', il :\n    - peut l'acheter s'il a l'argent necessaire pour le faire et si elle n'appartient a personne.");
     printf("\n    - peut acheter des maisons si l'emplacement est deja a lui ou acheter un hotel s'il y a deja 4 maisons sur ce terrain.\n    - doit payer un loyer si l'emplacement appartient a un adversaire.");
     printf("\n    - n'a aucun loyer a payer si la propriete appartient a un adversaire mais est hypothequee.");
@@ -1084,16 +812,10 @@ void regles() {  // affichage des règles du jeu : exit avec lettre 'a' ; access
     printf("\n\n 6 - Faillite :\nS'il ne peut plus payer, a la banque ou a un autre joueur, la somme qu'il leur doit, le joueur est en faillite et est elimine.");
     printf("\nIl doit donner tout ce qu'il lui reste a la personne a qui il doit de l'argent.\nLorsqu'il legue des biens hypotheques, le creancier doit immediatemment payer une taxe de 10%c a la banque, et a ensuite le choix de lever l'hypotheque immediatemment ou bien d'attendre plusieurs tours mais il devra repayer les interets a la banque.", 0x25);
     printf("\nSi le joueur doit l'argent a la banque, tous ses biens sont donnes a cette derniere.");
-    
-    printf("\nTapez 1 pour revenir au menu >> ");
-    scanf("%d",&sortie);
-    while (sortie != 1) {
-        printf("\nChoix invalide >> ");
-        fflush(stdin);
-        scanf("%d",&sortie);
-    }
-    printf("REVENIR A HOME IN GAME");
-    Sleep(2500);
+    do {
+        printf("\n\nPour revenir au menu principal, appuyez sur la touche 'a'. ");
+        scanf("%c", &sortie);
+    } while (sortie != 'a');  // à régler, ça print 2 fois pour x raison
 }
 
 void credits() {  // affichage des crédits du jeu : exit avec lettre 'a' ; accessible via le menu principal
@@ -1136,13 +858,10 @@ void credits() {  // affichage des crédits du jeu : exit avec lettre 'a' ; acce
     gotoligcol(22, 64);
     printf("Augustin Mouton");
     Color(15, 0);
-    printf("\nTapez 1 pour revenir au menu >> ");
-    scanf("%d",&sortie);
-    while (sortie != 1) {
-        printf("\nChoix invalide >> ");
-        fflush(stdin);
-        scanf("%d",&sortie);
-    }
+    do {
+        printf("\n\n\nPour revenir au menu principal, appuyez sur la touche 'a'. ");
+        scanf("%c", &sortie);
+    } while (sortie != 'a');  // à régler, ça print 2 fois pour x raison
     retourMenu();
 }
 
@@ -1165,163 +884,109 @@ int cartePrisonEnJeu(joueur **listePlayers) {
 }
 
 void deplacement(joueur *player, int sommeDe) {
+
     gotoligcol(21, 50);
-    printf("Deplacer %s de la case %d a la case %d.", player->username, player->position, (player->position + sommeDe));
+    printf("Deplacer %s de la case %d a la case %d.", player->username, player->position, (player->position + sommeDe) % 40);
     Sleep(2000);
     (player)->position += sommeDe;
+    return player;
 }
 
 void tourPartie2(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
     updateTour(listeTerrain, listePlayers, listeCases, currentPlayer, nbJoueurs);
+    int terrainactuel, choix, proprietaire, nbMaisons, idalbum, loyer = 0;
+
+    joueur player = (*listePlayers)[currentPlayer];
+
     Color(15, 0);
-    int terrainactuel, choix, proprietaire, nbMaisons, idalbum, loyer, compteur, argentRestant = 0;
-    joueur *player = listePlayers[currentPlayer];
     gotoligcol(6, 120);
     printf("Tour n%c%d", 0xF8, nbTours);
     gotoligcol(6, 15);
-    printf("Solde du joueur %s : %d%c", (player)->username, (player)->balance, 0x24);
-    if ((player)->position == 36 || (player)->position == 7 || (player)->position == 22) {  // cases chance
+    printf("Solde du joueur %s : %d", (player).username, (player).balance);
+    if ((player).position == 36 || (player).position == 7 || (player).position == 22) {  // cases chance
         gotoligcol(26, 15);
-        *player = chance(*player);
-    } else if ((player)->position == 2 || (player)->position == 17 || (player)->position == 33) {  // cases communauté
+        printf("APPELER LA FONCTION caseChance()");
+    } else if ((player).position == 2 || (player).position == 17 || (player).position == 33) {  // cases communauté
         gotoligcol(26, 15);
-        *player = communaute(*player, listeTerrain);
-    } else if ((player)->position == 4 || (player)->position == 12 || (player)->position == 28 || (player)->position == 38) {  // cases sacem
-        player->balance -= 200;
-        //argentRestant = compterArgent(player, listeTerrain);
-        //printf("%d", argentRestant);
-        //Sleep(2000);
-        //faillite(player, listeTerrain, 200);
-    } else if ((player)->position == 20 || (player)->position == 0) {  // case soundcloud (stationnement libre)
+        printf("APPELER LA FONCTION caseCommunaute()");
+    } else if ((player).position == 4 || (player).position == 12 || (player).position == 28 || (player).position == 38) {  // cases sacem
+        player.balance -= 200;
+    } else if ((player).position == 20 || (player).position == 0) {  // case soundcloud (stationnement libre)
         gotoligcol(26, 15);
         printf("Reposez vous bien !");
-    } else if ((player)->position == 30) {  // case drama
+    } else if ((player).position == 30) {  // case drama
         gotoligcol(26, 15);
         printf("A cause d'une polemique, vous etes finito ...");
-        (player)->position = 10;
-        player->inJail = true;
-    } else if ((player)->position == 10) {  // case prison
+        (player).position = 10;
+    } else if ((player).position == 10) {  // case prison
         gotoligcol(26, 15);
-        printf("Vous rendez visite a un ami en prison.");
-    } else if ((player)->position == 5 || (player)->position == 15 || (player)->position == 25 || (player)->position == 35) {  // cases Zéniths
+        printf("%s est finito !", (player).username);
+    } else if ((player).position == 5 || (player).position == 15 || (player).position == 25 || (player).position == 35) {  // cases Zéniths
         gotoligcol(26, 15);
         printf("Case de repos.");
     } else {
         for (int i = 0; i < 22; i++) {
-            if (listeTerrain[i].idOnBoard == (player)->position) {
+            if (listeTerrain[i].idOnBoard == (player).position) {
                 terrainactuel = listeTerrain[i].id - 1;  // on récupère l'ID de l'album sur lequel le joueur est
             }
         }
         nbMaisons = listeTerrain[terrainactuel].buildings;
-        if (listeTerrain[terrainactuel].owned == true && listeTerrain[terrainactuel].ownedBy != (player)->id) {
-            if (listeTerrain[terrainactuel].hypotheque == true){
-                gotoligcol(25,15);
-                printf("Ce terrain est hypotheque, pas besoin de payer !");
-            } else {
-                proprietaire = listeTerrain[terrainactuel].ownedBy;
-                loyer = argentPaye(player, listeTerrain[terrainactuel]);
-                gotoligcol(25, 15);
-                printf("%s est chez %s !", (player)->username, listePlayers[proprietaire-1]->username);
-                gotoligcol(26, 15);
-                printf("%s doit lui verser %d%c", (player)->username, loyer, 0x24);
-                gotoligcol(27, 15);
-                if (player->balance-loyer < 0){
-                    //faillite(player, listeTerrain, loyer);
-                    if (player->balance == 0){
-                        printf("%s cede toute sa fortune a %s", (player)->username, listePlayers[proprietaire-1]->username);
-                        loyer = player->balance;
-                    }
-                } else {
-                    payerLoyerJ1(player, loyer);
-                }
-                animation(28, 15, 100, 15);
-                toucherLoyerJ2(listePlayers[proprietaire-1], loyer);
-            }
+        if (listeTerrain[terrainactuel].owned == true && listeTerrain[terrainactuel].ownedBy != (player).id) {
+            proprietaire = listeTerrain[terrainactuel].ownedBy;
+            loyer = argentPaye(&player, listeTerrain[terrainactuel]);
+            gotoligcol(25, 15);
+            printf("%s est chez %s !", (player).username, listePlayers[proprietaire - 1]->username);
+            gotoligcol(26, 15);
+            printf("%s doit lui verser %d%c", (player).username, loyer, 0x24);
+            // gotoligcol(28, 15);
+            // printf("Appuyez sur 'Entree' pour continuer.");
+            payerLoyerJ1(&player, loyer);
+            toucherLoyerJ2(listePlayers[proprietaire - 1], loyer);
         } else {
             gotoligcol(25, 15);
-            printf("%s peut maintenant :", (player)->username);
+            printf("%s peut maintenant :", (player).username);
             gotoligcol(26, 15);
             printf("1- Acheter la propriete");
             gotoligcol(27, 15);
             printf("2- Acheter une maison ou un hotel");
             gotoligcol(28, 15);
-            printf("3- Vendre une maison ou un hotel");
+            printf("3- Obtenir des informations sur un terrain");
             gotoligcol(29, 15);
-            printf("4- Obtenir des informations sur un terrain");
+            printf("4- Finir le tour et passer au joueur suivant");
             gotoligcol(30, 15);
-            printf("5- Finir le tour et passer au joueur suivant");
-            gotoligcol(31,15);
             printf(">> ");
-            fflush(stdin);
-            scanf("%d", &choix);
-            while ((choix != 1) && (choix != 2) && (choix != 3) && (choix != 4) && (choix != 5)) {
-                printf("Saisie invalide (Valeur attendue : 1, 2, 3, 4 ou 5)\n>> ");
-                fflush(stdin);
+            do {
                 scanf("%d", &choix);
-            };
+            } while (choix < 1 || choix > 4);
         }
         if (choix == 1) {
             terrainactuel = listeCases[terrainactuel].id;
-            if (listeTerrain[terrainactuel].ownedBy == player->id){
-                gotoligcol(32,15);
-                printf("Vous possedez deja ce terrain.");
-                Sleep(500);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-            }
-            if (player->balance-listeTerrain[terrainactuel].defaultPrice < 0){
-                gotoligcol(32,15);
-                printf("Vous n'avez pas assez d'argent. Revenez plus tard !");
-                Sleep(500);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-            } else {
-                acheterTerrainJ(player, listeTerrain[terrainactuel]);
-                acheterTerrainT(player, &listeTerrain[terrainactuel]);
-            }
+            acheterTerrainJ(&player, listeTerrain[terrainactuel]);
+            acheterTerrainT(&player, &listeTerrain[terrainactuel]);
         } else if (choix == 2) {
-            if (listeTerrain[terrainactuel].ownedBy != player->id) {
-                gotoligcol(32, 15);
-                printf("Vous n'etes pas proprietaire de ce terrain, veuillez choisir une autre option.");
-                Sleep(500);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-            } else if (player->balance-listeTerrain[terrainactuel].housePrice < 0) {
-                gotoligcol(32, 15);
-                printf("Vous n'avez pas assez d'argent. Revenez plus tard !");
-                Sleep(500);
+            if (listeTerrain[terrainactuel].ownedBy != player.id) {
+                gotoligcol(30, 15);
+                printf("Vous n'etes pas proprietaire de ce terrain, veuillez choisir une autre option : ");
                 tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
             } else {
-                acheterMaisonJ(player, listeTerrain[terrainactuel]);
-                acheterMaisonT(player, &listeTerrain[terrainactuel]);
+                acheterMaisonJ(&player, listeTerrain[terrainactuel]);
+                acheterMaisonT(&player, &listeTerrain[terrainactuel]);
             }
-        } else if (choix == 4) {
-            printf("Saisissez l'ID de l'album sur lequel vous souhaitez des informations :\n");
+        } else if (choix == 3) {
             do {
-                printf("De 1 a 22 inclus >> ");
+                gotoligcol(30, 15);
+                printf("Saisissez l'ID de l'album sur lequel vous souhaitez des informations : ");
                 scanf("%d", &idalbum);
             } while (idalbum < 1 || idalbum > 22);
             infoAlbum(listeTerrain[idalbum - 1]);
             tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-        } else if (choix == 5) {
+        } else if (choix == 4) {
             if (!rejouer) {
                 gotoligcol(26, 30);
                 printf("Passer au tour du joueur suivant");
             } else {
                 gotoligcol(26, 30);
                 printf("On fait rejouer le joueur");
-            }
-        } else if (choix == 3) {
-            if (listeTerrain[terrainactuel].ownedBy != player->id) {
-                gotoligcol(32, 15);
-                printf("Vous n'etes pas proprietaire de ce terrain, veuillez choisir une autre option.");
-                Sleep(500);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-            } else if (listeTerrain[terrainactuel].buildings == 0){
-                gotoligcol(32, 15);
-                printf("Il n'y a pas de maisons a vendre, veuillez choisir une autre option.");
-                Sleep(500);
-                tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
-            } else {
-                vendreMaisonJ(player, listeTerrain[terrainactuel], 1);
-                vendreMaisonT(player, &listeTerrain[terrainactuel], 1);
             }
         }
     }
@@ -1336,30 +1001,31 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     int choix1, choix2 = 0;
     int idJPrison = 0;  // id du potentiel joueur possédant une carte sortiePrison
     idJPrison = cartePrisonEnJeu(listePlayers);
-    joueur *player = listePlayers[currentPlayer];
+
+    joueur player = (*listePlayers)[currentPlayer];
+
     gotoligcol(6, 15);
-    printf("Solde du joueur %s : %d%c", player->username, player->balance, 0x24);
+    printf("Solde du joueur %s : %d", player.username, player.balance);
 
     gotoligcol(25, 15);
-    printf("C'est au tour de %s : il est en prison depuis %d tour(s).", (player)->username, (player)->timeInJail);
+    printf("C'est au tour de %s : il est en prison depuis %d tour(s).", (player).username, (player).timeInJail);
     gotoligcol(26, 15);
     printf("Il peut :");
     gotoligcol(27, 15);
     printf("1- Continuer le tour");
     gotoligcol(28, 15);
     printf("2- Retourner au menu");
+    gotoligcol(29, 15);
+    printf(">> ");
     do {
-        gotoligcol(29, 15);
-        printf(">> ");
         scanf("%d", &choix1);
     } while (choix1 < 1 || choix1 > 2);
     if (choix1 == 1) {                    // Continuer le tour
-        if ((player)->timeInJail == 3) {  // Si il est en prison depuis 3 tours
-            (player)->timeInJail = 0;
-            //faillite(player, listeTerrain, 50);
-            (player)->balance -= 50;
-            gotoligcol(28, 35);
-            printf("%s perd donc 50%c et peut a nouveau jouer normalement.", (player)->username, 0x24);
+        if ((player).timeInJail == 3) {  // Si il est en prison depuis 3 tours
+            (player).timeInJail = 0;
+            (player).balance -= 50;
+            gotoligcol(28, 15);
+            printf("%s perd donc 50%c et peut a nouveau jouer normalement.", (player).username, 0x24);
             gotoligcol(25, 15);
             tourNormal(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
         } else {  // Si il est en prison depuis moins de 3 tours
@@ -1368,127 +1034,157 @@ void tourPrison(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
             gotoligcol(28, 15);
             printf("2- Tenter d'obtenir un double");
             gotoligcol(29, 15);
-            if ((player)->sortiePrison == true) {
+            if ((player).sortiePrison == true) {
                 printf("3- Utiliser votre carte 'Sortie de prison'");
-                gotoligcol(30, 15);
-                printf(">> ");
-                scanf("%d", &choix2);
-                while (choix2 != 1 && choix2 != 2 && choix2 != 3) {
-                    gotoligcol(30, 15);
-                    printf("Saisie invalide >> ");
-                    fflush(stdin);
+                do {
                     scanf("%d", &choix2);
-                }
-            } else if (player->sortiePrison != true && idJPrison != 0) {
+                } while (choix2 < 1 || choix2 > 3);
+            } else if (player.sortiePrison != true && idJPrison != 0) {
                 printf("3- Acheter la carte du joueur %d", idJPrison);
-                gotoligcol(30, 15);
-                printf(">> ");
-                scanf("%d", &choix2);
-                while (choix2 != 1 && choix2 != 2 && choix2 != 3) {
-                    gotoligcol(30, 15);
-                    printf("Saisie invalide >> ");
-                    fflush(stdin);
+                do {
                     scanf("%d", &choix2);
-                }
+                } while (choix2 < 1 || choix2 > 3);
             }
             do {
-                gotoligcol(29,15);
-                printf(">> ");
                 scanf("%d", &choix2);
             } while (choix2 < 1 || choix2 > 2);
-            (player)->timeInJail += 1;
+            (player).timeInJail += 1;
             premierDe = lancerDe();
             deuxiemeDe = lancerDe();
             sommeDe = premierDe + deuxiemeDe;
             if (choix2 == 1) {
-                (player)->timeInJail = 0;
-               // faillite(player, listeTerrain, 50);
-                (player)->balance -= 50;
-                deplacement(player, sommeDe);
+                (player).timeInJail = 0;
+                (player).balance -= 50;
+                deplacement(&player, sommeDe);
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
-                    (player)->streakDouble += 1;
+                    (player).streakDouble += 1;
                     gotoligcol(10, 50);
-                    printf("%s a fait un double ! Il peut donc rejouer.", player->username);
+                    printf("%s a fait un double ! Il peut donc rejouer.", player.username);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                 } else {
-                    (player)->streakDouble = 0;
+                    (player).streakDouble = 0;
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
                 }
             } else if (choix2 == 2) {
                 if (premierDe == deuxiemeDe) {  // Si il fait un double
-                    (player)->timeInJail = 0;
-                    gotoligcol(31, 15);
-                    printf("%s a fait un double ! Il sort de prison et avance de %d cases.", (player)->username, sommeDe);
-                    deplacement(player, sommeDe);
+                    (player).timeInJail = 0;
+                    gotoligcol(28, 15);
+                    printf("%s a fait un double ! Il sort de prison et avance de %d cases.", (player).username, sommeDe);
+                    deplacement(&player, sommeDe);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
                 } else {
-                    gotoligcol(31, 15);
-                    printf("%s n'a pas fait de double et reste en prison...", (player)->username);
+                    gotoligcol(28, 15);
+                    printf("%s n'a pas fait de double et reste en prison...", (player).username);
                 }
-            } else if (choix2 == 3 && (player)->sortiePrison == true) {
-                (player)->timeInJail = 0;
+            } else if (choix2 == 3 && (player).sortiePrison == true) {
+                (player).timeInJail = 0;
                 gotoligcol(28, 15);
                 printf("%s a utilise sa carte et sort de prison");
-                deplacement(player, sommeDe);
+                deplacement(&player, sommeDe);
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
-                    (player)->streakDouble += 1;
+                    (player).streakDouble += 1;
                     gotoligcol(10, 50);
-                    printf("%s a fait un double ! Il peut donc rejouer.", player->username);
+                    printf("%s a fait un double ! Il peut donc rejouer.", player.username);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                 } else {
-                    (player)->streakDouble = 0;
+                    (player).streakDouble = 0;
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
                 }
-            } else if (choix2 == 3 && (player)->sortiePrison != true && idJPrison != 0) {
-                (player)->timeInJail = 0;
-                acheterCarteSortie(listePlayers[idJPrison], player);
-                deplacement(player, sommeDe);
+            } else if (choix2 == 3 && (player).sortiePrison != true && idJPrison != 0) {
+                (player).timeInJail = 0;
+                // fonction d'achat d'une carte sortie de prison d'un autre joueur
+                deplacement(&player, sommeDe);
                 if (premierDe == deuxiemeDe) {  // Si le joueur fait un double
-                    (player)->streakDouble += 1;
+                    (player).streakDouble += 1;
                     gotoligcol(10, 50);
-                    printf("%s a fait un double ! Il peut donc rejouer.", (player)->username);
+                    printf("%s a fait un double ! Il peut donc rejouer.", (player).username);
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                     tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                 } else {
-                    (player)->streakDouble = 0;
+                    (player).streakDouble = 0;
                     tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
                 }
             }
         }
     } else if (choix1 == 2) {
-        homeInGame(listePlayers, player, listeTerrain, nbJoueurs, rejouer, nbTours);
+        homeInGame(listePlayers, &player, listeTerrain, nbJoueurs, rejouer, nbTours);
     }
+}
+
+void acheterCarteSortie(joueur *detenteur, joueur *enprison) {
+    gotoligcol(20, 15);
+    printf("%s, saisissez une valeur");
 }
 
 void tourJoueur(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
     gotoligcol(6, 15);
-    joueur *player = listePlayers[currentPlayer];
-    printf("Solde du joueur %s : %d%c", (player)->username, (player)->balance, 0x24);
-    if (player->inJail == true) {
+    joueur player;
+
+    joueur *tempListPlayers;
+    tempListPlayers = *listePlayers;
+
+    player = tempListPlayers[currentPlayer];
+
+    //showJoueur(listePlayers);
+
+    printf("Solde du joueur %s : %d", (player).username, (player).balance);
+    if (player.position == 10) {
         tourPrison(listeTerrain, listePlayers, listeCases, currentPlayer, nbJoueurs, rejouer, nbTours);
     } else {
         tourNormal(listeTerrain, listePlayers, listeCases, currentPlayer, rejouer, nbJoueurs, nbTours);
     }
 }
 
+void showJoueur(joueur **listePlayers) {
+    //Function for debug
+
+    joueur p;
+    gotoligcol(0, 0);
+    Color(15, 0);
+    system("cls");
+    for (int i = 0; i < 4; i++) {
+        p = (*listePlayers)[i];
+
+        printf("ID : %d\n", p.id);
+        printf("Balance : %d\n", p.balance);
+        printf("Username : %s\n", p.username);
+        printf("Position : %d\n", p.position);
+        printf("Owned Field : %d\n", p.ownedField[0]);
+        printf("Carte prison : %d\n", p.sortiePrison);
+        printf("Carte denonciation : %d\n", p.carteDenonciation);
+        printf("En prison : %d\n", p.inJail);
+        printf("En faillite : %d\n", p.bankruptcy);
+        printf("Combo de : %d\n", p.streakDouble);
+        printf("Tour en prison : %d\n", p.timeInJail);
+        printf("Avatar : %c\n\n", p.avatar);
+    }
+    system("pause");
+}
+
 void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, int currentPlayer, bool rejouer, int nbJoueurs, int nbTours) {
     int premierDe, deuxiemeDe, sommeDe, choix = 0;
+
+    //showJoueur(*listePlayers);
+
+    joueur player = (*listePlayers)[currentPlayer];
+
+
     updateTour(listeTerrain, listePlayers, listeCases, currentPlayer, nbJoueurs);
+    
     Color(15, 0);
-    joueur *player = listePlayers[currentPlayer];
     gotoligcol(6, 120);
     printf("Tour n%c%d", 0xF8, nbTours);
     gotoligcol(6, 15);
-    printf("Solde du joueur %s : %d%c", (player)->username, (player)->balance, 0x24);
+    //printf("Solde du joueur %s : %d", (player)->username, (player)->balance);
 
     if (rejouer) {
         gotoligcol(25, 15);
-        printf("%s rejoue, il a fait un double :", (player)->username);
+        printf("%s rejoue, il a fait un double :", (player).username);
     } else {
         gotoligcol(27, 15);
-        printf("Tour de %s, options :", (player)->username);
+        printf("Tour de %s, options :", (player).username);
     }
 
     gotoligcol(28, 15);
@@ -1496,15 +1192,10 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
     gotoligcol(29, 15);
     printf("2- Retourner au menu");
     gotoligcol(30, 15);
-
     printf(">> ");
-    fflush(stdin);
-    scanf("%d", &choix);
-    while (choix != 1 && choix != 2) {
-        printf("\nSaisie invalide (1 ou 2) >> ");
-        fflush(stdin);
+    do {
         scanf("%d", &choix);
-    }
+    } while (choix < 1 || choix > 2);
 
     if (choix == 1) {
         premierDe = lancerDe();
@@ -1514,31 +1205,31 @@ void tourNormal(terrain *listeTerrain, joueur **listePlayers, box *listeCases, i
         printf("Premier de : %d", premierDe);
         gotoligcol(19, 50);
         printf("Deuxieme de : %d", deuxiemeDe);
-        if (premierDe == deuxiemeDe && (player)->position != 10) {  // Si le joueur fait un double
-            player->streakDouble += 1;
+        if (premierDe == deuxiemeDe && (player).position != 10) {  // Si le joueur fait un double
+            player.streakDouble += 1;
             gotoligcol(10, 50);
-            printf("%s a fait un double !", (player)->username);
-            if (player->streakDouble == 3) {  // Soit il en a fait 3 d'affilés alors il a des malus (prison etc)
+            printf("%s a fait un double !", (player).username);
+            if (player.streakDouble == 3) {  // Soit il en a fait 3 d'affilés alors il a des malus (prison etc)
                 printf("Le joueur a fait 3 doubles d'affilee.");
-                *player = doubleStreakLimite(*player);  // à vérifier
-            } else {                                    // Soit il n'en est pas à 3 et peut donc jouer 2 fois
+                player = doubleStreakLimite(player);  // à vérifier
+            } else {                                      // Soit il n'en est pas à 3 et peut donc jouer 2 fois
                 gotoligcol(16, 50);
                 printf("Le joueur a fait un double et peut donc rejouer");
                 Sleep(2000);
-                deplacement(player, sommeDe);
-                tourComplet(player);
+                deplacement(&player, sommeDe);
+                tourComplet(&player);
                 tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
                 tourJoueur(listeTerrain, listePlayers, listeCases, currentPlayer, true, nbJoueurs, nbTours);
             }
             // !
         } else {  // Si le joueur ne fait pas de double
-            (player)->streakDouble = 0;
-            deplacement(player, sommeDe);
-            tourComplet(player);
+            (player).streakDouble = 0;
+            deplacement(&player, sommeDe);
+            tourComplet(&player);
             tourPartie2(listeTerrain, listePlayers, listeCases, currentPlayer, false, nbJoueurs, nbTours);
         }
     } else if (choix == 2) {
-        homeInGame(listePlayers, player, listeTerrain, nbJoueurs, rejouer, nbTours);
+        homeInGame(listePlayers, &player, listeTerrain, nbJoueurs, rejouer, nbTours);
     }
 }
 
@@ -1546,30 +1237,34 @@ void newGame() {  // menu de création des joueurs, affiche le plateau de base
     const int nbJoueurs = demanderNbJoueurs();
     int i = 0;
     int nbTours = 1;
+
     joueur *pJoueurs = creationDesJoueurs(nbJoueurs);
+    
+
+    // showJoueur(pJoueurs);
     terrain *pTerrains = creationTerrain();
     box *bList = creationBox();
 
-    while (finDuJeu(pJoueurs, nbJoueurs) == false) {
-        creerPiocheCommu();
-        creerPiocheChance();
+    while (pJoueurs[0].balance > 0) {
         clearScreen();
         plateauGraphique(pTerrains);
+        afficherJoueurPlateau(&pJoueurs, pTerrains, bList, nbJoueurs);
         Color(15, 0);
-        joueur *joueuractuel = &pJoueurs[i];
+        
+        //joueur *joueuractuel = pJoueurs[i];
+
         tourJoueur(pTerrains, &pJoueurs, bList, i, false, nbJoueurs, nbTours);
         Color(15, 0);
         gotoligcol(7, 15);
-        printf("Position joueur : %d", (joueuractuel)->position);
+        //printf("Position joueur : %d", (joueuractuel)->position);
         nbTours += 1;
-        ifFaillite (&pJoueurs);
         i++;
         if (i >= nbJoueurs) {
             i = 0;
         }
         gotoligcol(22, 58);
         printf("C'est au tour de %s !", pJoueurs[i].username);
-        animation(23, 53, 100, 30);
+        animation(23, 53, 50, 30);
     }
     free(bList);
     free(pJoueurs);
@@ -1602,16 +1297,25 @@ int caseColorId(int id) {
 
 void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int nbJoueurs) {
     int posJoueur[4] = {-1, -1, -1, -1};
+    int tempPos;
 
     FILE *pf = fopen("data/output.txt", "w");
+
     if (pf == NULL) {
         printf("Erreur d'ouverture de fichier.");
     } else {
         fprintf(pf, "Le dossier a été ouvert\n\n");
     }
-    for (int i = 0; i < 4; i++) {
-        posJoueur[i] = (joueurs[i])->position;
+    
+    joueur joueurCurrent;
+
+    for (int i = 0; i < nbJoueurs; i++) {
+
+        tempPos = (*joueurs)[i].position;
+
+        posJoueur[i] = tempPos;
     }
+
     int pos1 = posJoueur[0], pos2 = posJoueur[1], pos3 = posJoueur[2], pos4 = posJoueur[3];
 
     int nbPos1 = 0, nbPos2 = 0, nbPos3 = 0, nbPos4 = 0;
@@ -1620,6 +1324,7 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
 
     for (int i = 0; i < 4; i++) {
         currentPos = posJoueur[i];
+        printf("currentPos : %d", currentPos);
 
         if (currentPos != -1) {
             if (currentPos == pos1) {
@@ -1652,11 +1357,14 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
         nbPos4 = nbPos3;
     }
 
+    ///// Ici ça marche //////
+
     fprintf(pf, "|ID|Position|Nombre|\n");
     fprintf(pf, "| 1|      %d|    %d|\n", pos1, nbPos1);
     fprintf(pf, "| 2|      %d|    %d|\n", pos2, nbPos2);
     fprintf(pf, "| 3|      %d|    %d|\n", pos3, nbPos3);
     fprintf(pf, "| 4|      %d|    %d|\n\n", pos4, nbPos4);
+
 
     int posList[4] = {pos1, pos2, pos3, pos4};
     int nbPosList[4] = {nbPos1, nbPos2, nbPos3, nbPos4};
@@ -1664,51 +1372,72 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
     for (int i = 0; i < 40; i++) {
         fprintf(pf, "ID : %d|X : %d|Y : %d\n", cases[i].id, cases[i].x, cases[i].y);
     }
+
+    //printf("nbJoueurs : %d\n", nbJoueurs);
+
     for (int i = 0; i < nbJoueurs; i++) {
         // printf("Jouer numero :  %d", i);
+
         if (nbPosList[i] == 1) {
             Color(0, caseColorId(cases[posList[i]].id));
+
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 6, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 6);
-            // printf("avant le pointeur");
-            printf("%c", joueurs[i]->avatar);
-            // printf("apres le pointeur ");
+            printf("%c", (*joueurs)[i].avatar);
+
         } else if (nbPosList[i] == 2) {
             Color(0, caseColorId(cases[posList[i]].id));
+
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 4, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 4);
-            printf("%c", joueurs[i]->avatar);
+            printf("%c", (*joueurs)[i].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 8, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 8);
-            printf("%c", joueurs[i + 1]->avatar);
+            printf("%c", (*joueurs)[i + 1].avatar);
+
             i++;
+
         } else if (nbPosList[i] == 3) {
             Color(0, caseColorId(cases[posList[i]].id));
+
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 3, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 3);
-            printf("%c", joueurs[i]->avatar);
+            printf("%c", (*joueurs)[i].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 6, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 6);
-            printf("%c", joueurs[i + 1]->avatar);
+            printf("%c", (*joueurs)[i + 1].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 9, i + 2);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 9);
-            printf("%c", joueurs[i + 2]->avatar);
+            printf("%c", (*joueurs)[i + 2].avatar);
+
             i++;
             i++;
+
+    
+            Sleep(2000);
+
         } else if (nbPosList[i] == 4) {
             Color(0, caseColorId(cases[posList[i]].id));
+
             fprintf(pf, "\n%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 3, i);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 3);
-            printf("%c", joueurs[i]->avatar);
+            printf("%c", (*joueurs)[i].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 5, i + 1);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 5);
-            printf("%c", joueurs[i + 1]->avatar);
+            printf("%c", (*joueurs)[i + 1].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 7, i + 2);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 7);
-            printf("%c", joueurs[i + 2]->avatar);
+            printf("%c", (*joueurs)[i + 2].avatar);
+
             fprintf(pf, "%d - %d, joueur %d\n", cases[posList[i]].y + 2, cases[posList[i]].x + 9, i + 3);
             gotoligcol(cases[posList[i]].x + 2, cases[posList[i]].y + 9);
-            printf("%c", joueurs[i + 3]->avatar);
+            printf("%c", (*joueurs)[i + 3].avatar);
+
             i++;
             i++;
             i++;
@@ -1717,7 +1446,10 @@ void afficherJoueurPlateau(joueur **joueurs, terrain *terrains, box *cases, int 
     Color(15, 0);
     fclose(pf);
     pf = NULL;
-    Sleep(2000);
+
+    //showJoueur(joueurs);
+
+    Sleep(1000);
 }
 
 void faireSauvegarde(joueur **listePlayers, joueur *currentplayer, terrain *listeTerrain, int nbJoueurs, bool rejouer, int nbTours) {
@@ -1728,603 +1460,180 @@ void faireSauvegarde(joueur **listePlayers, joueur *currentplayer, terrain *list
 
     for (int i = 0; i < 22; i++) {
         fprintf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", listeTerrain[i].id, listeTerrain[i].defaultPrice,
-        listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
-        listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
-        listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
-        fprintf(pf, " %d %d %d", listeTerrain[i].owned, listeTerrain[i].hotel, listeTerrain[i].hypotheque);
+                listeTerrain[i].idOnBoard, listeTerrain[i].housePrice, listeTerrain[i].loyer, listeTerrain[i].loyermaison1, listeTerrain[i].loyermaison2,
+                listeTerrain[i].loyermaison3, listeTerrain[i].loyermaison4, listeTerrain[i].loyerhotel, listeTerrain[i].val_hypoth, listeTerrain[i].buildings,
+                listeTerrain[i].x, listeTerrain[i].y, listeTerrain[i].couleur, listeTerrain[i].ownedBy);
+        if (listeTerrain[i].owned == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listeTerrain[i].hotel == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listeTerrain[i].hypotheque == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
         fprintf(pf, "\n");
     }
 
-    for (int j = 0; j<nbJoueurs; j++){
-        fprintf(pf, "%d %d %d %d %d %d %d %d %d %d", listePlayers[j]->id, listePlayers[j]->balance, listePlayers[j]->position,
-        listePlayers[j]->sortiePrison, listePlayers[j]->carteDenonciation, listePlayers[j]->inJail, listePlayers[j]->bankruptcy,
-        listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
-        for (int k = 0; k<26; k++){
+    for (int j = 0; j < nbJoueurs; j++) {
+        fprintf(pf, "%d %d %s %d", listePlayers[j]->id, listePlayers[j]->balance, listePlayers[j]->username, listePlayers[j]->position);
+        if (listePlayers[j]->sortiePrison == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->carteDenonciation == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->inJail == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        if (listePlayers[j]->bankruptcy == false) {
+            fprintf(pf, " false");
+        } else {
+            fprintf(pf, " true");
+        }
+        fprintf(pf, " %d %d %d", listePlayers[j]->streakDouble, listePlayers[j]->timeInJail, listePlayers[j]->avatar);
+        for (int k = 0; k < 26; k++) {
             fprintf(pf, " %d", listePlayers[j]->ownedField[k]);
         }
-        fprintf(pf, " %s", listePlayers[j]->username);
         fprintf(pf, "\n");
     }
 
-    if (nbJoueurs == 2){
-        fprintf(pf, "\n\n\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
-    } else if (nbJoueurs == 3){
-        fprintf(pf, "\n\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
+    fprintf(pf, "%d %d", currentplayer->id, nbTours);
+    if (rejouer == true) {
+        fprintf(pf, " true");
     } else {
-        fprintf(pf, "\n\n\n%d %d %d", nbJoueurs, currentplayer->id, nbTours);
+        fprintf(pf, " false");
     }
-    fprintf(pf, " %d", rejouer);
-
     fclose(pf);
 }
 
-terrain *chargerTerrains() {  // chargement des terrains
-    terrain *listeTerrain = (terrain *)malloc(23 * sizeof(terrain));
-
-    terrain instance;
-
-    char *listeNomTerrain[22] = {"Racine Carree", "Brol", "Absolution", "Plat.Collec", "Nevermind", "RAM", "One More Love",
-                                 "Discovery", "MMLP", "NWTS", "Eminem Show", "Or Noir", "Ouest Side", "Civilisation", "Unorth.Juke",
-                                 "After Hours", "Thriller", "DLL", "Trinity", "JVLIVS", "Ipseite", "Cyborg"};
-    
-    for (int i = 0; i < 22; i++) {
-        char *nomCurrent = listeNomTerrain[i];
-        FILE* texte = NULL;
-        texte = fopen("data/save1.txt", "r");
-        if (texte == NULL) {
-            printf("Error: Cannot open");
-        }
-        char ignore[1024];
-        int donnee[16];
-        bool own, hot, hyp;
-        int tempOwn, tempHot, tempHyp;
-        for (int j = 0; j < i; j++) {
-            fgets(ignore, sizeof(ignore), texte);
-        }
-        fscanf(texte, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[14],
-               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7], &donnee[8], &donnee[9],
-               &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[15], &tempOwn, &tempHot, &tempHyp);
-
-        instance.nom = nomCurrent;
-        instance.id = donnee[0];
-        instance.defaultPrice = donnee[1];
-        instance.idOnBoard = donnee[14];
-        instance.housePrice = donnee[2];
-        instance.loyer = donnee[3];
-        instance.loyermaison1 = donnee[4];
-        instance.loyermaison2 = donnee[5];
-        instance.loyermaison3 = donnee[6];
-        instance.loyermaison4 = donnee[7];
-        instance.loyerhotel = donnee[8];
-        instance.val_hypoth = donnee[9];
-        instance.buildings = donnee[10];
-        instance.x = donnee[11];
-        instance.y = donnee[12];
-        instance.couleur = donnee[13];
-        instance.ownedBy = donnee[15];
-        own = tempOwn;
-        hot = tempHot;
-        hyp = tempHyp;
-        instance.owned = own;
-        instance.hotel = hot;
-        instance.hypotheque = hyp;
-
-        listeTerrain[i] = instance;
-    }
-
-    return listeTerrain;
-}
-
-joueur* chargerJoueurs(int nbJoueurs){
-    joueur *listeJoueurs = (joueur *)malloc(4 * sizeof(joueur));
-    joueur player;
-
-    for (int i = 0; i < nbJoueurs; i++) {
-        FILE* pf = NULL;
-        pf = fopen("data/save1.txt", "r");
-        if (pf == NULL) {
-            printf("Error: Cannot open");
-        }
-        //char* nomJ = malloc(12 * sizeof(char));
-        int nbJoueurs;
-        int donnee[40];
-        char ignore[1024];
-        bool sortie, prison, denoncer, faillite;
-        int tempSortie, tempDenoncer, tempPrison, tempFaillite;
-        for (int j = 0; j < 22+i; j++) {
-            fgets(ignore, sizeof(ignore), pf);
-        }
-
-        fscanf(pf, "%d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1], &donnee[2], &donnee[3], &tempSortie, &tempDenoncer, 
-        &tempPrison, &tempFaillite, &donnee[4], &donnee[5]);
-        sortie = tempSortie;
-        denoncer = tempDenoncer;
-        prison = tempPrison;
-        faillite = tempFaillite;
-        player.id = donnee[0];
-        player.balance = donnee[1];
-        player.position = donnee[2];
-        player.sortiePrison = sortie;
-        if (player.sortiePrison == 0){
-            player.sortiePrison = false;
-        } else {
-            player.sortiePrison = true;
-        }
-        player.carteDenonciation = denoncer;
-        if (player.carteDenonciation == 0){
-            player.carteDenonciation = false;
-        } else {
-            player.carteDenonciation = true;
-        }
-        player.inJail = prison;
-        if (player.inJail == 0){
-            player.inJail = false;
-        } else {
-            player.inJail = true;
-        }
-        player.bankruptcy = faillite;
-        if (player.bankruptcy == 0){
-            player.bankruptcy = false;
-        } else {
-            player.bankruptcy = true;
-        }
-        player.streakDouble = donnee[3];
-        printf("%d ", player.streakDouble);
-        player.timeInJail = donnee[4];
-        printf("%d ", player.timeInJail);
-        player.avatar = donnee[5];
-        printf("avatar : %d ", player.avatar);
-        for (int j=0; j<26; j++){
-            fscanf(pf, "%d ", &donnee[j+6]);
-            player.ownedField[j] = donnee[j+6];
-            printf("indice %d liste : %d ", j, player.ownedField[j]);
-        }
-        /*
-        for (int n=0; n<5; n++){
-            fscanf(pf, "%c", &nomJ[n]);
-        }
-        printf("nom : %s ", nomJ);
-        strcpy(player.username, nomJ);
-        printf("nom 2 : %s",player.username);
-        */
-        Sleep(3000);
-
-        listeJoueurs[i] = player;
-    }
-
-    /*
-    if (nbJoueurs == 2){
-        joueur tempJ3 = {3, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0};
-        joueur tempJ4 = {4, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0};
-        listeJoueurs[2] = tempJ3;
-        listeJoueurs[3] = tempJ4;
-    } else if (nbJoueurs == 3){
-        joueur tempJ4 = {4, 1500, "NULL", -1, {0}, false, false, false, false, 0, 0};
-        listeJoueurs[3] = tempJ4;
-    } */
-
-    for (int i = 0; i < nbJoueurs; i++) {
-        display();
-        printf("Entrez le nom du joueur %d : ", i + 1);
-        scanf("%s", listeJoueurs[i].username);
-        listeJoueurs[i].position = 0;
-    }
-
-    display();
-    gotoligcol(14, 0);
-
-    for (int i = 0; i < nbJoueurs; i++) {
-        printf("Pseudo et avatar du joueur %d : %s  -  %c\n", i + 1, listeJoueurs[i].username, listeJoueurs[i].avatar);
-    }
-
-    printf("\nChargement de la partie en cours");
-
-    animation(20, 0, 75, 50);
-
-    return listeJoueurs;
-}
-
-void chargerSauvegarde(){
-    FILE* pf = NULL;
-    pf = fopen("data/save1.txt", "r");
-    if (pf == NULL) {
-        printf("Error: Cannot open");
-    }
-
-    const int nbJoueurs = 0;
-    int i = 0;
-    int nbTours = 1;
-    char ignore[1024];
-    bool rejouer;
-    int tempRejouer;
-    for (int j = 0; j < 29; j++) {
-        fgets(ignore, sizeof(ignore), pf);
-    }
-    fscanf(pf, "%d %d %d %d", &nbJoueurs, &i, &nbTours, &tempRejouer);
-    rejouer = tempRejouer;
-    printf(" %d %d %d %d\n", nbJoueurs, i, nbTours, rejouer);
-    Sleep(2000);
-    i -= 1;
-    printf("%d\n", i);
-    rewind(pf);
-    
-    joueur *pJoueurs = chargerJoueurs(nbJoueurs);
-    Sleep(2000);
-    terrain *pTerrains = chargerTerrains();
-    box *bList = creationBox();
-
-    while (pJoueurs[0].balance > 0) {
-        clearScreen();
-        plateauGraphique(pTerrains);
-        Color(15, 0);
-        joueur *joueuractuel = &pJoueurs[i];
-        tourJoueur(pTerrains, &pJoueurs, bList, i, rejouer, nbJoueurs, nbTours);
-        printf("putoooo");
-        Color(15, 0);
-        gotoligcol(7, 15);
-        printf("Position joueur : %d", (joueuractuel)->position);
-        nbTours += 1;
-        i++;
-        if (i >= nbJoueurs) {
-            i = 0;
-        }
-        gotoligcol(22, 58);
-        printf("C'est au tour de %s !", pJoueurs[i].username);
-        animation(23, 53, 100, 30);
-    }
-    free(bList);
-    free(pJoueurs);
-    free(pTerrains);
-}
-
 int main() {
+
     // Sleep(10000);    // Decommente pour voir les warnings
     Color(15, 0);
+    // system("[console]::windowwidth=100; [console]::windowheight=50; [console]::bufferwidth=[console]::windowwidth");
+
     srand(time(NULL));
     home();
 
     return 0;
 }
 
-joueur communaute(joueur currentplayer, terrain *listeTerrain){
-    int nb;
-    int donnee[16];
-    int piocheTampon[16];
-    FILE *pf = fopen("data/piocheCommu.txt", "w");
-    if (pf == NULL)
-    {
-        printf("Erreur d'ouverture de fichier.");
-    }
-    else
-    {
-        fscanf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
-               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
-               &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[14], &donnee[15]);
-    }
-    nb = donnee[0];
+/*void communaute(joueur currentplayer, terrain *listeTerrains, ){
+
     if (nb == 1){
-        printf("Vous achetez des streams. Versez 50%c a la banque", 0x24);
+        printf("Vous achetez des streams. Versez 50$ a la banque")
         currentplayer.balance -= 50;
     }
     else if (nb == 2){
-        printf("Vous faites un mauvais demarrage d'album. Versez 100%c a la banque", 0x24);
+        printf("Vous faites un mauvais demarrage d'album. Versez 100$ a la banque")
         currentplayer.balance -= 100;
     }
     else if (nb == 3){
-        printf("Vous faites un exces de vitesse. Versez 10%c a la banque",0x24);
+        printf("Vous faites un exces de vitesse. Versez 10$ a la banque")
         currentplayer.balance -= 10;
     }
     else if (nb == 4){
-        printf("Un fans vous donne 50%c", 0x24);
+        printf("Un fans vous donne 50$")
         currentplayer.balance += 50;
     }
     else if (nb == 5){
-        printf("Vous faites un showcase. Recevez 100%c", 0x24);
+        printf("Vous faites un showcase. Recevez 100$")
         currentplayer.balance += 100;
     }
     else if (nb == 6){
-        printf("Vous tournez un clip a Dubai. Versez 100%c a la banque", 0x24);
+        printf("Vous tournez un clip à Dubai. Versez 100$ a la banque")
         currentplayer.balance -= 100;
     }
     else if (nb == 7){
-        printf("Vous allez vous inspirer a New York. Versez 50%c a la banque", 0x24);
+        printf("Vous allez vous inspirer à New York. Versez 50$ a la banque")
         currentplayer.balance -= 50;
     }
     else if (nb == 8){
-        printf("Vous etes top1 spotify. Recevez 50%c de la banque", 0x24);
+        printf("Vous etes top1 spotify . Recevez 50$ a la banque")
         currentplayer.balance += 50;
     }
     else if (nb == 9){
-        printf("Vous signez un nouveau label. Recevez 200%c", 0x24);
+        printf("Vous signez un nouveau label. Recevez 200$")
         currentplayer.balance += 200;
     }
-    else if (nb == 10)
-    {
-        printf("Payez 10%c d'impots pour chacun de vos terrain",0x24);
+    else if (nb == 10){
+        printf("Payez 20$ d'impots pour chacun de vos terrain")
         int prix=0;
-        for (int i  = 0; i<26; i++)
+        for (int i  == 0; i<26; i++)
         {
-            if (currentplayer.ownedField[i] != 0)
+            if (currentplayer.ownedField[i] == 1)
             {
-                prix +=10;
-            }
-        printf("Vous avez payer %d$ taxes",prix);
-        currentplayer.balance -= prix;
-        }
-    }
-    else if (nb == 11)
-    {
-        int reparation = 0;
-        printf("Payer 50%c de réparation sur chacun de vos hotels.",0x24 );
-        for (int i = 0; i<22;i++)
-        {
-            if (listeTerrain[i].ownedBy == currentplayer.id)
-            {
-                if (listeTerrain[i].hotel == true)
+                if (currentplayer.ownedField[i] == 1)
                 {
-                    reparation += 50;
+                    prix +=10;
                 }
             }
+            printf("Vous avez payer %d$ taxes",prix)
+            currentplayer.balance -= prix;
         }
-        printf("Vous avez payez %d reparation",reparation);
-        currentplayer.balance += reparation;
-    }
-    else if (nb == 12)
-    {
-        printf("Allez en prison" );
-        currentplayer.position = 10;
-        currentplayer.inJail = true;
-    }
-    else if (nb == 13)
-    {
-        printf("Allez vous reposer au Zenith d'apres");
-        if (currentplayer.position > 35 )
+        else if (nb == 11){
+            int reparation = 0;
+            printf("Payer 50$ de réparation sur chacun de vos hotels.")
+            for (int i == 0; i<22;i++)
+            {
+                if (listeTerrain[i].ownedBy == currentplayer.id)
+                {
+                    if (listeTerrain[i].hotel == true)
+                    {
+                    reparation += 50;
+                    }
+                }
+            }
+            printf("Vous avez payez %d reparation",reparation)
+            currentplayer.balance += reparation;
+        else if (nb == 12)
         {
-            currentplayer.balance += 200;
-            currentplayer.position = 5;
-        }
-        else if ( 5 < currentplayer.position < 15)
-        {
-            currentplayer.position = 15;
-        }
-        else if ( 15 < currentplayer.position < 25)
-        {
-            currentplayer.position = 25 ;
-        }
-        else if ( 25 < currentplayer.position < 35)
-        {
-            currentplayer.position = 35;
-        }
-        else 
-        {
-            currentplayer.position = 5;
-        }
-    }
-    else if (nb == 14)
-    {
-        printf("Vous aidez un fans dans le besoin et vous lui donnez 25%c", 0x24);
-        currentplayer.balance -= 25;
-    }
-    else if (nb == 15)
-    {
-        printf("Allez à la case départ");
-        currentplayer.position = 0;
-        currentplayer.balance += 200;
-    }
-    else
-    {
-        printf("Vous aidez un jeune rappeur à commencer. Versez 50%c à la banque", 0x24);
-        currentplayer.balance -= 50;
-    }
-    for (int i = 0; i< 16; i++)
-    {
-        piocheTampon[i] = donnee[i+1];
-    }
-    piocheTampon[15] = nb;
-    for(int j = 0; j < 15; j++)
-    {
-        piocheTampon[j] = donnee[j+1];
-    }
-    piocheTampon[15] = nb;
-    for(int j = 0; j < 16; j++)
-    {
-        fprintf(pf, "%d ",piocheTampon[j]);
-    }
-    fclose(pf);
-    pf = NULL;
-    return currentplayer;
-}
-
-joueur chance(joueur currentplayer){
-    int nb;
-    int donnee[16];
-    int piocheTampon[16];
-    FILE *pf = fopen("data/piocheChance.txt", "w");
-    if (pf == NULL)
-    {
-        printf("Erreur d'ouverture de fichier.");
-    }
-    else
-    {
-        fscanf(pf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &donnee[0], &donnee[1],
-               &donnee[2], &donnee[3], &donnee[4], &donnee[5], &donnee[6], &donnee[7],
-               &donnee[8], &donnee[9], &donnee[10], &donnee[11], &donnee[12], &donnee[13], &donnee[14], &donnee[15]);
-    }
-    nb = donnee[0];
-    if (nb <15 )
-    {
-        if (nb == 1){
-            printf("Allez a la case depart");
-            currentplayer.balance += 200;
-            currentplayer.position = 0;
-        }
-        else if (nb == 2){
-            printf("Vous gagnez un pari PMU. Recevez 100%c.", 0x24);
-            currentplayer.balance += 100;
-        }
-        else if (nb == 3){
-            printf("Allez en prison");
+            printf("Allez en prison")
             currentplayer.position = 10;
             currentplayer.inJail = true;
         }
-        else if (nb == 4){
-            printf("Vous recevez la recompensede revelation de l'annee. Recevez 50%c", 0x24);
-            currentplayer.balance += 50;
-        }
-        else if (nb == 5){
-            printf("Vous faites une pub. ReceveZ 50%c", 0x24);
-            currentplayer.balance += 200;
-        }
-        else if (nb == 6){
-            printf("Vous allez voir un amis en prison");
-            if (currentplayer.position > 10)
-            {
-                currentplayer.balance += 200;
-            }
-            currentplayer.position = 10;
-        }
-        else if (nb == 7){
-            printf("Vous avez bien travaillé. Allez vous reposé à Soundcloud");
-            if (currentplayer.position > 20)
-            {
-                currentplayer.balance += 200;
-            }
-            currentplayer.position = 20;
-        }
-        else if (nb == 8){
-            printf("Vos placements vous rapporte 200%c", 0x24);
-            currentplayer.balance += 50;
-        }
-        else if (nb == 9)
-        {
-            printf("Allez vous reposer au Zenith d'apres");
-            if (currentplayer.position > 35 )
-            {
-                currentplayer.balance += 200;
-                currentplayer.position = 5;
-            }
-            else if ( 5 < currentplayer.position < 15)
-            {
-                currentplayer.position = 15;
-            }
-            else if ( 15 < currentplayer.position < 25)
-            {
-                currentplayer.position = 25 ;
-            }
-            else if ( 25 < currentplayer.position < 35)
-            {
-                currentplayer.position = 35;
-            }
-            else 
-            {
-                currentplayer.position = 5;
-            }
-        }
-        else if (nb == 10)
-        {
-            printf("Payez 20%c d'impots", 0x24);
-            currentplayer.balance -= 20;
-        }
-        else if (nb == 11)
-        {
-            printf("Vous achetez une nouvelle voiture. Payez 50%c", 0x24);
-            currentplayer.balance -= 50;
-        }
-        else if (nb == 12)
-        {
-            printf("Vous etes top un Deezer. Recevez 25%c", 0x24);
-            currentplayer.balance += 25;
-        }
         else if (nb == 13)
         {
-            printf("Vous gagnez 500%c au loto", 0x24);
-            currentplayer.balance += 500;
-
+            char choix = '';
+            printf("Payer 10$ ou tirer une carte chance./nTapez 1 pour payer ou entrez n'importe quel autre touche pour tirer la carte chance")
+            scanf("%s", choix)
+            if (choix == '1')
+            {
+                currentplayer.balance -= 10;
+            }
+            else
+            {
+                chance(joueur currentplayer)
+            }
+        }
+        else if (nb == 14)
+        {
+            printf("Vous aidez un fans dans le besoin et vous lui donnez 25$")
+            currentplayer.balance -= 25;
+        }
+        else if (nb == 15)
+        {
+            printf("Allez à la case départ")
+            currentplayer.position = 0;
+            currentplayer.balance += 200;
         }
         else
         {
-            printf("Vous prenez des cours de piano. Payez 50%c", 0x24);
+            printf("Vous aidez un jeune rappeur à commencer. Versez 50$ à la banque")
             currentplayer.balance -= 50;
         }
-        if (donnee[14] == 0 && donnee[15] == 0)
-        {
-                for (int i = 0; i< 16; i++)
-            {
-                piocheTampon[i] = donnee[i+1];
-            }
-            for(int j = 0; j < 15; j++)
-            {
-                piocheTampon[j] = donnee[j+1];
-            }
-            piocheTampon[13] = nb;
-            piocheTampon[14] = 0;
-            piocheTampon[15] = 0;
-            for(int j = 0; j < 16; j++)
-            {
-                fprintf(pf, "%d ",piocheTampon[j]);
-            }
-        }
-        else if (donnee[14] != 0 && donnee[15] == 0)
-        {
-            for (int i = 0; i< 16; i++)
-            {
-                piocheTampon[i] = donnee[i+1];
-            }
-            for(int j = 0; j < 15; j++)
-            {
-                piocheTampon[j] = donnee[j+1];
-            }
-            piocheTampon[14] = nb;
-            piocheTampon[15] = 0;
-            for(int j = 0; j < 16; j++)
-            {
-                fprintf(pf, "%d ",piocheTampon[j]);
-            }
-        }
-        else
-        {
-            for (int i = 0; i< 16; i++)
-            {
-                piocheTampon[i] = donnee[i+1];
-            }
-            for(int j = 0; j < 15; j++)
-            {
-                piocheTampon[j] = donnee[j+1];
-            }
-            piocheTampon[15] = nb;
-            for(int j = 0; j < 16; j++)
-            {
-                fprintf(pf, "%d ",piocheTampon[j]);
-            }
-        }
-    }
-    else
-    {
-        if (nb == 15)
-        {
-            printf("Vous denoncez une fraude du proprietaire, vous ne payez pas le loyer, carte a conserver ");
-            currentplayer.carteDenonciation = true;
-        }
-        else
-        {
-            printf("Carte sortie de prison, a concerver");
-            currentplayer.sortiePrison = true;
-        }
-        for (int i = 0; i< 16; i++)
-        {
-            piocheTampon[i] = donnee[i+1];
-        }
-        piocheTampon[15] = 0;
-        for(int j = 0; j < 15; j++)
-        {
-            piocheTampon[j] = donnee[j+1];
-        }
-        for(int j = 0; j < 16; j++)
-        {
-            fprintf(pf, "%d ",piocheTampon[j]);
-        }
-    }
-    fclose(pf);
-    pf == NULL;
-    return currentplayer;
-}
+
+    } */
