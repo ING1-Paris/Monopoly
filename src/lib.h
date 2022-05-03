@@ -1,5 +1,6 @@
 #ifndef LIB
 #define LIB
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
